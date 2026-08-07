@@ -30,15 +30,6 @@ paginate: "true"
 
 ---
 
-## Agenda 
-
-- Ementa
-- Avaliação
-- Stack
-- Contato
-
----
-
 ## Ementa
 
 > *"Pilhas, filas, alocação dinâmica, recursividade, listas encadeadas, tabelas de espalhamento e árvores."*
@@ -92,7 +83,7 @@ paginate: "true"
 
 ---
 
-## Requisito
+## Requisitos
 
 - Git
 
@@ -114,6 +105,15 @@ paginate: "true"
 - `Cracking the Coding Interview` por Gayle Laakmann McDowell
 - `Introduction to Algorithms` por Thomas H Cormen, Charles E Leiserson, Ronald L Rivest), Clifford Stein
 - `The Algorithm Design Manual` por Steven S Skiena
+
+---
+
+## Avisos
+
+- Não é uma disciplina fácil
+- Não é uma disciplina teórica
+
+    > Termos uma lista de exercício toda semana.   
 
 ---
 
