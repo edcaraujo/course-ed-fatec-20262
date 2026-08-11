@@ -8,14 +8,19 @@ description: "Disciplina de Estruturas de Dados."
 theme: "default"
 class: "invert"
 
-footer: "Eduardo Cruz Araujo | Fatec | 2026.2 | Estruturas de Dados | Hello World"
+footer: "Eduardo Cruz Araujo | Fatec | 2026.2 | Estruturas de Dados | Hello World (Part. 1)"
 
 paginate: "true"
 
 ---
 
 # Estrutura de Dados :mortar_board:
-## Hello World
+## Hello World (Part. 1)
+
+--- 
+
+Hello World (Part. 1)
+## Ementa
 
 ---
 
@@ -60,18 +65,18 @@ paginate: "true"
 
 ## Ementa
 
-- Grafos: (Part. 1)
-- Grafos: (Part. 2)
-- Grafos: (Part. 3)
-- Avançado: Programação Dinâmica
-- Avançado: Greedy e Union-Find
+- Grafos: Introdução e Travessias Básicas (Part. 1)
+- Grafos: Dijkstra e Bellman-Ford (Part. 2)
+- Grafos: Kruskal e Prim (Part. 3)
+- Grafos: Kahn (Part. 4)
+- Avançado: Backtracking e Programação Dinâmica
 
 ---
 
 ## Avaliação
 
 - :pencil: Avaliação (P1)
-- :package: Avaliação (P2)
+- :pencil: Avaliação (P2)
 - :pencil: Avaliação (SUB)
 - :pencil: Avaliação (REC)*
 
@@ -85,6 +90,7 @@ paginate: "true"
 
 ## Requisitos
 
+- Introdução a programação
 - Git
 
 ---

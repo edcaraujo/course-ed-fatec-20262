@@ -3,5 +3,5 @@ Materiais da disciplina de 'Estrutura de Dados' 2026.2 do curso de Análise e De
 
 ## Aulas
 
-- [00 - Hello World](00-ed-helloworld/00-ed-helloworld.md)
-- [00 - Hello World: Python](00-ed-helloworld/00-ed-helloworld-pyhton.md)
+- [01 - Hello World (Part. 1)](01-ed-helloworld/01-ed-helloworld-part-1.md)
+- [01 - Hello World (Part. 2)](01-ed-helloworld/01-ed-helloworld-part-2.md)

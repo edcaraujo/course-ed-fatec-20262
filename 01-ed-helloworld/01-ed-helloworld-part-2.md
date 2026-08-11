@@ -8,18 +8,18 @@ description: "Disciplina de Estruturas de Dados."
 theme: "default"
 class: "invert"
 
-footer: "Eduardo Cruz Araujo | Fatec | 2026.2 | Estruturas de Dados | Hello World: Python"
+footer: "Eduardo Cruz Araujo | Fatec | 2026.2 | Estruturas de Dados | Hello World (Part. 2)"
 
 paginate: "true"
 
 ---
 
 # Estrutura de Dados :mortar_board:
-## Hello World
+## Hello World (Part. 2)
 
 --- 
 
-Hello World
+Hello World (Part. 2)
 ## Python
 
 ---
