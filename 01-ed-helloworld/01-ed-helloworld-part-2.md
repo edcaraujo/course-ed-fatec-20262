@@ -620,16 +620,14 @@ Depois de resolver, vamos revisar o código em conjunto observando:
 
 ---
 
-# Contato :mortar_board:
+# Obrigado :metal:
 
 ---
-
-![bg right:35%](images/94c58c652f08235bd2c1c3abd95cd2ac.png)
 
 ## Eduardo Cruz Araujo
 
 - E-mail: [eduardo.araujo@cps.sp.gov.br](eduardo.araujo@cps.sp.gov.br)
-- Linkedin: [edcaraujo](https://www.instagram.com/)
+- Linkedin: [edcaraujo](https://www.linkedin.com/in/edcaraujo/)
 - Github: [edcaraujo](https://github.com/edcaraujo)
 
 
