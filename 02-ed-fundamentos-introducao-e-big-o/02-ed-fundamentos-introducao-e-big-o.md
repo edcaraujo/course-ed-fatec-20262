@@ -1006,8 +1006,6 @@ Fundamentos: Introdução e Big-O
 
 ---
 
-![bg right:35%](images/94c58c652f08235bd2c1c3abd95cd2ac.png)
-
 ## Eduardo Cruz Araujo
 
 - E-mail: [eduardo.araujo@cps.sp.gov.br](mailto:eduardo.araujo@cps.sp.gov.br)
