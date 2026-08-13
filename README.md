@@ -19,7 +19,7 @@ Repositório contendo os materiais, apresentações e exercícios da disciplina 
 | Aula | Data | Tópico | Descrição / Conteúdo | Materiais / Apresentações |
 | :---: | :---: | :--- | :--- | :--- |
 | **01** | 07/08 | Hello World | Apresentação, ementa e alinhamento sobre a disciplina.<br>Revisão de Python. | [[1]](01-ed-helloworld/01-ed-helloworld-part-1.md) • [[2]](01-ed-helloworld/01-ed-helloworld-part-2.md) |
-| **02** | 14/08 | Fundamentos: Introdução e Big-O | Conceitos fundamentais de complexidade computacional. Análise assintótica de algoritmos utilizando a Notação Big-O para avaliar o consumo de tempo e espaço de memória. | — |
+| **02** | 14/08 | Fundamentos: Introdução e Big-O | Conceitos fundamentais de complexidade computacional. Análise assintótica de algoritmos utilizando a Notação Big-O para avaliar o consumo de tempo e espaço de memória. | [[1]](02-ed-fundamentos-introducao-e-big-o/02-ed-fundamentos-introducao-e-big-o.md)|
 
 ---
 

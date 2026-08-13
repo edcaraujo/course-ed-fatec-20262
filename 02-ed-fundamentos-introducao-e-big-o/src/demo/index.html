@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundamentos: Introdução e Big-O | Estrutura de Dados | Fatec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Application Navigation Bar -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-badge">FATEC 2026.2</span>
+      <span>Estrutura de Dados</span>
+      <span style="color: var(--text-muted); font-weight: 400;">| Fundamentos: Introdução e Big-O</span>
+    </div>
+    
+    <div class="header-controls">
+      <button class="btn-nav" id="btn-prev" title="Slide Anterior (Seta Esquerda)">← Anter</button>
+      <span class="slide-counter" id="slide-counter">1 / 27</span>
+      <button class="btn-nav" id="btn-next" title="Próximo Slide (Seta Direita / Espaço)">Próx →</button>
+      <button class="btn-nav" id="btn-overview" title="Menu de Navegação (Teclas M)">📱 Índice (M)</button>
+      <button class="btn-nav" id="btn-notes" title="Notas do Apresentador (Tecla P)">💡 Notas (P)</button>
+      <button class="btn-nav" id="btn-fullscreen" title="Modo Tela Cheia (Tecla F)">⛶ Tela Cheia</button>
+    </div>
+  </header>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Slides Viewport -->
+  <main class="slides-viewport">
+
+    <!-- SLIDE 1: CAPA -->
+    <section class="slide slide-cover active">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS 2026.2</span>
+      <h1 class="cover-title">Fundamentos: Introdução e Big-O</h1>
+      <p class="cover-subtitle">Conceitos fundamentais de complexidade computacional, análise assintótica e notação Big-O para avaliar tempo e memória de algoritmos.</p>
+      
+      <div class="author-box">
+        <div style="font-size: 2.2rem;">🎓</div>
+        <div class="author-info">
+          <div class="author-name">Eduardo Cruz Araujo</div>
+          <div class="author-meta">Professor & Engenheiro de Software • Fatec SP</div>
+        </div>
+      </div>
+
+      <div class="keyboard-hints">
+        <div class="kbd-pill"><kbd>←</kbd> <kbd>→</kbd> Navegar</div>
+        <div class="kbd-pill"><kbd>Espaço</kbd> Avançar</div>
+        <div class="kbd-pill"><kbd>M</kbd> Índice Geral</div>
+        <div class="kbd-pill"><kbd>P</kbd> Notas de Aula</div>
+        <div class="kbd-pill"><kbd>F</kbd> Tela Cheia</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: POR QUE ANALISAR ALGORITMOS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">01. Motivação</span>
+        <h2 class="slide-title">Por que Analisar Algoritmos?</h2>
+        <p class="slide-subtitle">O problema do "tempo de relógio" (<em>wall-clock time</em>) e a necessidade de uma métrica universal.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">⚖️ O Dilema de Maria e João</div>
+          <div class="card-body">
+            <p>Dois desenvolvedores criaram soluções para o <strong>mesmo problema</strong>:</p>
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; margin: 10px 0; font-family: var(--font-mono); font-size: 0.85rem;">
+              • Algoritmo <strong>A</strong> (Maria): <span style="color: var(--accent-emerald);">0.05 segundos</span><br>
+              • Algoritmo <strong>B</strong> (João): <span style="color: var(--accent-rose);">0.12 segundos</span>
+            </div>
+            <p><strong>Podemos afirmar que o algoritmo A é melhor?</strong></p>
+            <p style="margin-top: 8px; color: var(--accent-amber);">⚠️ Medir tempo em segundos avalia o <em>ambiente de execução</em> (CPU, RAM, programas abertos, interpretador), não a qualidade intrínseca do algoritmo.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🎯 As Duas Perguntas Fundamentais</div>
+          <div class="card-body">
+            <div style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid var(--accent-cyan); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+              <strong>Pergunta 1:</strong> Ao comparar dois algoritmos, qual será mais rápido à medida que o volume de dados cresce (<i>N</i> → ∞)?
+            </div>
+            <div style="background: rgba(52, 211, 153, 0.08); border-left: 3px solid var(--accent-emerald); padding: 12px; border-radius: 6px;">
+              <strong>Pergunta 2:</strong> Se <strong>dobrarmos a entrada (<i>N</i> → 2<i>N</i>)</strong>, como o tempo e o consumo de memória serão afetados? Dobra? Quadruplica? Permanece constante? Ou explode?
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Wall-Clock Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: IMPACTO DO HARDWARE VS EFICIÊNCIA DO ALGORITMO</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav" id="btn-preset-small">N = 10 (Pequeno)</button>
+            <button class="btn-nav" id="btn-preset-med">N = 500 (Médio)</button>
+            <button class="btn-nav" id="btn-preset-large">N = 10.000 (Grande)</button>
+            <button class="btn-nav" id="btn-preset-huge">N = 100.000 (Gigante)</button>
+            <button class="btn-nav active" id="btn-sim-clock" style="background: rgba(56, 189, 248, 0.2); border-color: var(--accent-cyan);">▶️ Executar Benchmark</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="grid-2" style="margin-top: 0;">
+            <!-- Maria Card -->
+            <div class="card" id="card-maria" style="background: #090d16; border: 1px solid var(--border-color); transition: all 0.35s ease;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div>
+                  <div style="font-weight: 700; color: var(--accent-cyan); font-size: 1rem;">💻 PC de Maria (Top de Linha)</div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">Intel Core i9 • 5.0 GHz (5 × 10⁹ ops/s)</div>
+                </div>
+                <span class="complexity-tag tag-bad">O(N²) Quadrático</span>
+              </div>
+              
+              <div style="margin: 12px 0; background: #050811; padding: 10px 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                  <span style="color: var(--text-dim);">Operações (N²):</span>
+                  <strong style="color: #fff;" id="maria-ops-count">--</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-dim);">Tempo de Execução:</span>
+                  <strong style="color: var(--accent-cyan); font-size: 1.05rem;" id="sim-maria-time">--</strong>
+                </div>
+              </div>
+
+              <div style="background: #1e293b; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 8px;">
+                <div id="maria-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #818cf8); transition: width 0.5s ease;"></div>
+              </div>
+              <div style="margin-top: 8px; text-align: right;" id="maria-badge-container"></div>
+            </div>
+
+            <!-- Joao Card -->
+            <div class="card" id="card-joao" style="background: #090d16; border: 1px solid var(--border-color); transition: all 0.35s ease;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div>
+                  <div style="font-weight: 700; color: var(--accent-amber); font-size: 1rem;">💻 Notebook de João (Básico)</div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">Intel Core i3 • 1.8 GHz (1.8 × 10⁹ ops/s)</div>
+                </div>
+                <span class="complexity-tag tag-good">O(N) Linear</span>
+              </div>
+              
+              <div style="margin: 12px 0; background: #050811; padding: 10px 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                  <span style="color: var(--text-dim);">Operações (10 · N):</span>
+                  <strong style="color: #fff;" id="joao-ops-count">--</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-dim);">Tempo de Execução:</span>
+                  <strong style="color: var(--accent-emerald); font-size: 1.05rem;" id="sim-joao-time">--</strong>
+                </div>
+              </div>
+
+              <div style="background: #1e293b; height: 10px; border-radius: 5px; overflow: hidden; margin-top: 8px;">
+                <div id="joao-progress" style="height: 100%; width: 0%; background: linear-gradient(90deg, #34d399, #10b981); transition: width 0.5s ease;"></div>
+              </div>
+              <div style="margin-top: 8px; text-align: right;" id="joao-badge-container"></div>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px; background: #090d16; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-size: 0.88rem; font-weight: 600; color: #fff;">Ajuste o Tamanho da Entrada (<i>N</i>):</span>
+              <span class="slider-val" id="val-sim-n" style="font-size: 1rem; color: var(--accent-cyan); font-family: var(--font-mono);">N = 500</span>
+            </div>
+            
+            <input type="range" id="slider-sim-n" min="0" max="12" step="1" value="5" style="width: 100%; accent-color: var(--accent-cyan); cursor: pointer;">
+            
+            <div style="margin-top: 12px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main); border-top: 1px solid var(--border-color); padding-top: 10px;" id="sim-clock-verdict">
+              Clique em <strong>"Executar Benchmark"</strong> ou escolha um tamanho de entrada para rodar a simulação!
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: CONTAGEM DE INSTRUÇÕES E ASSÍNTOTAS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">02. Análise Matemática</span>
+        <h2 class="slide-title">Contagem de Instruções e Comportamento Assintótico</h2>
+        <p class="slide-subtitle">Como modelar o número de passos e entender a dominância dos termos para <i>N</i> → ∞.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="code-box">
+          <div class="code-header">
+            <span class="code-lang">Python</span>
+            <span>Contagem Passo a Passo</span>
+          </div>
+          <pre class="code-content"><code><span class="kw">def</span> <span class="fn">sum_list</span>(<span class="var">lst</span>):
+    <span class="var">total</span> <span class="op">=</span> <span class="num">0</span>           <span class="com"># 1 instrução (atribuição)</span>
+    <span class="kw">for</span> <span class="var">value</span> <span class="kw">in</span> <span class="var">lst</span>:   <span class="com"># N iterações do laço</span>
+        <span class="var">total</span> <span class="op">+=</span> <span class="var">value</span>  <span class="com"># 1 instrução por iteração (N vezes)</span>
+    <span class="kw">return</span> <span class="var">total</span>        <span class="com"># 1 instrução (retorno)</span></code></pre>
+          <div style="padding: 12px 16px; background: #0f172a; border-top: 1px solid var(--border-color); font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent-cyan);">
+            Total de Instruções: <i>f</i>(<i>N</i>) = <i>N</i> + 2
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔍 O Princípio da Dominância</div>
+          <div class="card-body">
+            <p>Considere dois algoritmos com contagens de instruções:</p>
+            <ul class="bullet-list" style="margin: 10px 0;">
+              <li>Algoritmo 1: <i>f</i>(<i>N</i>) = 4<i>N</i><sup>2</sup> + 2<i>N</i> + 7</li>
+              <li>Algoritmo 2: <i>g</i>(<i>N</i>) = 3<i>N</i><sup>2</sup> + 5<i>N</i> + 13</li>
+            </ul>
+            <p>Quando <i>N</i> é pequeno (ex: <i>N</i> = 2), as constantes e termos menores têm peso. Porém, quando <i>N</i> cresce para milhares ou milhões, <strong>o termo de maior expoente (<i>N</i><sup>2</sup>) representa mais de 99.99% do custo total!</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Polynomial Breakdown Calculator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">📈 CALCULADORA DE DOMINÂNCIA: <i>f</i>(<i>N</i>) = 4<i>N</i>² + 2<i>N</i> + 7</div>
+          <div class="range-slider-group">
+            <span>Valor de <i>N</i>:</span>
+            <input type="range" id="slider-poly-n" min="1" max="10000" step="1" value="10">
+            <span class="slider-val" id="val-poly-n">N = 10</span>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="grid-4" style="margin-top: 0;">
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Termo Quadrático 4<i>N</i>²</div>
+              <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan); font-family: var(--font-mono); margin: 6px 0;" id="calc-term-quad">400</div>
+              <div style="font-size: 0.75rem; color: var(--accent-emerald);" id="calc-pct-quad">94.56% do total</div>
+            </div>
+
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Termo Linear 2<i>N</i></div>
+              <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent-amber); font-family: var(--font-mono); margin: 6px 0;" id="calc-term-lin">20</div>
+              <div style="font-size: 0.75rem; color: var(--text-dim);" id="calc-pct-lin">4.72% do total</div>
+            </div>
+
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Constante + 7</div>
+              <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent-purple); font-family: var(--font-mono); margin: 6px 0;">7</div>
+              <div style="font-size: 0.75rem; color: var(--text-dim);" id="calc-pct-const">0.72% do total</div>
+            </div>
+
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Total de Operações</div>
+              <div style="font-size: 1.2rem; font-weight: 700; color: #fff; font-family: var(--font-mono); margin: 6px 0;" id="calc-term-total">427</div>
+              <div style="font-size: 0.75rem; color: var(--accent-cyan);">Classe: <i>O</i>(<i>N</i>²)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: NOTAÇÕES ASSINTÓTICAS (O, Ω, Θ) E CASOS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">03. Notações Matemáticas</span>
+        <h2 class="slide-title">A Família Assintótica (<i>O</i>, Ω, Θ) e Casos de Análise</h2>
+        <p class="slide-subtitle">Limite Superior (Teto), Limite Inferior (Piso) e Limite Justo, combinados com Melhor, Médio e Pior caso.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-highlight">
+          <div class="card-title">
+            <span class="complexity-tag tag-good"><i>O</i></span> Big-O (Upper Bound)
+          </div>
+          <div class="card-body">
+            <p><strong>Limite Superior (Teto):</strong></p>
+            <p><em>"O algoritmo não demora mais do que..."</em></p>
+            <p style="margin-top: 8px; font-size: 0.82rem; color: var(--text-dim);">Garante um limite máximo de tempo no pior cenário possível. É a notação padrão da indústria.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-fair">Ω</span> Big-Omega (Lower Bound)
+          </div>
+          <div class="card-body">
+            <p><strong>Limite Inferior (Piso):</strong></p>
+            <p><em>"O algoritmo demora pelo menos..."</em></p>
+            <p style="margin-top: 8px; font-size: 0.82rem; color: var(--text-dim);">Representa o mínimo de trabalho indispensável para o algoritmo resolver a tarefa.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-excellent">Θ</span> Big-Theta (Tight Bound)
+          </div>
+          <div class="card-body">
+            <p><strong>Limite Justo (Exato):</strong></p>
+            <p><em>"O algoritmo cresce exatamente na taxa de..."</em></p>
+            <p style="margin-top: 8px; font-size: 0.82rem; color: var(--text-dim);">Quando os limites superior e inferior coincidem na mesma ordem de grandeza (<i>O</i> = Ω).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Linear Search Case Visualizer -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🔍 ESTUDO DE CASO: BUSCA LINEAR (MELHOR, MÉDIO E PIOR CASO)</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav active" id="btn-case-best">Melhor Caso (Item no Início)</button>
+            <button class="btn-nav" id="btn-case-avg">Caso Médio (Item no Meio)</button>
+            <button class="btn-nav" id="btn-case-worst">Pior Caso (Não Existe / Fim)</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="array-container" id="linear-search-array">
+            <!-- Dynamically populated -->
+          </div>
+
+          <div style="margin-top: 14px; background: #090d16; padding: 12px 18px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span style="font-weight: 700; color: #fff;" id="case-title">Cenário: Melhor Caso</span>
+              <div style="font-size: 0.82rem; color: var(--text-muted);" id="case-desc">O elemento buscado (10) está exatamente na primeira posição analisada.</div>
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.9rem;" id="case-complexity">
+              Passos: <span style="color: var(--accent-emerald); font-weight: 700;">1 passo</span> • Complexidade: <span class="complexity-tag tag-excellent">Ω(1)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: AS 4 REGRAS DE OURO DO BIG-O -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">04. Simplificação</span>
+        <h2 class="slide-title">As 4 Regras de Ouro do Big-O</h2>
+        <p class="slide-subtitle">Diretrizes indispensáveis para simplificar expressões algébricas de complexidade.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">1️⃣ Descarte as Constantes</div>
+          <div class="card-body">
+            <p>Multiplicações e divisões por constantes não alteram a ordem assintótica:</p>
+            <div style="background: #090d16; padding: 10px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; font-size: 0.85rem;">
+              • <i>O</i>(2<i>N</i>) ➔ <span style="color: var(--accent-cyan);"><i>O</i>(<i>N</i>)</span><br>
+              • <i>O</i>(500) ➔ <span style="color: var(--accent-cyan);"><i>O</i>(1)</span><br>
+              • <i>O</i>(3<i>N</i>² + 100) ➔ <span style="color: var(--accent-cyan);"><i>O</i>(<i>N</i>²)</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Exemplo: Percorrer a lista duas vezes com dois loops sequenciais é 2<i>N</i> operações, ou seja, <i>O</i>(<i>N</i>).</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">2️⃣ Descarte Termos Não-Dominantes</div>
+          <div class="card-body">
+            <p>Quando termos de ordens diferentes estão somados, apenas o de maior crescimento importa:</p>
+            <div style="background: #090d16; padding: 10px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; font-size: 0.85rem;">
+              • <i>O</i>(<i>N</i>² + <i>N</i>) ➔ <span style="color: var(--accent-cyan);"><i>O</i>(<i>N</i>²)</span><br>
+              • <i>O</i>(<i>N</i> + log <i>N</i>) ➔ <span style="color: var(--accent-cyan);"><i>O</i>(<i>N</i>)</span><br>
+              • <i>O</i>(2<sup><i>N</i></sup> + <i>N</i><sup>100</sup>) ➔ <span style="color: var(--accent-cyan);"><i>O</i>(2<sup><i>N</i></sup>)</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Exemplo: Um loop linear <i>O</i>(<i>N</i>) seguido de um loop duplo <i>O</i>(<i>N</i><sup>2</sup>) resulta em <i>O</i>(<i>N</i><sup>2</sup>).</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">3️⃣ Entradas Diferentes ➔ Variáveis Diferentes!</div>
+          <div class="card-body">
+            <p>Se a função recebe duas listas independentes <i>A</i> (tamanho <i>N</i>) e <i>B</i> (tamanho <i>M</i>):</p>
+            <div style="background: #090d16; padding: 10px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; font-size: 0.85rem;">
+              • Loops sequenciais: <span style="color: var(--accent-emerald);"><i>O</i>(<i>N</i> + <i>M</i>)</span> (Não é <i>O</i>(2<i>N</i>)!)<br>
+              • Loops aninhados: <span style="color: var(--accent-purple);"><i>O</i>(<i>N</i> · <i>M</i>)</span> (Não é <i>O</i>(<i>N</i>²)!)
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">4️⃣ Adição vs Multiplicação</div>
+          <div class="card-body">
+            <p>Identifique a estrutura de execução do código:</p>
+            <div style="background: #090d16; padding: 10px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; font-size: 0.85rem;">
+              • <strong>Ações Sequenciais</strong> (Passo 1 DEPOIS Passo 2) ➔ <span style="color: var(--accent-cyan);">SOMA (+)</span><br>
+              • <strong>Ações Aninhadas</strong> (Para CADA item faça...) ➔ <span style="color: var(--accent-cyan);">MULTIPLICAÇÃO (·)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: O ZOOLÓGICO DAS COMPLEXIDADES -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">05. Hierarquia de Eficiência</span>
+        <h2 class="slide-title">O Zoológico das Complexidades (Big-O Zoo)</h2>
+        <p class="slide-subtitle">O ranking completo das ordens de grandeza, da mais eficiente à intratável.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 16px;">
+        <div class="card-title">🏆 Escala Universal de Eficiência</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: center; padding: 12px 0;">
+          <span class="complexity-tag tag-excellent">O(1)</span>
+          <span style="color: var(--text-dim);">&lt;</span>
+          <span class="complexity-tag tag-excellent">O(log N)</span>
+          <span style="color: var(--text-dim);">&lt;</span>
+          <span class="complexity-tag tag-good">O(N)</span>
+          <span style="color: var(--text-dim);">&lt;</span>
+          <span class="complexity-tag tag-fair">O(N log N)</span>
+          <span style="color: var(--text-dim);">&lt;</span>
+          <span class="complexity-tag tag-bad">O(N²)</span>
+          <span style="color: var(--text-dim);">&lt;</span>
+          <span class="complexity-tag tag-bad">O(N³)</span>
+          <span style="color: var(--text-dim);">&lt;</span>
+          <span class="complexity-tag tag-horrible">O(2ᴺ)</span>
+          <span style="color: var(--text-dim);">&lt;</span>
+          <span class="complexity-tag tag-horrible">O(N!)</span>
+        </div>
+      </div>
+
+      <!-- Live Interactive Big-O Curve Canvas -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">📈 GRÁFICO INTERATIVO DE CRESCIMENTO DAS CURVAS</div>
+          <div class="toolbar-controls" id="curve-toggle-group">
+            <button class="btn-nav active" data-curve="o1">O(1)</button>
+            <button class="btn-nav active" data-curve="ologn">O(log N)</button>
+            <button class="btn-nav active" data-curve="on">O(N)</button>
+            <button class="btn-nav active" data-curve="onlogn">O(N log N)</button>
+            <button class="btn-nav active" data-curve="on2">O(N²)</button>
+            <button class="btn-nav active" data-curve="o2n">O(2ᴺ)</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div style="position: relative; height: 310px; width: 100%; background: #070b14; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;">
+            <canvas id="big-o-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+          </div>
+          <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-dim); text-align: center;">
+            Observe como as curvas exponenciais <i>O</i>(2<sup><i>N</i></sup>) e quadráticas <i>O</i>(<i>N</i><sup>2</sup>) sobem verticalmente enquanto <i>O</i>(1) e <i>O</i>(log <i>N</i>) permanecem praticamente planas.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: O(1) CONSTANTE E O(log N) LOGARÍTMICA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">05. Zoo: Alta Velocidade</span>
+        <h2 class="slide-title"><i>O</i>(1) Constante vs <i>O</i>(log <i>N</i>) Logarítmica</h2>
+        <p class="slide-subtitle">Acesso imediato e divisão repetida do espaço de busca.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-excellent">O(1)</span> Complexidade Constante
+          </div>
+          <div class="card-body">
+            <p>O tempo de execução é independente do tamanho da entrada:</p>
+            <pre class="code-content" style="background:#090d16; border-radius:6px; margin: 10px 0; font-size: 0.8rem;"><code><span class="kw">def</span> <span class="fn">get_first</span>(<span class="var">lst</span>):
+    <span class="kw">return</span> <span class="var">lst</span>[<span class="num">0</span>] <span class="kw">if</span> <span class="var">lst</span> <span class="kw">else</span> <span class="typ">None</span>
+
+<span class="kw">def</span> <span class="fn">is_even</span>(<span class="var">n</span>):
+    <span class="kw">return</span> <span class="var">n</span> % <span class="num">2</span> == <span class="num">0</span></code></pre>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Acessar um elemento por índice em um vetor ou verificar uma chave em um dicionário (Hash Table) é <i>O</i>(1).</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-excellent">O(log N)</span> Complexidade Logarítmica
+          </div>
+          <div class="card-body">
+            <p>A cada iteração, o problema é <strong>dividido pela metade</strong>:</p>
+            <div style="background:#090d16; padding: 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.82rem; margin: 10px 0;">
+              • <i>N</i> = 16 ➔ 4 passos (16 ➔ 8 ➔ 4 ➔ 2 ➔ 1)<br>
+              • <i>N</i> = 1.000.000 ➔ ~20 passos!<br>
+              • <i>N</i> = 1.000.000.000 ➔ ~30 passos!
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Exemplo clássico: <strong>Busca Binária (<em>Binary Search</em>)</strong> em listas ordenadas.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Binary Search Step-by-Step Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🎯 SIMULADOR INTERATIVO DE BUSCA BINÁRIA (O(log N))</div>
+          <div class="toolbar-controls">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Buscar Alvo:</span>
+            <input type="number" id="bs-target-input" value="42" style="width: 60px; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff; padding: 4px 8px; border-radius: 4px; font-family: var(--font-mono);">
+            <button class="btn-nav" id="btn-bs-step">Passo Seguinte (Next Step)</button>
+            <button class="btn-nav" id="btn-bs-reset">Reiniciar</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="array-container" id="bs-array-container">
+            <!-- 16 sorted items populated by JS -->
+          </div>
+          <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan); background: #090d16; padding: 10px 16px; border-radius: 6px; border: 1px solid var(--border-color);" id="bs-status-text">
+            Clique em "Passo Seguinte" para iniciar a divisão do vetor pela metade!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: O(N) LINEAR E O(N log N) LINEARÍTMICA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">05. Zoo: Eficiência Prática</span>
+        <h2 class="slide-title"><i>O</i>(<i>N</i>) Linear vs <i>O</i>(<i>N</i> log <i>N</i>) Linearítmica</h2>
+        <p class="slide-subtitle">Varredura direta e a técnica ótima de Dividir para Conquistar.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-good">O(N)</span> Complexidade Linear
+          </div>
+          <div class="card-body">
+            <p>O tempo cresce na <strong>mesma proporção direta</strong> da entrada:</p>
+            <pre class="code-content" style="background:#090d16; border-radius:6px; margin: 10px 0; font-size: 0.8rem;"><code><span class="kw">def</span> <span class="fn">find_max</span>(<span class="var">numbers</span>):
+    <span class="var">max_val</span> <span class="op">=</span> <span class="var">numbers</span>[<span class="num">0</span>]
+    <span class="kw">for</span> <span class="var">num</span> <span class="kw">in</span> <span class="var">numbers</span>:
+        <span class="kw">if</span> <span class="var">num</span> <span class="op">&gt;</span> <span class="var">max_val</span>:
+            <span class="var">max_val</span> <span class="op">=</span> <span class="var">num</span>
+    <span class="kw">return</span> <span class="var">max_val</span></code></pre>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Se dobrarmos os dados (<i>N</i> → 2<i>N</i>), o tempo de execução simplesmente dobra.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-fair">O(N log N)</span> Linearítmica (Dividir e Conquistar)
+          </div>
+          <div class="card-body">
+            <p>O problema é dividido em log <i>N</i> níveis e, em cada nível, processamos todos os <i>N</i> elementos:</p>
+            <div style="background:#090d16; padding: 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.78rem; margin: 10px 0; color: var(--accent-cyan);">
+              Nível 0: [------------- N -------------] ➔ N passos<br>
+              Nível 1: [---- N/2 ----][---- N/2 ----] ➔ N passos<br>
+              Nível 2: [- N/4 -][- N/4 -][- N/4 -]... ➔ N passos<br>
+              Total de níveis: log(N) • Custo Total: N · log(N)
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">É o <strong>limite teórico ótimo</strong> para algoritmos de ordenação por comparação (Merge Sort, Quick Sort médio, Timsort).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divide and Conquer Visual Diagram Card -->
+      <div class="card" style="margin-top: 16px; border-color: rgba(56, 189, 248, 0.3);">
+        <div class="card-title">🌲 Árvore de Execução do Merge Sort (<i>O</i>(<i>N</i> log <i>N</i>))</div>
+        <div style="display: flex; justify-content: space-around; align-items: center; padding: 16px; font-family: var(--font-mono); font-size: 0.85rem; background: #090d16; border-radius: 8px;">
+          <div style="text-align: center;">
+            <div style="color: var(--accent-amber);">1. Divisão Recursiva</div>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">log<sub>2</sub>(<i>N</i>) níveis de quebra</div>
+          </div>
+          <div style="color: var(--accent-cyan); font-size: 1.5rem;">➔</div>
+          <div style="text-align: center;">
+            <div style="color: var(--accent-emerald);">2. Intercalação Linear</div>
+            <div style="font-size: 0.75rem; color: var(--text-dim);"><i>O</i>(<i>N</i>) trabalho por nível</div>
+          </div>
+          <div style="color: var(--accent-cyan); font-size: 1.5rem;">➔</div>
+          <div style="text-align: center;">
+            <div style="color: var(--accent-cyan); font-weight: 700;">Total: <i>O</i>(<i>N</i> log <i>N</i>)</div>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">Milhões de itens em frações de segundo</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: O(N²) QUADRÁTICA E O(N³) CÚBICA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">05. Zoo: Laços Aninhados</span>
+        <h2 class="slide-title"><i>O</i>(<i>N</i><sup>2</sup>) Quadrática vs <i>O</i>(<i>N</i><sup>3</sup>) Cúbica</h2>
+        <p class="slide-subtitle">Laços aninhados múltiplos e a degradação rápida de desempenho.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-bad">O(N²)</span> Complexidade Quadrática
+          </div>
+          <div class="card-body">
+            <p>Ocorre com frequência ao comparar <strong>todos os pares</strong> de uma lista com dois laços aninhados:</p>
+            <pre class="code-content" style="background:#090d16; border-radius:6px; margin: 8px 0; font-size: 0.8rem;"><code><span class="kw">def</span> <span class="fn">bubble_sort</span>(<span class="var">arr</span>):
+    <span class="var">n</span> <span class="op">=</span> <span class="fn">len</span>(<span class="var">arr</span>)
+    <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span> <span class="op">-</span> <span class="num">1</span>):
+        <span class="kw">for</span> <span class="var">j</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span> <span class="op">-</span> <span class="var">i</span> <span class="op">-</span> <span class="num">1</span>):
+            <span class="kw">if</span> <span class="var">arr</span>[<span class="var">j</span>] <span class="op">&gt;</span> <span class="var">arr</span>[<span class="var">j</span> <span class="op">+</span> <span class="num">1</span>]:
+                <span class="var">arr</span>[<span class="var">j</span>], <span class="var">arr</span>[<span class="var">j</span><span class="op">+</span><span class="num">1</span>] <span class="op">=</span> <span class="var">arr</span>[<span class="var">j</span><span class="op">+</span><span class="num">1</span>], <span class="var">arr</span>[<span class="var">j</span>]</code></pre>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">
+              • <i>N</i> = 1.000 ➔ 1.000.000 operações<br>
+              • <i>N</i> = 100.000 ➔ 10.000.000.000 operações (começa a travar o processador!)
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-bad">O(N³)</span> Complexidade Cúbica
+          </div>
+          <div class="card-body">
+            <p>Três laços aninhados. Exemplo: <strong>Multiplicação Tradicional de Matrizes <i>N</i> × <i>N</i></strong>:</p>
+            <pre class="code-content" style="background:#090d16; border-radius:6px; margin: 8px 0; font-size: 0.8rem;"><code><span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span>):
+    <span class="kw">for</span> <span class="var">j</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span>):
+        <span class="kw">for</span> <span class="var">k</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span>):
+            <span class="var">res</span>[<span class="var">i</span>][<span class="var">j</span>] <span class="op">+=</span> <span class="var">a</span>[<span class="var">i</span>][<span class="var">k</span>] <span class="op">*</span> <span class="var">b</span>[<span class="var">k</span>][<span class="var">j</span>]</code></pre>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">O espaço de operações forma um <em>cubo tridimensional</em> com <i>N</i> × <i>N</i> × <i>N</i> = <i>N</i><sup>3</sup> iterações.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Bubble Sort Live Visualizer -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR INTERATIVO DE BUBBLE SORT (O(N²))</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav" id="btn-bubble-step">Próximo Passo (Passo a Passo)</button>
+            <button class="btn-nav" id="btn-bubble-auto">▶️ Ordenação Automática</button>
+            <button class="btn-nav" id="btn-bubble-reset">Embaralhar</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="array-container" id="bubble-array-container">
+            <!-- Populated by JS -->
+          </div>
+          <div style="margin-top: 12px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); background: #090d16; padding: 10px 16px; border-radius: 6px;">
+            <span>Comparações: <strong style="color: var(--accent-amber);" id="bubble-comparisons">0</strong></span>
+            <span>Trocas (Swaps): <strong style="color: var(--accent-rose);" id="bubble-swaps">0</strong></span>
+            <span id="bubble-status">Status: Pronto para ordenar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: O(2ᴺ) EXPONENCIAL E O(N!) FATORIAL -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">05. Zoo: A Explosão Combinatória</span>
+        <h2 class="slide-title"><i>O</i>(2<sup><i>N</i></sup>) Exponencial vs <i>O</i>(<i>N</i>!) Fatorial</h2>
+        <p class="slide-subtitle">A barreira da intratabilidade computacional e a explosão de tempo.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-horrible">O(2ᴺ)</span> Complexidade Exponencial
+          </div>
+          <div class="card-body">
+            <p>A cada elemento adicional em <i>N</i>, o número total de operações <strong>dobra</strong>:</p>
+            <pre class="code-content" style="background:#090d16; border-radius:6px; margin: 8px 0; font-size: 0.8rem;"><code><span class="kw">def</span> <span class="fn">fibonacci</span>(<span class="var">n</span>):
+    <span class="kw">if</span> <span class="var">n</span> <span class="op">&lt;=</span> <span class="num">1</span>:
+        <span class="kw">return</span> <span class="var">n</span>
+    <span class="kw">return</span> <span class="fn">fibonacci</span>(<span class="var">n</span> <span class="op">-</span> <span class="num">1</span>) <span class="op">+</span> <span class="fn">fibonacci</span>(<span class="var">n</span> <span class="op">-</span> <span class="num">2</span>)</code></pre>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">
+              • <i>N</i> = 10 ➔ ~1.024 chamadas<br>
+              • <i>N</i> = 30 ➔ ~1.000.000.000 chamadas (1 bilhão!)<br>
+              • <i>N</i> = 50 ➔ ~1.125.899.906.842.624 chamadas (<strong style="color: var(--accent-rose);">levaria anos</strong>)
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="complexity-tag tag-horrible">O(N!)</span> Complexidade Fatorial
+          </div>
+          <div class="card-body">
+            <p>Ocorre na geração de todas as <strong>permutações possíveis</strong> (ex: Caixeiro-Viajante por força bruta):</p>
+            <div style="background:#090d16; padding: 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.8rem; margin: 8px 0;">
+              • 5! = 120 operações<br>
+              • 10! = 3.628.800 operações<br>
+              • 20! ≈ 2,43 × 10<sup>18</sup> operações (<strong style="color: var(--accent-rose);">mais segundos que a idade do universo!</strong>)
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Torna qualquer algoritmo inviável para <i>N</i> &gt; 20.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fibonacci Recursion Tree Visualizer -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🌲 VISUALIZADOR DA ÁRVORE DE RECURSÃO: FIBONACCI(N)</div>
+          <div class="range-slider-group">
+            <span>Selecione <i>N</i>:</span>
+            <input type="range" id="slider-fib-n" min="1" max="6" value="4">
+            <span class="slider-val" id="val-fib-n">N = 4</span>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div id="fib-tree-container" style="background: #090d16; border-radius: 8px; padding: 16px; min-height: 120px; text-align: center; font-family: var(--font-mono); font-size: 0.85rem; overflow-x: auto;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: TABELA DE IMPACTO E REGRA DOS 10^8 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">05. Limites do Hardware</span>
+        <h2 class="slide-title">Tabela de Impacto e a Regra dos 10<sup>8</sup> Operações/s</h2>
+        <p class="slide-subtitle">Como estimar se o seu algoritmo passará dentro do tempo limite em sistemas reais e juízes online.</p>
+      </div>
+
+      <div class="card card-highlight" style="margin-bottom: 16px;">
+        <div class="card-title">⚡ A Regra de Ouro do Hardware (10<sup>8</sup> ops/s)</div>
+        <div class="card-body">
+          Um processador moderno padrão realiza aproximadamente <strong>10<sup>8</sup> (100 milhões) de operações básicas por segundo</strong>. Em juízes online (Beecrowd, LeetCode, Codeforces) onde o limite de tempo é 1.0 segundo:
+          <span style="display: block; margin-top: 6px; font-family: var(--font-mono); color: var(--accent-cyan);">
+            Se <i>f</i>(<i>N</i>) ≤ 10<sup>8</sup>, sua solução passa com folga! Se <i>f</i>(<i>N</i>) ≫ 10<sup>8</sup>, receberá "Time Limit Exceeded (TLE)".
+          </span>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Complexidade</th>
+            <th>N = 10</th>
+            <th>N = 50</th>
+            <th>N = 1.000</th>
+            <th>N = 1.000.000</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>O(1)</code> / <code>O(log N)</code></td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+          </tr>
+          <tr>
+            <td><code>O(N)</code></td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+            <td><span style="color: var(--accent-emerald);">0.01 s</span></td>
+          </tr>
+          <tr>
+            <td><code>O(N log N)</code></td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+            <td><span style="color: var(--accent-cyan);">0.20 s</span></td>
+          </tr>
+          <tr>
+            <td><code>O(N²)</code></td>
+            <td>&lt; 1 µs</td>
+            <td>&lt; 1 µs</td>
+            <td>0.01 s</td>
+            <td><strong style="color: var(--accent-amber);">~3 horas</strong></td>
+          </tr>
+          <tr>
+            <td><code>O(2ᴺ)</code></td>
+            <td>10 µs</td>
+            <td><strong style="color: var(--accent-rose);">357 anos</strong></td>
+            <td>Impossível</td>
+            <td>Impossível</td>
+          </tr>
+          <tr>
+            <td><code>O(N!)</code></td>
+            <td>0.03 s</td>
+            <td>Impossível</td>
+            <td>Impossível</td>
+            <td>Impossível</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SLIDE 12: COMPLEXIDADE DE TEMPO VS ESPAÇO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">06. Trade-offs</span>
+        <h2 class="slide-title">Complexidade de Tempo vs Complexidade de Espaço</h2>
+        <p class="slide-subtitle">Avaliando o consumo de memória RAM auxiliar e o trade-off tempo-espaço com 3 soluções distintas.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">1. Vetor de Frequência</div>
+          <div class="card-body">
+            <p>Cria um array de tamanho igual ao maior valor (<i>K</i>):</p>
+            <div style="margin: 8px 0; font-family: var(--font-mono); font-size: 0.82rem;">
+              • Tempo: <span style="color: var(--accent-emerald);"><i>O</i>(<i>N</i> + <i>K</i>)</span><br>
+              • Espaço: <span style="color: var(--accent-rose);"><i>O</i>(<i>K</i>)</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-dim);">⚠️ Se <i>K</i> = 10<sup>9</sup>, alocará 1 bilhão de inteiros!</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">2. Conjunto Hash (Set)</div>
+          <div class="card-body">
+            <p>Insere elementos em uma tabela hash para filtrar únicos:</p>
+            <div style="margin: 8px 0; font-family: var(--font-mono); font-size: 0.82rem;">
+              • Tempo: <span style="color: var(--accent-emerald);"><i>O</i>(<i>N</i>)</span><br>
+              • Espaço: <span style="color: var(--accent-amber);"><i>O</i>(<i>N</i>)</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-dim);">Funciona para qualquer lista, mas consome memória linear.</p>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">3. Dois Ponteiros (Ótimo)</div>
+          <div class="card-body">
+            <p>Aproveita que o vetor <strong>já está ordenado</strong>:</p>
+            <div style="margin: 8px 0; font-family: var(--font-mono); font-size: 0.82rem;">
+              • Tempo: <span style="color: var(--accent-emerald);"><i>O</i>(<i>N</i>)</span><br>
+              • Espaço: <span style="color: var(--accent-emerald);"><i>O</i>(1)</span> (In-place!)
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-dim);">🏆 Solução perfeita: varre uma vez usando só uma variável contadora!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Two Pointers Distinct Counter Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULAÇÃO: CONTANDO ELEMENTOS DISTINTOS (DOIS PONTEIROS O(1) ESPAÇO)</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav" id="btn-distinct-step">Passo Seguinte</button>
+            <button class="btn-nav" id="btn-distinct-reset">Reiniciar</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="array-container" id="distinct-array-container">
+            <!-- Array [1, 1, 2, 2, 2, 6, 6, 9, 10] -->
+          </div>
+          <div style="margin-top: 14px; background: #090d16; padding: 10px 16px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-cyan);" id="distinct-status">
+            Array ordenado: elementos repetidos estão lado a lado. Basta checar se arr[i] != arr[i-1]!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: ANÁLISE AMORTIZADA (list.append) -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">07. Alocação Dinâmica</span>
+        <h2 class="slide-title">Análise Amortizada: O Segredo do `list.append()`</h2>
+        <p class="slide-subtitle">Como operações raras e caras (<i>O</i>(<i>N</i>)) são diluídas por milhares de operações imediatas (<i>O</i>(1)).</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">💡 O que é Custo Amortizado?</div>
+          <div class="card-body">
+            <p>Em algumas estruturas de dados, uma operação é <strong><i>O</i>(1) em 99.9% dos casos</strong>, mas ocasionalmente precisa fazer um trabalho pesado de <i>O</i>(<i>N</i>) (como redimensionar um buffer).</p>
+            <blockquote style="margin: 12px 0; padding-left: 12px; border-left: 3px solid var(--accent-cyan); color: #fff; font-style: italic;">
+              "O custo caro ocasional é diluído e amortizado pelas muitas operações baratas consecutivas!"
+            </blockquote>
+            <p>Resultado: Custo médio garantido de <strong><i>O</i>(1) Amortizado</strong>.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📦 A Mecânica de Redimensionamento do Python</div>
+          <div class="card-body">
+            <ul class="bullet-list">
+              <li>1. A lista aloca um bloco contíguo de memória com capacidade inicial <i>C</i>.</li>
+              <li>2. Inserir elementos é <i>O</i>(1) enquanto houver slots livres.</li>
+              <li>3. Ao encher, aloca um <strong>novo bloco com o dobro da capacidade (2<i>C</i>)</strong>, copia todos os itens antigos (<i>O</i>(<i>N</i>)) e insere o novo.</li>
+              <li>4. As próximas <i>N</i> inserções serão novamente <i>O</i>(1)!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Dynamic Array Append Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR DE ALOCAÇÃO DINÂMICA (APPEND COM DUPLICAÇÃO DE CAPACIDADE)</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav" id="btn-append-item">➕ Inserir Elemento (arr.append)</button>
+            <button class="btn-nav" id="btn-append-reset">Limpar Lista</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div style="display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap;" id="dynamic-buffer-view">
+            <!-- Dynamic buffer visualizer -->
+          </div>
+          <div style="margin-top: 14px; background: #090d16; padding: 10px 16px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-emerald);" id="append-status-log">
+            Capacidade Inicial: 4 slots. Clique em "Inserir Elemento" para preencher!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: CHEAT SHEET OPERAÇÕES NATIVAS DO PYTHON -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">08. Guia de Referência</span>
+        <h2 class="slide-title">Cheat Sheet: Estruturas Nativas do Python</h2>
+        <p class="slide-subtitle">Complexidade detalhada das operações mais comuns em <code>list</code>, <code>dict</code> e <code>set</code>.</p>
+      </div>
+
+      <div class="interactive-widget" style="margin-top: 0;">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🔍 BUSCADOR E FILTRO DE OPERAÇÕES</div>
+          <div class="toolbar-controls" id="filter-type-group">
+            <button class="btn-nav active" data-filter="all">Todas as Estruturas</button>
+            <button class="btn-nav" data-filter="list">Listas (list)</button>
+            <button class="btn-nav" data-filter="dict">Dicionários (dict)</button>
+            <button class="btn-nav" data-filter="set">Conjuntos (set)</button>
+          </div>
+        </div>
+        <div class="widget-body" style="padding: 0;">
+          <table class="data-table" id="table-cheatsheet" style="margin-top: 0;">
+            <thead>
+              <tr>
+                <th>Estrutura</th>
+                <th>Operação</th>
+                <th>Código / Exemplo</th>
+                <th>Complexidade</th>
+                <th>Detalhes / Armadilhas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Acesso por Índice</td>
+                <td><code>arr[i]</code></td>
+                <td><span class="complexity-tag tag-excellent">O(1)</span></td>
+                <td>Acesso direto via ponteiro em memória contígua</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Tamanho</td>
+                <td><code>len(arr)</code></td>
+                <td><span class="complexity-tag tag-excellent">O(1)</span></td>
+                <td>Python armazena o tamanho internamente em cache</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Inserção no Final</td>
+                <td><code>arr.append(x)</code></td>
+                <td><span class="complexity-tag tag-excellent">O(1) amort.</span></td>
+                <td>Altamente eficiente</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Remoção do Final</td>
+                <td><code>arr.pop()</code></td>
+                <td><span class="complexity-tag tag-excellent">O(1)</span></td>
+                <td>Apenas diminui o contador de itens</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Inserção no Início</td>
+                <td><code>arr.insert(0, x)</code></td>
+                <td><span class="complexity-tag tag-bad">O(N)</span></td>
+                <td>⚠️ <strong>Desloca todos</strong> os N elementos para a direita!</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Remoção no Início</td>
+                <td><code>arr.pop(0)</code></td>
+                <td><span class="complexity-tag tag-bad">O(N)</span></td>
+                <td>⚠️ <strong>Desloca todos</strong> os N elementos para a esquerda!</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Busca Linear</td>
+                <td><code>x in arr</code></td>
+                <td><span class="complexity-tag tag-bad">O(N)</span></td>
+                <td>Varre elemento a elemento até encontrar ou terminar</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Fatiamento (Slice)</td>
+                <td><code>arr[a:b]</code></td>
+                <td><span class="complexity-tag tag-fair">O(k)</span></td>
+                <td>Onde <i>k</i> = <i>b</i> - <i>a</i> (aloca e copia nova lista)</td>
+              </tr>
+              <tr data-type="list">
+                <td><code>list</code></td>
+                <td>Ordenação</td>
+                <td><code>arr.sort()</code></td>
+                <td><span class="complexity-tag tag-fair">O(N log N)</span></td>
+                <td>Algoritmo Timsort nativo altamente otimizado</td>
+              </tr>
+              <tr data-type="dict">
+                <td><code>dict</code></td>
+                <td>Busca por Chave</td>
+                <td><code>d[key]</code></td>
+                <td><span class="complexity-tag tag-excellent">O(1) médio</span></td>
+                <td>Tabela Hash com acesso O(1) no caso médio</td>
+              </tr>
+              <tr data-type="dict">
+                <td><code>dict</code></td>
+                <td>Inserção / Update</td>
+                <td><code>d[key] = val</code></td>
+                <td><span class="complexity-tag tag-excellent">O(1) médio</span></td>
+                <td>Cria ou atualiza bucket</td>
+              </tr>
+              <tr data-type="set">
+                <td><code>set</code></td>
+                <td>Verificação de Pertinência</td>
+                <td><code>x in my_set</code></td>
+                <td><span class="complexity-tag tag-excellent">O(1) médio</span></td>
+                <td>💡 <strong>Dica de Ouro:</strong> Trocar busca em lista por set reduz <i>O</i>(<i>N</i>) para <i>O</i>(1)!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 15: DESAFIO 01 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 01 / 10</span>
+        <h2 class="slide-title">Desafio 01: Pulo de 2 em 2 🎯</h2>
+        <p class="slide-subtitle">Qual é a complexidade de <strong>Tempo</strong> e de <strong>Espaço</strong> desta função?</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_01.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">challenge_01</span>(<span class="var">arr</span>):
+    <span class="var">n</span> <span class="op">=</span> <span class="fn">len</span>(<span class="var">arr</span>)
+    <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">0</span>, <span class="var">n</span>, <span class="num">2</span>):
+        <span class="fn">print</span>(<span class="var">arr</span>[<span class="var">i</span>])</code></pre>
+          </div>
+          
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>Quantas iterações o laço executa em relação a <i>N</i>?</li>
+                <li>Pular de 2 em 2 reduz a ordem de grandeza do crescimento?</li>
+                <li>Quanta memória auxiliar foi alocada na memória RAM?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-1')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-1">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-good">O(N) Linear</span> • 
+                Espaço: <span class="complexity-tag tag-excellent">O(1) Constante</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Derivação Matemática:</strong><br>
+                O laço pula de 2 em 2 posições, executando exatamente <i>N</i> / 2 iterações.<br>
+                Pela <strong>Regra 1 (Descarte de Constantes)</strong>:
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-cyan);">
+                  <i>O</i>(<i>N</i> / 2) = <i>O</i>(½ · <i>N</i>) ➔ <i>O</i>(<i>N</i>)
+                </div>
+                A memória auxiliar alocada se resume às variáveis primitivas <code>n</code> e <code>i</code>, totalizando espaço <i>O</i>(1).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: DESAFIO 02 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 02 / 10</span>
+        <h2 class="slide-title">Desafio 02: Dobrando o Índice 🎯</h2>
+        <p class="slide-subtitle">Qual é a complexidade de <strong>Tempo</strong> e de <strong>Espaço</strong> deste algoritmo?</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_02.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">challenge_02</span>(<span class="var">n</span>):
+    <span class="var">i</span> <span class="op">=</span> <span class="num">1</span>
+    <span class="kw">while</span> <span class="var">i</span> <span class="op">&lt;</span> <span class="var">n</span>:
+        <span class="fn">print</span>(<span class="var">i</span>)
+        <span class="var">i</span> <span class="op">=</span> <span class="var">i</span> <span class="op">*</span> <span class="num">2</span></code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>Quais valores a variável <code>i</code> assume a cada iteração?</li>
+                <li>Quantas vezes podemos multiplicar 1 por 2 até ultrapassar <i>N</i>?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-2')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-2">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-excellent">O(log N) Logarítmica</span> • 
+                Espaço: <span class="complexity-tag tag-excellent">O(1) Constante</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Derivação Matemática:</strong><br>
+                A cada iteração, <code>i</code> assume a progressão geométrica: 1, 2, 4, 8, 16, ..., 2<sup><i>k</i></sup>.<br>
+                O laço termina quando 2<sup><i>k</i></sup> ≥ <i>n</i>. Aplicando logaritmo na base 2:
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-emerald);">
+                  2<sup><i>k</i></sup> = <i>n</i> ➔ <i>k</i> = log<sub>2</sub>(<i>n</i>) iterações
+                </div>
+                Portanto, o número total de execuções cresce na escala logarítmica <i>O</i>(log <i>N</i>).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 17: DESAFIO 03 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 03 / 10</span>
+        <h2 class="slide-title">Desafio 03: Loops Sequencial + Aninhado 🎯</h2>
+        <p class="slide-subtitle">Qual é a complexidade total deste procedimento?</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_03.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">challenge_03</span>(<span class="var">arr</span>):
+    <span class="var">n</span> <span class="op">=</span> <span class="fn">len</span>(<span class="var">arr</span>)
+    <span class="com"># Bloco 1: Sequencial</span>
+    <span class="kw">for</span> <span class="var">x</span> <span class="kw">in</span> <span class="var">arr</span>:
+        <span class="fn">print</span>(<span class="var">x</span>)
+        
+    <span class="com"># Bloco 2: Aninhado</span>
+    <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span>):
+        <span class="kw">for</span> <span class="var">j</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span>):
+            <span class="fn">print</span>(<span class="var">arr</span>[<span class="var">i</span>], <span class="var">arr</span>[<span class="var">j</span>])</code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>Qual é a complexidade individual do Bloco 1 e do Bloco 2?</li>
+                <li>Como combinamos blocos de código sequenciais?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-3')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-3">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-bad">O(N²) Quadrática</span> • 
+                Espaço: <span class="complexity-tag tag-excellent">O(1) Constante</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Derivação:</strong><br>
+                • Bloco 1 executa <i>N</i> passos: <i>O</i>(<i>N</i>).<br>
+                • Bloco 2 possui dois loops aninhados de tamanho <i>N</i>: <i>N</i> × <i>N</i> = <i>O</i>(<i>N</i><sup>2</sup>).<br>
+                Pela <strong>Regra 4 (Adição)</strong> e <strong>Regra 2 (Termo Dominante)</strong>:
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-cyan);">
+                  <i>O</i>(<i>N</i> + <i>N</i><sup>2</sup>) ➔ <i>O</i>(<i>N</i><sup>2</sup>)
+                </div>
+                O termo quadrático domina completamente e dita o custo assintótico.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 18: DESAFIO 04 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 04 / 10</span>
+        <h2 class="slide-title">Desafio 04: Loop Triangular (j = i + 1) 🎯</h2>
+        <p class="slide-subtitle">O laço interno começa em <code>i + 1</code>. Isso altera a classe de complexidade?</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_04.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">challenge_04</span>(<span class="var">arr</span>):
+    <span class="var">n</span> <span class="op">=</span> <span class="fn">len</span>(<span class="var">arr</span>)
+    <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span>):
+        <span class="kw">for</span> <span class="var">j</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">i</span> <span class="op">+</span> <span class="num">1</span>, <span class="var">n</span>):
+            <span class="fn">print</span>(<span class="var">arr</span>[<span class="var">i</span>], <span class="var">arr</span>[<span class="var">j</span>])</code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>Quando <i>i</i> = 0, quantas vezes <i>j</i> roda? E quando <i>i</i> = 1?</li>
+                <li>Qual é a soma total de iterações de <i>j</i>?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-4')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-4">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-bad">O(N²) Quadrática</span> • 
+                Espaço: <span class="complexity-tag tag-excellent">O(1) Constante</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Derivação Matemática (Soma de Gauss):</strong><br>
+                Somando as iterações do laço interno:<br>
+                • <i>i</i> = 0 ➔ <i>N</i> - 1 vezes<br>
+                • <i>i</i> = 1 ➔ <i>N</i> - 2 vezes<br>
+                • <i>i</i> = <i>N</i> - 1 ➔ 0 vezes<br>
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-amber);">
+                  Total = (<i>N</i> - 1) + ... + 1 + 0 = (<i>N</i>(<i>N</i> - 1)) / 2 = (<i>N</i><sup>2</sup> - <i>N</i>) / 2 ➔ <i>O</i>(<i>N</i><sup>2</sup>)
+                </div>
+                Mesmo sendo metade da matriz (um triângulo), a classe de complexidade continua sendo estritamente quadrática <i>O</i>(<i>N</i><sup>2</sup>).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 19: DESAFIO 05 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 05 / 10</span>
+        <h2 class="slide-title">Desafio 05: A Busca Oculta com 'in list' 🎯</h2>
+        <p class="slide-subtitle">Qual é o custo real quando chamamos <code>item in list_b</code> dentro de um laço?</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_05.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">challenge_05</span>(<span class="var">list_a</span>, <span class="var">list_b</span>):
+    <span class="var">common</span> <span class="op">=</span> []
+    <span class="kw">for</span> <span class="var">item</span> <span class="kw">in</span> <span class="var">list_a</span>:      <span class="com"># N iterações</span>
+        <span class="kw">if</span> <span class="var">item</span> <span class="kw">in</span> <span class="var">list_b</span>:  <span class="com"># ATENÇÃO AQUI!</span>
+            <span class="var">common</span>.<span class="fn">append</span>(<span class="var">item</span>)
+    <span class="kw">return</span> <span class="var">common</span></code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>Considere <code>len(list_a) = N</code> e <code>len(list_b) = M</code>.</li>
+                <li>A operação <code>item in list_b</code> é imediata ou precisa varrer a lista?</li>
+                <li>Como otimizar este código usando a estrutura de dados certa?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-5')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-5">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-bad">O(N · M) Quadrático Misto</span> • 
+                Espaço: <span class="complexity-tag tag-fair">O(min(N, M))</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Armadilha Comum:</strong><br>
+                Em Python, listas são arrays lineares. A operação <code>item in list_b</code> faz uma busca sequencial elemento a elemento que custa <i>O</i>(<i>M</i>) a cada volta!<br>
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-rose);">
+                  Tempo Total = N voltas × O(M) = O(N · M)
+                </div>
+                💡 <strong>Otimização de Ouro:</strong><br>
+                Se converter <code>set_b = set(list_b)</code> antes do loop, a busca passa a ser <i>O</i>(1) em média. O tempo total cai para <strong><i>O</i>(<i>N</i> + <i>M</i>) linear</strong>!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 20: DESAFIO 06 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 06 / 10</span>
+        <h2 class="slide-title">Desafio 06: Concatenação Repetida de Strings 🎯</h2>
+        <p class="slide-subtitle">O impacto silencioso da imutabilidade de strings na memória e no tempo.</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_06.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">challenge_06</span>(<span class="var">words</span>):
+    <span class="var">result</span> <span class="op">=</span> <span class="str">""</span>
+    <span class="kw">for</span> <span class="var">w</span> <span class="kw">in</span> <span class="var">words</span>:
+        <span class="var">result</span> <span class="op">=</span> <span class="var">result</span> <span class="op">+</span> <span class="var">w</span>  <span class="com"># Concatenação</span>
+    <span class="kw">return</span> <span class="var">result</span></code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>Suponha <i>N</i> palavras de tamanho médio <i>K</i>.</li>
+                <li>Strings em Python são mutáveis ou imutáveis?</li>
+                <li>O que o interpretador precisa fazer a cada operação <code>result + w</code>?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-6')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-6">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-bad">O(N² · K) Quadrática</span> • 
+                Espaço: <span class="complexity-tag tag-fair">O(N · K)</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Mecânica Interna:</strong><br>
+                Como strings são imutáveis, cada <code>result + w</code> aloca uma nova string e copia todos os caracteres anteriores:<br>
+                • 1ª volta: copia <i>K</i> caracteres<br>
+                • 2ª volta: copia 2<i>K</i> caracteres<br>
+                • <i>N</i>-ésima volta: copia <i>N</i> · <i>K</i> caracteres<br>
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-rose);">
+                  Total = K · (1 + 2 + ... + N) ≈ O(N² · K)
+                </div>
+                💡 <strong>Solução Ótima (Linear O(N · K)):</strong><br>
+                Utilizar <code>"".join(words)</code> aloca a memória apenas uma vez!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 21: DESAFIO 07 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 07 / 10</span>
+        <h2 class="slide-title">Desafio 07: Recursão e a Pilha de Chamadas 🎯</h2>
+        <p class="slide-subtitle">Como as chamadas pendentes na <em>Call Stack</em> consomem memória RAM auxiliar.</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_07.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">countdown</span>(<span class="var">n</span>):
+    <span class="kw">if</span> <span class="var">n</span> <span class="op">&lt;=</span> <span class="num">0</span>:
+        <span class="kw">return</span>
+    <span class="fn">print</span>(<span class="var">n</span>)
+    <span class="fn">countdown</span>(<span class="var">n</span> <span class="op">-</span> <span class="num">1</span>)</code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>A função aloca listas ou variáveis pesadas?</li>
+                <li>Onde ficam armazenadas as chamadas recursivas antes de atingir o caso base?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-7')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-7">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-good">O(N) Linear</span> • 
+                Espaço: <span class="complexity-tag tag-good">O(N) Linear na Pilha</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Comportamento da Memória:</strong><br>
+                A função é chamada <i>N</i> vezes até atingir o caso base (<code>n &lt;= 0</code>).<br>
+                Cada frame de execução permanece na pilha de chamadas (*Call Stack*):
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-amber);">
+                  countdown(4) ➔ countdown(3) ➔ countdown(2) ➔ countdown(1) ➔ countdown(0)<br>
+                  [Profundidade da pilha = N frames alocados simultaneamente]
+                </div>
+                Portanto, embora não aloque arrays, o espaço em memória é linear <i>O</i>(<i>N</i>).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 22: DESAFIO 08 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 08 / 10</span>
+        <h2 class="slide-title">Desafio 08: Two Sum em Vetor Ordenado 🎯</h2>
+        <p class="slide-subtitle">A técnica de Dois Ponteiros (<em>Two Pointers</em>) para encontrar um par com soma alvo.</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>two_sum_sorted.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">two_sum_sorted</span>(<span class="var">nums</span>, <span class="var">target</span>):
+    <span class="var">left</span> <span class="op">=</span> <span class="num">0</span>
+    <span class="var">right</span> <span class="op">=</span> <span class="fn">len</span>(<span class="var">nums</span>) <span class="op">-</span> <span class="num">1</span>
+    <span class="kw">while</span> <span class="var">left</span> <span class="op">&lt;</span> <span class="var">right</span>:
+        <span class="var">s</span> <span class="op">=</span> <span class="var">nums</span>[<span class="var">left</span>] <span class="op">+</span> <span class="var">nums</span>[<span class="var">right</span>]
+        <span class="kw">if</span> <span class="var">s</span> <span class="op">==</span> <span class="var">target</span>: <span class="kw">return</span> (<span class="var">left</span>, <span class="var">right</span>)
+        <span class="kw">elif</span> <span class="var">s</span> <span class="op">&lt;</span> <span class="var">target</span>: <span class="var">left</span> <span class="op">+=</span> <span class="num">1</span>
+        <span class="kw">else</span>: <span class="var">right</span> <span class="op">-=</span> <span class="num">1</span>
+    <span class="kw">return</span> <span class="typ">None</span></code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>O vetor já está ordenado. Como os ponteiros <code>left</code> e <code>right</code> se comportam?</li>
+                <li>Quantos passos no máximo os dois ponteiros podem se mover juntos?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-8')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-8">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-good">O(N) Linear</span> • 
+                Espaço: <span class="complexity-tag tag-excellent">O(1) Constante</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Mecânica dos Dois Ponteiros:</strong><br>
+                • A cada iteração do laço, ou <code>left</code> avança (+1) ou <code>right</code> recua (-1).<br>
+                • A distância total inicial entre os dois ponteiros é de <i>N</i> posições.<br>
+                • Eles nunca cruzam nem voltam para trás.<br>
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-emerald);">
+                  Total Máximo de Iterações = N passos ➔ O(N)
+                </div>
+                🏆 Reduz um problema que seria <i>O</i>(<i>N</i><sup>2</sup>) por força bruta para <strong><i>O</i>(<i>N</i>) tempo e <i>O</i>(1) memória</strong>!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 23: DESAFIO 09 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 09 / 10</span>
+        <h2 class="slide-title">Desafio 09: Loop Externo Linear + Interno Logarítmico 🎯</h2>
+        <p class="slide-subtitle">Como calcular o custo quando um laço linear engloba um laço com passo exponencial?</p>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="code-box">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <span>challenge_09.py</span>
+            </div>
+            <pre class="code-content"><code><span class="kw">def</span> <span class="fn">challenge_09</span>(<span class="var">arr</span>):
+    <span class="var">n</span> <span class="op">=</span> <span class="fn">len</span>(<span class="var">arr</span>)
+    <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="var">n</span>):
+        <span class="var">j</span> <span class="op">=</span> <span class="num">1</span>
+        <span class="kw">while</span> <span class="var">j</span> <span class="op">&lt;</span> <span class="var">n</span>:
+            <span class="fn">print</span>(<span class="var">arr</span>[<span class="var">i</span>], <span class="var">j</span>)
+            <span class="var">j</span> <span class="op">=</span> <span class="var">j</span> <span class="op">*</span> <span class="num">2</span></code></pre>
+          </div>
+
+          <div class="card" style="margin-top: 14px;">
+            <div class="card-title">🤔 Questões para Reflexão</div>
+            <div class="card-body">
+              <ul class="bullet-list">
+                <li>O laço externo roda quantas vezes?</li>
+                <li>Para cada iteração de <code>i</code>, quantas vezes o laço <code>while j &lt; n</code> executa?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="challenge-card" style="margin-top: 0;">
+            <div class="challenge-header">
+              <span class="challenge-title">Análise Assintótica</span>
+              <button class="btn-nav" onclick="toggleSolution('sol-9')">👁️ Revelar Resolução</button>
+            </div>
+            <div class="solution-box" id="sol-9">
+              <div style="font-size: 1.05rem; margin-bottom: 10px;">
+                <strong>Complexidade:</strong> 
+                Tempo: <span class="complexity-tag tag-fair">O(N log N) Linearítmica</span> • 
+                Espaço: <span class="complexity-tag tag-excellent">O(1) Constante</span>
+              </div>
+              <div style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                <strong>Aplicação da Regra 4 (Multiplicação):</strong><br>
+                • O laço externo <code>for i in range(n)</code> roda exatamente <i>N</i> vezes.<br>
+                • Para <strong>cada</strong> valor de <code>i</code>, o laço interno <code>while j &lt; n</code> dobra <code>j</code>, executando log<sub>2</sub>(<i>n</i>) vezes.<br>
+                <div style="background: #050811; padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono); margin: 8px 0; color: var(--accent-cyan);">
+                  Tempo Total = N voltas × O(log N) = O(N log N)
+                </div>
+                Não aloca memória extra além das variáveis de controle <code>i</code> e <code>j</code> (<i>O</i>(1)).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 24: DESAFIO 10 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio 10 / 10</span>
+        <h2 class="slide-title">Desafio 10: 3 Abordagens para Detectar Duplicados 🎯</h2>
+        <p class="slide-subtitle">Comparando três estratégias clássicas com diferentes trade-offs de tempo e espaço.</p>
+      </div>
+
+      <div class="grid-3" style="margin-top: 0;">
+        <div class="card">
+          <div class="card-title">Abordagem A (Força Bruta)</div>
+          <div class="card-body">
+            Compara todos os pares com 2 laços aninhados.
+            <div style="margin-top: 10px; font-family: var(--font-mono); font-size: 0.82rem;">
+              • Tempo: <span class="complexity-tag tag-bad">O(N²)</span><br>
+              • Espaço: <span class="complexity-tag tag-excellent">O(1)</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-dim); margin-top: 6px;">Lento para <i>N</i> grande, mas não aloca memória extra.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Abordagem B (Ordenação)</div>
+          <div class="card-body">
+            Ordena a lista primeiro e compara itens adjacentes.
+            <div style="margin-top: 10px; font-family: var(--font-mono); font-size: 0.82rem;">
+              • Tempo: <span class="complexity-tag tag-fair">O(N log N)</span><br>
+              • Espaço: <span class="complexity-tag tag-excellent">O(1) ou O(N)</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-dim); margin-top: 6px;">Excelente equilíbrio entre velocidade e consumo de memória.</p>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">Abordagem C (Hash Set)</div>
+          <div class="card-body">
+            Insere em um <code>set</code> e verifica se o tamanho mudou.
+            <div style="margin-top: 10px; font-family: var(--font-mono); font-size: 0.82rem;">
+              • Tempo: <span class="complexity-tag tag-good">O(N)</span><br>
+              • Espaço: <span class="complexity-tag tag-good">O(N)</span>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-dim); margin-top: 6px;">🚀 <strong>Mais rápido</strong>, mas consome memória proporcional a <i>N</i>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="challenge-card" style="margin-top: 16px;">
+        <div class="challenge-header">
+          <span class="challenge-title">🏆 Conclusão e Lição para a Engenharia de Software</span>
+          <button class="btn-nav" onclick="toggleSolution('sol-10')">👁️ Revelar Lição Prática</button>
+        </div>
+        <div class="solution-box" id="sol-10">
+          <p style="font-size: 0.92rem; line-height: 1.6; color: #cbd5e1;">
+            Em desenvolvimento profissional de software, não existe "a melhor solução absoluta". Existe a <strong>solução mais adequada para as restrições do sistema</strong>:<br>
+            • Se a memória RAM for extremamente restrita (ex: microcontroladores, sistemas embarcados), escolha <strong>Abordagem A ou B</strong>.<br>
+            • Se o sistema precisa de baixa latência e alta vazão (ex: APIs web, microsserviços), escolha <strong>Abordagem C (Hash Set)</strong>!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 25: RESUMO E REGRAS DE SOBREVIVÊNCIA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">10. Síntese</span>
+        <h2 class="slide-title">Resumo dos Pontos-Chave & Regras de Sobrevivência 💡</h2>
+        <p class="slide-subtitle">O guia definitivo para manter na mente durante toda a disciplina e carreira técnica.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-highlight">
+          <div class="card-title">1. Comportamento Assintótico</div>
+          <div class="card-body">
+            Big-O mede a taxa de crescimento com <i>N</i> → ∞, e não o tempo de relógio em milissegundos.
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">2. Simplifique Sempre</div>
+          <div class="card-body">
+            Ignore constantes e termos menores: <i>O</i>(3<i>N</i><sup>2</sup> + 5<i>N</i> + 10) → <i>O</i>(<i>N</i><sup>2</sup>).
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">3. Soma vs Multiplicação</div>
+          <div class="card-body">
+            Ações sequenciais se somam (<i>O</i>(<i>A</i> + <i>B</i>)); laços aninhados se multiplicam (<i>O</i>(<i>A</i> · <i>B</i>)).
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">4. Cuidado com Laços Ocultos</div>
+          <div class="card-body">
+            Atenção com `in list`, `.insert(0)` e concatenação de strings dentro de loops.
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">5. Trade-off Tempo vs Espaço</div>
+          <div class="card-body">
+            Podemos acelerar algoritmos usando estruturas hash (<i>O</i>(1)) ao custo de um pouco mais de memória (<i>O</i>(<i>N</i>)).
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">6. A Regra dos 10<sup>8</sup> Operações</div>
+          <div class="card-body">
+            Use 10<sup>8</sup> ops/s para calcular se o seu código passará em menos de 1 segundo antes mesmo de codificar!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 26: REFERÊNCIAS BIBLIOGRÁFICAS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Bibliografia</span>
+        <h2 class="slide-title">Referências Bibliográficas 📚</h2>
+        <p class="slide-subtitle">Livros clássicos e ferramentas recomendadas para aprofundamento.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📖 Livros Essenciais</div>
+          <div class="card-body">
+            <ul class="bullet-list">
+              <li><strong>Entendendo Algoritmos: Um Guia Ilustrado para Programadores</strong> — <em>Aditya Y. Bhargava</em></li>
+              <li><strong>Algoritmos: Teoria e Prática (CLRS)</strong> — <em>Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein</em></li>
+              <li><strong>Cracking the Coding Interview</strong> — <em>Gayle Laakmann McDowell</em></li>
+              <li><strong>Algorithmic Thinking: A Problem-Based Introduction</strong> — <em>Daniel Zingaro</em></li>
+              <li><strong>The Algorithm Design Manual</strong> — <em>Steven S. Skiena</em></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🌐 Links e Guias Interativos</div>
+          <div class="card-body">
+            <ul class="bullet-list">
+              <li><strong>Big-O Cheat Sheet:</strong> <a href="https://www.bigocheatsheet.com/" target="_blank" style="color: var(--accent-cyan);">bigocheatsheet.com</a></li>
+              <li><strong>GeeksforGeeks — Analysis of Algorithms:</strong> <a href="https://www.geeksforgeeks.org/analysis-algorithms-big-o-analysis/" target="_blank" style="color: var(--accent-cyan);">geeksforgeeks.org</a></li>
+              <li><strong>Visualgo (Visualising Data Structures):</strong> <a href="https://visualgo.net/" target="_blank" style="color: var(--accent-cyan);">visualgo.net</a></li>
+              <li><strong>Python Wiki (TimeComplexity):</strong> <a href="https://wiki.python.org/moin/TimeComplexity" target="_blank" style="color: var(--accent-cyan);">wiki.python.org</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 27: ENCERRAMENTO E CONTATO -->
+    <section class="slide slide-cover">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS</span>
+      <h1 class="cover-title" style="font-size: 2.8rem;">Obrigado! 🤘</h1>
+      <p class="cover-subtitle">Próxima aula: <strong>Fundamentos: Arrays e Strings</strong>.</p>
+      
+      <div class="author-box" style="margin-top: 10px;">
+        <div style="font-size: 2.2rem;">👨‍🏫</div>
+        <div class="author-info">
+          <div class="author-name">Prof. Eduardo Cruz Araujo</div>
+            <ul class="bullet-list" style="margin-top: 8px; font-size: 0.88rem; gap: 6px;">
+              <li><strong>E-mail:</strong> <a href="mailto:eduardo.araujo@cps.sp.gov.br" style="color: var(--accent-cyan); text-decoration: none;">eduardo.araujo@cps.sp.gov.br</a></li>
+              <li><strong>GitHub:</strong> <a href="https://github.com/edcaraujo" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">github.com/edcaraujo</a></li>
+              <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/edcaraujo/" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">linkedin.com/in/edcaraujo</a></li>
+            </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slide Overview Navigation Modal (Key: M) -->
+  <div class="modal-overlay" id="overview-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">📱 Índice Completo da Aula (Pressione M para fechar)</div>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="slide-grid-nav" id="slide-grid-nav">
+        <!-- Dynamically injected -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Presenter Notes Drawer (Key: P) -->
+  <aside class="notes-drawer" id="notes-drawer">
+    <div class="notes-header">
+      <span>💡 NOTAS DO PROFESSOR (TECLA P)</span>
+      <span style="font-size: 0.75rem; color: var(--text-dim);">Pressione P para fechar</span>
+    </div>
+    <div class="notes-content" id="notes-content">
+      Apresentação da disciplina de Estrutura de Dados. Apresente os conceitos com tranquilidade e engaje os alunos nos desafios e simuladores.
+    </div>
+  </aside>
+
+  <!-- Toast Message -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
