@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundamentos: Arrays e Strings | Estrutura de Dados | Fatec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Application Navigation Bar -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-badge">FATEC 2026.2</span>
+      <span>Estrutura de Dados</span>
+      <span style="color: var(--text-muted); font-weight: 400;">| Fundamentos: Arrays e Strings</span>
+    </div>
+    
+    <div class="header-controls">
+      <button class="btn-nav" id="btn-prev" title="Slide Anterior (Seta Esquerda)">← Anter</button>
+      <span class="slide-counter" id="slide-counter">1 / 22</span>
+      <button class="btn-nav" id="btn-next" title="Próximo Slide (Seta Direita / Espaço)">Próx →</button>
+      <button class="btn-nav" id="btn-overview" title="Menu de Navegação (Teclas M)">📱 Índice (M)</button>
+      <button class="btn-nav" id="btn-notes" title="Notas do Apresentador (Tecla P)">💡 Notas (P)</button>
+      <button class="btn-nav" id="btn-fullscreen" title="Modo Tela Cheia (Tecla F)">⛶ Tela Cheia</button>
+    </div>
+  </header>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Slides Viewport -->
+  <main class="slides-viewport">
+
+    <!-- SLIDE 1: CAPA -->
+    <section class="slide slide-cover active">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS 2026.2</span>
+      <h1 class="cover-title">Fundamentos: Arrays e Strings</h1>
+      <p class="cover-subtitle">Estruturas sequenciais na memória física, desafios práticos do LeetCode e técnicas essenciais: Two Pointers, Sliding Window, Prefix Sum, Palíndromos e Anagramas.</p>
+      
+      <div class="author-box">
+        <div style="font-size: 2.2rem;">🎓</div>
+        <div class="author-info">
+          <div class="author-name">Eduardo Cruz Araujo</div>
+          <div class="author-meta">Professor & Engenheiro de Software • Fatec SP</div>
+        </div>
+      </div>
+
+      <div class="keyboard-hints">
+        <div class="kbd-pill"><kbd>←</kbd> <kbd>→</kbd> Navegar</div>
+        <div class="kbd-pill"><kbd>Espaço</kbd> Avançar</div>
+        <div class="kbd-pill"><kbd>M</kbd> Índice Geral</div>
+        <div class="kbd-pill"><kbd>P</kbd> Notas de Aula</div>
+        <div class="kbd-pill"><kbd>F</kbd> Tela Cheia</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: ARRAYS E A MEMÓRIA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Arquitetura</span>
+        <h2 class="slide-title">Arrays e a Disposição na Memória RAM</h2>
+        <p class="slide-subtitle">Como posições contíguas garantem acesso imediato em tempo constante <i>O(1)</i>.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">📦 O Princípio da Contiguidade</div>
+          <div class="card-body">
+            <p>Um <strong>Array</strong> é armazenado em um bloco sequencial contínuo de endereços de memória.</p>
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; margin: 12px 0; font-family: var(--font-mono); font-size: 0.85rem; border-left: 3px solid var(--accent-cyan);">
+              <strong>Fórmula de Endereçamento:</strong><br>
+              <span style="color: var(--accent-emerald);">Endereço(arr[i]) = Base + (i &times; Tam_Byte)</span>
+            </div>
+            <p>Como a CPU executa apenas 1 multiplicação e 1 soma aritmética, o acesso indexado <code>arr[i]</code> é estritamente <strong>O(1)</strong>.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚠️ O Custo do Deslocamento (Shift)</div>
+          <div class="card-body">
+            <p>Inserir ou remover itens no <strong>início ou meio</strong> quebra a contiguidade, exigindo mover todos os itens subsequentes:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li><code>arr.append(x)</code> / <code>arr.pop()</code>: <strong>O(1)</strong> (sem deslocamento)</li>
+              <li><code>arr.insert(0, x)</code> / <code>arr.pop(0)</code>: <strong style="color: var(--accent-rose);">O(N)</strong> (desloca <i>N</i> elementos)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Memory Addressing & Shift Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: ENDEREÇAMENTO FÍSICO E DESLOCAMENTO (SHIFT)</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav" id="btn-mem-access">🔍 Acessar Índice 3 (O(1))</button>
+            <button class="btn-nav" id="btn-mem-insert">➕ Inserir no Início (O(N) Shift)</button>
+            <button class="btn-nav" id="btn-mem-reset">🔄 Resetar Vetor</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="array-container" id="mem-array-view"></div>
+          <div class="status-box" id="mem-status-box">
+            <span>Clique nos botões acima para simular a fórmula aritmética de acesso ou o deslocamento de memória.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: ARRAYS ESTÁTICOS VS DINÂMICOS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Alocação</span>
+        <h2 class="slide-title">Arrays Estáticos vs Arrays Dinâmicos</h2>
+        <p class="slide-subtitle">Como linguagens de alto nível (Python, Java, C++) expandem capacidade sob demanda.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-emerald">
+          <div class="card-title">📊 Comparativo Arquitetural</div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Propriedade</th>
+                  <th>Estático (C, Java[])</th>
+                  <th>Dinâmico (Python `list`)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Tamanho</strong></td>
+                  <td>Fixo na criação</td>
+                  <td>Expansível em runtime</td>
+                </tr>
+                <tr>
+                  <td><strong>Inserção Fim</strong></td>
+                  <td>Limitada ao tamanho</td>
+                  <td><code>O(1)</code> Amortizado</td>
+                </tr>
+                <tr>
+                  <td><strong>Estratégia</strong></td>
+                  <td>Bloco estrito</td>
+                  <td>Buffer dobrado (2x)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card card-purple">
+          <div class="card-title">🔄 O Segredo do Redimensionamento Amortizado</div>
+          <div class="card-body">
+            <p>Quando o buffer atinge a capacidade máxima <i>C</i>:</p>
+            <ol style="margin-left: 20px; margin-top: 8px; line-height: 1.6;">
+              <li>Aloca um novo bloco com o dobro da capacidade (2<i>C</i>).</li>
+              <li>Copia os <i>N</i> elementos antigos para o novo endereço (<i>O(N)</i>).</li>
+              <li>Libera o bloco antigo da memória.</li>
+            </ol>
+            <p style="margin-top: 10px; color: var(--accent-emerald);">✨ As <i>N</i> inserções baratas <i>O(1)</i> pagam antecipadamente a cópia cara ocasional.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Array Growth Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: EXPANSÃO DO BUFFER DE UM ARRAY DINÂMICO</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav active" id="btn-dyn-append">➕ Executar `append()`</button>
+            <button class="btn-nav" id="btn-dyn-fill">🚀 Preencher 10 Elementos</button>
+            <button class="btn-nav" id="btn-dyn-reset">🔄 Resetar Buffer</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-family: var(--font-mono); font-size: 0.85rem;">
+            <span>Tamanho Atual (N): <strong id="dyn-size" style="color: var(--accent-cyan);">0</strong></span>
+            <span>Capacidade Alocada (C): <strong id="dyn-cap" style="color: var(--accent-purple);">4</strong></span>
+            <span>Custo da Última Operação: <strong id="dyn-cost" style="color: var(--accent-emerald);">O(1)</strong></span>
+          </div>
+          <div class="array-container" id="dyn-array-view"></div>
+          <div class="status-box" id="dyn-status-box">
+            <span>Adicione elementos para ver quando o redimensionamento e a cópia de memória ocorrem.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: STRINGS E IMUTABILIDADE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Strings</span>
+        <h2 class="slide-title">Strings e a Armadilha da Imutabilidade</h2>
+        <p class="slide-subtitle">Por que concatenar strings com <code>+</code> em laços gera complexidade quadrática <i>O(N<sup>2</sup>)</i>.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">⚠️ Concatenação Ingênua: O(N<sup>2</sup>)</div>
+          <div class="card-body">
+            <p>Em Python, strings são <strong>imutáveis</strong>. Fazer <code>s = s + ch</code> aloca uma nova string e copia todos os caracteres anteriores:</p>
+            <div class="code-box" style="margin-top: 10px;">
+              <div class="code-header"><span class="code-lang">Python (Lento)</span></div>
+              <pre class="code-content"><span class="kw">def</span> <span class="fn">concat_bad</span>(words):
+    result = <span class="str">""</span>
+    <span class="kw">for</span> w <span class="kw">in</span> words:
+        result = result + w  <span class="com"># Copia tudo de novo! O(N²)</span>
+    <span class="kw">return</span> result</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-emerald">
+          <div class="card-title">🚀 A Solução Eficiente: `"".join()` O(N)</div>
+          <div class="card-body">
+            <p>Calcula o tamanho total prévio, aloca um único bloco na memória e copia cada pedaço em uma passada:</p>
+            <div class="code-box" style="margin-top: 10px;">
+              <div class="code-header"><span class="code-lang">Python (Ótimo)</span></div>
+              <pre class="code-content"><span class="kw">def</span> <span class="fn">concat_good</span>(words):
+    <span class="kw">return</span> <span class="str">""</span>.<span class="fn">join</span>(words)  <span class="com"># Alocação única! O(N)</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- String Concat Benchmark Widget -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: CONCATENAÇÃO EM LAÇO (+) VS "".join()</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav" id="btn-str-100">N = 500 chars</button>
+            <button class="btn-nav" id="btn-str-5k">N = 5.000 chars</button>
+            <button class="btn-nav" id="btn-str-50k">N = 50.000 chars</button>
+            <button class="btn-nav active" id="btn-str-run">▶️ Rodar Comparativo</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="grid-2" style="margin-top: 0;">
+            <div class="card" style="background: #090d16;">
+              <div style="font-weight: 700; color: var(--accent-rose); margin-bottom: 6px;">Operação `s = s + ch` (O(N<sup>2</sup>))</div>
+              <div style="font-size: 0.85rem; color: var(--text-dim);">Cópias de caracteres na RAM: <strong id="str-bad-copies" style="color: #fff;">--</strong></div>
+              <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">Tempo estimado: <strong id="str-bad-time" style="color: var(--accent-rose);">--</strong></div>
+            </div>
+            <div class="card" style="background: #090d16;">
+              <div style="font-weight: 700; color: var(--accent-emerald); margin-bottom: 6px;">Operação `"".join(lista)` (O(N))</div>
+              <div style="font-size: 0.85rem; color: var(--text-dim);">Cópias de caracteres na RAM: <strong id="str-good-copies" style="color: #fff;">--</strong></div>
+              <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 4px;">Tempo estimado: <strong id="str-good-time" style="color: var(--accent-emerald);">--</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: DESAFIO LEETCODE 167 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio LeetCode</span>
+        <h2 class="slide-title">Problema: Two Sum II - Array Já Ordenado</h2>
+        <p class="slide-subtitle">Como encontrar o par de elementos sem força bruta e sem memória extra?</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-header">
+          <div class="problem-badges">
+            <a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" class="leetcode-badge">
+              <span>LeetCode #167</span>
+            </a>
+            <span class="diff-pill diff-med">Médio / Fácil</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">Tópico: Two Pointers Convergentes</span>
+        </div>
+
+        <div class="problem-statement">
+          Dado um array de inteiros <code>numbers</code> que <strong>já está ordenado em ordem crescente</strong>, encontre dois números que somem exatamente o valor <code>target</code>. Retorne os índices dos dois números.
+        </div>
+
+        <div class="example-box">
+          <strong>Exemplo:</strong> <code>numbers = [2, 7, 11, 15]</code>, <code>target = 9</code><br>
+          <strong>Saída:</strong> <code>[0, 1]</code> (ou <code>[1, 2]</code> em 1-based) &rarr; pois <code>numbers[0] + numbers[1] = 2 + 7 = 9</code>.
+        </div>
+
+        <div class="reflection-box">
+          <div class="reflection-title">💬 Ponto de Discussão para a Turma:</div>
+          <div class="reflection-body">
+            1. A <strong>força bruta</strong> com dois laços aninhados testa todos os pares com custo <i>O(N<sup>2</sup>)</i>.<br>
+            2. Uma <strong>tabela hash (dicionário)</strong> resolveria em <i>O(N)</i> tempo, mas consumiria <i>O(N)</i> de memória auxiliar.<br>
+            3. <strong>Pergunta:</strong> Como podemos aproveitar que o vetor <strong>já vem ordenado</strong> para resolver com <strong>tempo linear <i>O(N)</i> e espaço estritamente constante <i>O(1)</i></strong>?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: TÉCNICA DOIS PONTEIROS CONVERGENTES + SIMULADOR -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Técnica & Solução</span>
+        <h2 class="slide-title">Técnica: Dois Ponteiros Convergentes</h2>
+        <p class="slide-subtitle">Solução ótima em <i>O(N)</i> tempo e <i>O(1)</i> espaço auxiliar.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">💡 A Lógica Determinística</div>
+          <div class="card-body">
+            <p>Posicionamos <code>left = 0</code> no menor valor e <code>right = N - 1</code> no maior valor:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li>Se <code>nums[left] + nums[right] == target</code>: <strong style="color: var(--accent-emerald);">Par encontrado!</strong></li>
+              <li>Se <code>soma &lt; target</code>: Precisamos de soma maior &rarr; avança <code>left += 1</code>.</li>
+              <li>Se <code>soma &gt; target</code>: Precisamos de soma menor &rarr; recua <code>right -= 1</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="code-header"><span class="code-lang">Python • O(N) Tempo / O(1) Espaço</span></div>
+          <pre class="code-content"><span class="kw">def</span> <span class="fn">two_sum_sorted</span>(nums, target):
+    left, right = <span class="num">0</span>, <span class="fn">len</span>(nums) - <span class="num">1</span>
+    <span class="kw">while</span> left &lt; right:
+        current_sum = nums[left] + nums[right]
+        <span class="kw">if</span> current_sum == target:
+            <span class="kw">return</span> (left, right)
+        <span class="kw">elif</span> current_sum &lt; target:
+            left += <span class="num">1</span>
+        <span class="kw">else</span>:
+            right -= <span class="num">1</span>
+    <span class="kw">return</span> <span class="kw">None</span></pre>
+        </div>
+      </div>
+
+      <!-- Two Pointers Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: CONVERGÊNCIA DOS PONTEIROS (TARGET = 13)</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav active" id="btn-tp-step">👣 Próximo Passo</button>
+            <button class="btn-nav" id="btn-tp-auto">▶️ Auto Play</button>
+            <button class="btn-nav" id="btn-tp-reset">🔄 Resetar</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="array-container" id="tp-array-view"></div>
+          
+          <div class="grid-3" style="margin-top: 10px;">
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Ponteiro Esquerdo (`left`):</div>
+              <strong id="tp-val-left" style="color: var(--accent-cyan); font-size: 1.1rem;">Índice 0 (Valor: 1)</strong>
+            </div>
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Ponteiro Direito (`right`):</div>
+              <strong id="tp-val-right" style="color: var(--accent-purple); font-size: 1.1rem;">Índice 7 (Valor: 20)</strong>
+            </div>
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Soma Atual vs Target:</div>
+              <strong id="tp-val-sum" style="color: var(--accent-amber); font-size: 1.1rem;">1 + 20 = 21 (&gt; 13)</strong>
+            </div>
+          </div>
+
+          <div class="status-box" id="tp-status-box">
+            <span>Clique em "Próximo Passo" para iniciar a busca.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: DESAFIO LEETCODE 26 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio LeetCode</span>
+        <h2 class="slide-title">Problema: Remover Duplicatas de Vetor Ordenado</h2>
+        <p class="slide-subtitle">Como modificar o array in-place sem alocar listas extras e sem custo de shift <i>O(N<sup>2</sup>)</i>?</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-header">
+          <div class="problem-badges">
+            <a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" class="leetcode-badge">
+              <span>LeetCode #26</span>
+            </a>
+            <span class="diff-pill diff-easy">Fácil</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">Tópico: Dois Ponteiros In-Place</span>
+        </div>
+
+        <div class="problem-statement">
+          Dado um array de inteiros ordenado <code>nums</code>, remova os elementos duplicados <strong>in-place</strong> de forma que cada elemento único apareça apenas uma vez. Retorne o novo comprimento <code>k</code>. O prefixo <code>nums[0...k-1]</code> deve conter os elementos únicos.
+        </div>
+
+        <div class="example-box">
+          <strong>Exemplo:</strong> <code>nums = [1, 1, 2, 2, 3]</code><br>
+          <strong>Saída:</strong> Retorna <code>3</code>, e os primeiros 3 elementos de <code>nums</code> passam a ser <code>[1, 2, 3]</code>.
+        </div>
+
+        <div class="reflection-box">
+          <div class="reflection-title">💬 Ponto de Discussão para a Turma:</div>
+          <div class="reflection-body">
+            1. Se usássemos <code>nums.pop(i)</code> a cada elemento repetido, cada remoção deslocaria os elementos à direita (custo <i>O(N)</i> por remoção), resultando em <strong><i>O(N<sup>2</sup>)</i></strong>!<br>
+            2. Se usássemos <code>set(nums)</code>, gastaríamos <i>O(N)</i> de memória auxiliar.<br>
+            3. <strong>Pergunta:</strong> Como usar dois ponteiros na mesma direção para sobrescrever o próprio array em tempo <strong><i>O(N)</i></strong> e memória <strong><i>O(1)</i></strong>?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: TÉCNICA PONTEIROS RÁPIDO E LENTO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Técnica & Solução</span>
+        <h2 class="slide-title">Técnica: Dois Ponteiros Rápido e Lento (In-Place)</h2>
+        <p class="slide-subtitle">Sobrescrevendo posições no próprio vetor sem criar estruturas intermediárias.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-purple">
+          <div class="card-title">📝 LeetCode #26: Remover Duplicados</div>
+          <div class="card-body">
+            <p>O ponteiro <code>slow</code> marca o último elemento único confirmado. O ponteiro <code>fast</code> busca novidades:</p>
+            <div class="code-box" style="margin-top: 10px;">
+              <div class="code-header"><span class="code-lang">Python O(N) Tempo / O(1) Espaço</span></div>
+              <pre class="code-content"><span class="kw">def</span> <span class="fn">remove_duplicates</span>(nums):
+    <span class="kw">if not</span> nums: <span class="kw">return</span> <span class="num">0</span>
+    slow = <span class="num">0</span>
+    <span class="kw">for</span> fast <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="fn">len</span>(nums)):
+        <span class="kw">if</span> nums[fast] != nums[slow]:
+            slow += <span class="num">1</span>
+            nums[slow] = nums[fast]  <span class="com"># Grava elemento</span>
+    <span class="kw">return</span> slow + <span class="num">1</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-emerald">
+          <div class="card-title">🔄 LeetCode #283: Mover Zeros</div>
+          <div class="card-body">
+            <p>Agrupa todos os elementos diferentes de zero à esquerda e empurra os zeros para a direita:</p>
+            <div class="code-box" style="margin-top: 10px;">
+              <div class="code-header"><span class="code-lang">Python O(N) Tempo / O(1) Espaço</span></div>
+              <pre class="code-content"><span class="kw">def</span> <span class="fn">move_zeroes</span>(nums):
+    slow = <span class="num">0</span>
+    <span class="kw">for</span> fast <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(nums)):
+        <span class="kw">if</span> nums[fast] != <span class="num">0</span>:
+            nums[slow], nums[fast] = nums[fast], nums[slow]
+            slow += <span class="num">1</span>
+    <span class="kw">return</span> nums</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: DESAFIO LEETCODE 643 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio LeetCode</span>
+        <h2 class="slide-title">Problema: Subarray de Tamanho Fixo com Maior Média</h2>
+        <p class="slide-subtitle">Como evitar recalcular somas de fatias contíguas do zero?</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-header">
+          <div class="problem-badges">
+            <a href="https://leetcode.com/problems/maximum-average-subarray-i/" target="_blank" class="leetcode-badge">
+              <span>LeetCode #643</span>
+            </a>
+            <span class="diff-pill diff-easy">Fácil</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">Tópico: Janela Deslizante Fixa</span>
+        </div>
+
+        <div class="problem-statement">
+          Dado um array <code>nums</code> composto por <i>n</i> inteiros e um inteiro <code>k</code>, encontre um subarray contíguo de tamanho exatamente <code>k</code> que possua a <strong>maior média de valor</strong> e retorne esse valor.
+        </div>
+
+        <div class="example-box">
+          <strong>Exemplo:</strong> <code>nums = [1, 12, -5, -6, 50, 3]</code>, <code>k = 4</code><br>
+          • Janela 1: <code>[1, 12, -5, -6]</code> &rarr; Soma = 2<br>
+          • Janela 2: <code>[12, -5, -6, 50]</code> &rarr; Soma = 51 ⭐ &rarr; Média = <code>51 / 4 = 12.75</code>
+        </div>
+
+        <div class="reflection-box">
+          <div class="reflection-title">💬 Ponto de Discussão para a Turma:</div>
+          <div class="reflection-body">
+            1. Fazer um laço de tamanho <i>K</i> para cada uma das (<i>N &minus; K</i>) posições custaria <strong><i>O(N &times; K)</i></strong>.<br>
+            2. <strong>Pergunta:</strong> Ao mover a janela 1 posição para o lado, quais elementos realmente mudam na soma total? Como fazer essa transição em tempo constante <strong><i>O(1)</i></strong>?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: TÉCNICA JANELA DESLIZANTE FIXA + SIMULADOR -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Técnica & Solução</span>
+        <h2 class="slide-title">Técnica: Janela Deslizante de Tamanho Fixo</h2>
+        <p class="slide-subtitle">Atualização do estado da janela em <i>O(1)</i> por deslocamento (+ novo, &minus; antigo).</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🪟 Transição em Tempo Constante</div>
+          <div class="card-body">
+            <p>Calculamos a primeira janela de tamanho <i>K</i>. Para cada passo subsequente:</p>
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; margin: 10px 0; font-family: var(--font-mono); font-size: 0.85rem;">
+              <span style="color: var(--accent-emerald);">+ Entra elemento da direita (nums[right])</span><br>
+              <span style="color: var(--accent-rose);">&minus; Sai elemento da esquerda (nums[left])</span>
+            </div>
+            <p>A complexidade total cai de <i>O(N &times; K)</i> para <strong><i>O(N)</i></strong>!</p>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="code-header"><span class="code-lang">Python • O(N) Tempo / O(1) Espaço</span></div>
+          <pre class="code-content"><span class="kw">def</span> <span class="fn">find_max_average</span>(nums, k):
+    window_sum = <span class="fn">sum</span>(nums[:k])
+    max_sum = window_sum
+    <span class="kw">for</span> right <span class="kw">in</span> <span class="fn">range</span>(k, <span class="fn">len</span>(nums)):
+        left = right - k
+        window_sum += nums[right] - nums[left]
+        <span class="kw">if</span> window_sum &gt; max_sum:
+            max_sum = window_sum
+    <span class="kw">return</span> max_sum / k</pre>
+        </div>
+      </div>
+
+      <!-- Sliding Window Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: SUBARRAY DE TAMANHO K = 3 COM SOMA MÁXIMA</div>
+          <div class="toolbar-controls">
+            <button class="btn-nav active" id="btn-sw-step">👣 Deslizar Janela</button>
+            <button class="btn-nav" id="btn-sw-auto">▶️ Auto Play</button>
+            <button class="btn-nav" id="btn-sw-reset">🔄 Resetar</button>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div class="array-container" id="sw-array-view"></div>
+          
+          <div class="grid-3" style="margin-top: 10px;">
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Janela Atual [L ... R]:</div>
+              <strong id="sw-val-window" style="color: var(--accent-amber); font-size: 1.1rem;">[ 2, 1, 5 ]</strong>
+            </div>
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Cálculo O(1) da Transição:</div>
+              <strong id="sw-val-calc" style="color: var(--accent-cyan); font-size: 1.1rem;">Soma Inicial: 8</strong>
+            </div>
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Soma Máxima Encontrada:</div>
+              <strong id="sw-val-max" style="color: var(--accent-emerald); font-size: 1.1rem;">Max = 8</strong>
+            </div>
+          </div>
+
+          <div class="status-box" id="sw-status-box">
+            <span>Clique em "Deslizar Janela" para ver as operações de adição (+) e subtração (&minus;) em O(1).</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: DESAFIO LEETCODE 209 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio LeetCode</span>
+        <h2 class="slide-title">Problema: Menor Subarray com Soma &ge; S</h2>
+        <p class="slide-subtitle">Como encontrar o tamanho ótimo quando o comprimento da janela é variável?</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-header">
+          <div class="problem-badges">
+            <a href="https://leetcode.com/problems/minimum-size-subarray-sum/" target="_blank" class="leetcode-badge">
+              <span>LeetCode #209</span>
+            </a>
+            <span class="diff-pill diff-med">Médio</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">Tópico: Janela Deslizante Dinâmica</span>
+        </div>
+
+        <div class="problem-statement">
+          Dado um array de inteiros positivos <code>nums</code> e um inteiro positivo <code>target</code>, retorne o <strong>comprimento mínimo</strong> de um subarray contíguo cuja soma seja maior ou igual a <code>target</code>. Se não existir, retorne <code>0</code>.
+        </div>
+
+        <div class="example-box">
+          <strong>Exemplo:</strong> <code>target = 7</code>, <code>nums = [2, 3, 1, 2, 4, 3]</code><br>
+          • Subarray <code>[2, 3, 1, 2]</code> tem soma 8 &ge; 7 (tam 4)<br>
+          • Subarray <code>[4, 3]</code> tem soma 7 &ge; 7 (tam 2) ⭐ &rarr; Resposta: <code>2</code>.
+        </div>
+
+        <div class="reflection-box">
+          <div class="reflection-title">💬 Ponto de Discussão para a Turma:</div>
+          <div class="reflection-body">
+            1. Como o tamanho da janela não é fixo, testar todas as combinações de início e fim custaria <i>O(N<sup>2</sup>)</i>.<br>
+            2. <strong>Pergunta:</strong> Como expandir a borda direita até bater a meta e encolher a borda esquerda para encontrar o menor tamanho possível em tempo linear <strong><i>O(N)</i></strong>?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: TÉCNICA JANELA DINÂMICA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Técnica & Solução</span>
+        <h2 class="slide-title">Técnica: Janela Deslizante Dinâmica (Expand & Shrink)</h2>
+        <p class="slide-subtitle">Controle coordenado de duas bordas com análise amortizada <i>O(N)</i>.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-purple">
+          <div class="card-title">📏 Mecânica do Expand & Shrink</div>
+          <div class="card-body">
+            <p>1. <strong>Expandir:</strong> Avança <code>right</code> adicionando elementos até que a condição seja satisfeita (<code>current_sum &ge; target</code>).</p>
+            <p style="margin-top: 8px;">2. <strong>Encolher:</strong> Enquanto a condição for válida, tenta avançar <code>left</code> para minimizar a janela.</p>
+            <p style="margin-top: 10px; color: var(--accent-emerald);">⚡ Como <code>left</code> e <code>right</code> avançam no máximo <i>N</i> vezes cada, o tempo total é estritamente <strong><i>O(N)</i></strong>.</p>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="code-header"><span class="code-lang">Python O(N) Tempo / O(1) Espaço</span></div>
+          <pre class="code-content"><span class="kw">def</span> <span class="fn">min_subarray_len</span>(target, nums):
+    left, current_sum = <span class="num">0</span>, <span class="num">0</span>
+    min_len = <span class="fn">float</span>(<span class="str">'inf'</span>)
+    
+    <span class="kw">for</span> right <span class="kw">in</span> <span class="fn">range</span>(<span class="fn">len</span>(nums)):
+        current_sum += nums[right]  <span class="com"># Expande</span>
+        
+        <span class="kw">while</span> current_sum &gt;= target:  <span class="com"># Encolhe</span>
+            min_len = <span class="fn">min</span>(min_len, right - left + <span class="num">1</span>)
+            current_sum -= nums[left]
+            left += <span class="num">1</span>
+            
+    <span class="kw">return</span> min_len <span class="kw">if</span> min_len != <span class="fn">float</span>(<span class="str">'inf'</span>) <span class="kw">else</span> <span class="num">0</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: DESAFIO LEETCODE 303 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio LeetCode</span>
+        <h2 class="slide-title">Problema: Consultas de Soma de Intervalo (Range Sum)</h2>
+        <p class="slide-subtitle">Como responder a milhares de perguntas de soma de fatias em tempo instantâneo <i>O(1)</i>?</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-header">
+          <div class="problem-badges">
+            <a href="https://leetcode.com/problems/range-sum-query-immutable/" target="_blank" class="leetcode-badge">
+              <span>LeetCode #303</span>
+            </a>
+            <span class="diff-pill diff-easy">Fácil</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">Tópico: Prefix Sum (Soma de Prefixos)</span>
+        </div>
+
+        <div class="problem-statement">
+          Dado um array de inteiros <code>nums</code>, responda a <strong>múltiplas consultas de soma</strong> do intervalo <code>[L, R]</code>, calculando a soma dos elementos de <code>nums[L]</code> até <code>nums[R]</code> inclusive.
+        </div>
+
+        <div class="example-box">
+          <strong>Cenário de Escala:</strong> Array com <i>N</i> = 100.000 elementos e <i>Q</i> = 100.000 consultas.<br>
+          • Se cada consulta fizer um loop de <i>L</i> até <i>R</i> &rarr; Custo total: <i>O(Q &times; N)</i> = <strong>10.000.000.000 operações</strong> (&rarr; Time Limit Exceeded!).
+        </div>
+
+        <div class="reflection-box">
+          <div class="reflection-title">💬 Ponto de Discussão para a Turma:</div>
+          <div class="reflection-body">
+            1. Podemos gastar um pré-processamento inicial de <i>O(N)</i> para acumular as somas.<br>
+            2. <strong>Pergunta:</strong> Como usar essa tabela acumulada para responder a <strong>qualquer consulta em uma única subtração aritmética de tempo <i>O(1)</i></strong>?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: TÉCNICA PREFIX SUM + SIMULADOR -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Técnica & Solução</span>
+        <h2 class="slide-title">Técnica: Vetor de Soma de Prefixos (Prefix Sum)</h2>
+        <p class="slide-subtitle">Consultas de intervalo respondidas em <i>O(1)</i> através da fórmula <i>P[R] &minus; P[L&minus;1]</i>.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">⚡ A Dedução da Fórmula</div>
+          <div class="card-body">
+            <p>Construímos o vetor acumulado: <code>P[i] = P[i-1] + nums[i]</code>.</p>
+            <div style="background: #090d16; padding: 12px; border-radius: 8px; margin: 10px 0; font-family: var(--font-mono); font-size: 0.9rem; border-left: 3px solid var(--accent-cyan);">
+              <span style="color: var(--accent-emerald);">Soma(L, R) = P[R] &minus; P[L &minus; 1]</span> &nbsp; (se L &gt; 0)<br>
+              <span style="color: var(--accent-emerald);">Soma(0, R) = P[R]</span> &nbsp; (se L = 0)
+            </div>
+            <p>Total para <i>Q</i> consultas: <strong><i>O(N + Q)</i></strong> em vez de <i>O(Q &times; N)</i>!</p>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="code-header"><span class="code-lang">Python • LeetCode #303</span></div>
+          <pre class="code-content"><span class="kw">class</span> <span class="typ">NumArray</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, nums: <span class="typ">list</span>[<span class="typ">int</span>]):
+        self.prefix = [<span class="num">0</span>] * <span class="fn">len</span>(nums)
+        <span class="kw">if</span> nums:
+            self.prefix[<span class="num">0</span>] = nums[<span class="num">0</span>]
+            <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="fn">len</span>(nums)):
+                self.prefix[i] = self.prefix[i - <span class="num">1</span>] + nums[i]
+                
+    <span class="kw">def</span> <span class="fn">sumRange</span>(self, left: <span class="typ">int</span>, right: <span class="typ">int</span>) -&gt; <span class="typ">int</span>:
+        <span class="kw">if</span> left == <span class="num">0</span>: <span class="kw">return</span> self.prefix[right]
+        <span class="kw">return</span> self.prefix[right] - self.prefix[left - <span class="num">1</span>]</pre>
+        </div>
+      </div>
+
+      <!-- Prefix Sum Interactive Simulator -->
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: SELETOR DE RANGE [L, R]</div>
+          <div class="toolbar-controls">
+            <div class="range-slider-group">
+              <label>L: <span class="slider-val" id="ps-l-val">1</span></label>
+              <input type="range" id="ps-l-slider" min="0" max="5" value="1">
+            </div>
+            <div class="range-slider-group">
+              <label>R: <span class="slider-val" id="ps-r-val">4</span></label>
+              <input type="range" id="ps-r-slider" min="0" max="5" value="4">
+            </div>
+          </div>
+        </div>
+        <div class="widget-body">
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">Vetor Original A:</div>
+          <div class="array-container" id="ps-arr-view"></div>
+
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; margin-bottom: 6px;">Vetor de Prefix Sum P:</div>
+          <div class="array-container" id="ps-prefix-view"></div>
+
+          <div class="grid-2" style="margin-top: 14px;">
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Fórmula Prefix Sum:</div>
+              <strong id="ps-calc-display" style="color: var(--accent-cyan); font-size: 1.05rem;">P[4] - P[0] = 15 - 3 = 12</strong>
+            </div>
+            <div class="card" style="background: #090d16; padding: 12px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Conferência Manual (Soma Direta):</div>
+              <strong id="ps-manual-display" style="color: var(--accent-emerald); font-size: 1.05rem;">A[1] + A[2] + A[3] + A[4] = 2 + 4 + 5 + 1 = 12</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 15: DESAFIO LEETCODE 125 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio LeetCode</span>
+        <h2 class="slide-title">Problema: Verificação de Palíndromo</h2>
+        <p class="slide-subtitle">Como validar palíndromos com pontuação sem gastar memória alocando novas strings?</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-header">
+          <div class="problem-badges">
+            <a href="https://leetcode.com/problems/valid-palindrome/" target="_blank" class="leetcode-badge">
+              <span>LeetCode #125</span>
+            </a>
+            <span class="diff-pill diff-easy">Fácil</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">Tópico: Strings & Dois Ponteiros In-Place</span>
+        </div>
+
+        <div class="problem-statement">
+          Uma frase é um <strong>palíndromo</strong> se, após converter maiúsculas em minúsculas e remover caracteres não-alfanuméricos, ela for lida da mesma forma para frente e para trás.
+        </div>
+
+        <div class="example-box">
+          <strong>Exemplo 1:</strong> <code>s = "A man, a plan, a canal: Panama"</code> &rarr; Retorna <code>True</code><br>
+          <strong>Exemplo 2:</strong> <code>s = "race a car"</code> &rarr; Retorna <code>False</code>
+        </div>
+
+        <div class="reflection-box">
+          <div class="reflection-title">💬 Ponto de Discussão para a Turma:</div>
+          <div class="reflection-body">
+            1. Criar uma nova string filtrada na memória consome <i>O(N)</i> de memória auxiliar.<br>
+            2. <strong>Pergunta:</strong> Como usar dois ponteiros opostos que pulam espaços e pontuações na string original para alcançar <strong><i>O(N)</i> de tempo e estritamente <i>O(1)</i> de memória</strong>?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: TÉCNICA PALÍNDROMOS IN-PLACE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Técnica & Solução</span>
+        <h2 class="slide-title">Técnica: Palíndromos com Dois Ponteiros In-Place</h2>
+        <p class="slide-subtitle">Validação com memória auxiliar <i>O(1)</i> pulando caracteres não-alfanuméricos.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🛡️ Ponteiros Opostos com `isalnum()`</div>
+          <div class="card-body">
+            <p>O ponteiro <code>left</code> avança enquanto não for letra/dígito, e <code>right</code> recua enquanto não for letra/dígito.</p>
+            <p style="margin-top: 10px;">Comparamos os caracteres em minúsculo <code>s[left].lower() == s[right].lower()</code> sem alocar nenhuma string auxiliar na RAM!</p>
+          </div>
+        </div>
+
+        <div class="code-box">
+          <div class="code-header"><span class="code-lang">Python • LeetCode #125 O(N) Tempo / O(1) Espaço</span></div>
+          <pre class="code-content"><span class="kw">def</span> <span class="fn">is_palindrome</span>(s: <span class="typ">str</span>) -&gt; <span class="typ">bool</span>:
+    left, right = <span class="num">0</span>, <span class="fn">len</span>(s) - <span class="num">1</span>
+    <span class="kw">while</span> left &lt; right:
+        <span class="kw">while</span> left &lt; right <span class="kw">and not</span> s[left].<span class="fn">isalnum</span>():
+            left += <span class="num">1</span>
+        <span class="kw">while</span> left &lt; right <span class="kw">and not</span> s[right].<span class="fn">isalnum</span>():
+            right -= <span class="num">1</span>
+            
+        <span class="kw">if</span> s[left].<span class="fn">lower</span>() != s[right].<span class="fn">lower</span>():
+            <span class="kw">return False</span>
+        left += <span class="num">1</span>
+        right -= <span class="num">1</span>
+    <span class="kw">return True</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 17: DESAFIO LEETCODE 242 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio LeetCode</span>
+        <h2 class="slide-title">Problema: Verificação de Anagramas</h2>
+        <p class="slide-subtitle">Qual é a forma mais eficiente de validar se duas palavras têm exatamente as mesmas letras?</p>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-header">
+          <div class="problem-badges">
+            <a href="https://leetcode.com/problems/valid-anagram/" target="_blank" class="leetcode-badge">
+              <span>LeetCode #242</span>
+            </a>
+            <span class="diff-pill diff-easy">Fácil</span>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">Tópico: Contagem de Frequência</span>
+        </div>
+
+        <div class="problem-statement">
+          Dadas duas strings <code>s</code> e <code>t</code>, retorne <code>true</code> se <code>t</code> for um <strong>anagrama</strong> de <code>s</code>, e <code>false</code> caso contrário. Um anagrama usa todas as letras originais exatamente o mesmo número de vezes.
+        </div>
+
+        <div class="example-box">
+          <strong>Exemplo 1:</strong> <code>s = "anagram"</code>, <code>t = "nagaram"</code> &rarr; Retorna <code>True</code><br>
+          <strong>Exemplo 2:</strong> <code>s = "rat"</code>, <code>t = "car"</code> &rarr; Retorna <code>False</code>
+        </div>
+
+        <div class="reflection-box">
+          <div class="reflection-title">💬 Ponto de Discussão para a Turma:</div>
+          <div class="reflection-body">
+            1. <strong>Abordagem por Ordenação:</strong> <code>sorted(s) == sorted(t)</code> custa <i>O(N log N)</i> em tempo e <i>O(N)</i> em espaço.<br>
+            2. <strong>Pergunta:</strong> Como usar um vetor ou dicionário de frequências para atingir <strong>tempo estritamente linear <i>O(N)</i></strong>?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 18: TÉCNICA ANAGRAMAS + SIMULADOR -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Técnica & Solução</span>
+        <h2 class="slide-title">Técnica: Anagramas com Histograma de Frequência</h2>
+        <p class="slide-subtitle">Contagem linear em <i>O(N)</i> tempo e <i>O(1)</i> espaço (alfabeto limitado).</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="code-box">
+          <div class="code-header"><span class="code-lang">Python • LeetCode #242 O(N) Tempo</span></div>
+          <pre class="code-content"><span class="kw">def</span> <span class="fn">is_anagram</span>(s: <span class="typ">str</span>, t: <span class="typ">str</span>) -&gt; <span class="typ">bool</span>:
+    <span class="kw">if</span> <span class="fn">len</span>(s) != <span class="fn">len</span>(t): <span class="kw">return False</span>
+    counts = {}
+    <span class="kw">for</span> ch <span class="kw">in</span> s: counts[ch] = counts.<span class="fn">get</span>(ch, <span class="num">0</span>) + <span class="num">1</span>
+    <span class="kw">for</span> ch <span class="kw">in</span> t:
+        <span class="kw">if</span> ch <span class="kw">not in</span> counts <span class="kw">or</span> counts[ch] == <span class="num">0</span>:
+            <span class="kw">return False</span>
+        counts[ch] -= <span class="num">1</span>
+    <span class="kw">return True</span></pre>
+        </div>
+
+        <div class="card card-emerald">
+          <div class="card-title">📊 Por que Contagem é Superior?</div>
+          <div class="card-body">
+            <p>1. Uma passada em <code>s</code> incrementa as contagens (+1).</p>
+            <p style="margin-top: 6px;">2. Uma passada em <code>t</code> decrementa as contagens (&minus;1).</p>
+            <p style="margin-top: 8px; color: var(--accent-emerald);">Tempo total: <strong><i>O(N)</i></strong> vs <i>O(N log N)</i> do sorted!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Tester for Palindrome & Anagram -->
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="interactive-widget" style="margin-top: 0;">
+          <div class="widget-toolbar"><div class="toolbar-title">🔄 TESTADOR DE PALÍNDROMO</div></div>
+          <div class="widget-body">
+            <input type="text" class="input-dark" id="pal-input" value="A man, a plan, a canal: Panama" style="width: 100%; margin-bottom: 10px;">
+            <button class="btn-nav" id="btn-pal-check">🔍 Validar Palíndromo</button>
+            <div class="status-box" id="pal-result-box" style="margin-top: 10px;"><span>Resultado da validação...</span></div>
+          </div>
+        </div>
+
+        <div class="interactive-widget" style="margin-top: 0;">
+          <div class="widget-toolbar"><div class="toolbar-title">🔤 TESTADOR DE ANAGRAMA</div></div>
+          <div class="widget-body">
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+              <input type="text" class="input-dark" id="ana-input-1" value="listen" style="width: 50%;">
+              <input type="text" class="input-dark" id="ana-input-2" value="silent" style="width: 50%;">
+            </div>
+            <button class="btn-nav" id="btn-ana-check">📊 Comparar Frequências</button>
+            <div class="status-box" id="ana-result-box" style="margin-top: 10px;"><span>Resultado do anagrama...</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 19: CHEAT SHEET PYTHON -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Referência</span>
+        <h2 class="slide-title">Cheat Sheet: Métodos Nativos em Python</h2>
+        <p class="slide-subtitle">Complexidade das principais operações de Arrays, Listas e Strings.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📋 Listas (`list`) e Deques</div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Operação</th>
+                  <th>Código</th>
+                  <th>Complexidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Acesso Indexado</td><td><code>arr[i]</code></td><td><span class="complexity-tag tag-excellent">O(1)</span></td></tr>
+                <tr><td>Adicionar no Fim</td><td><code>arr.append(x)</code></td><td><span class="complexity-tag tag-excellent">O(1) amort.</span></td></tr>
+                <tr><td>Remover do Fim</td><td><code>arr.pop()</code></td><td><span class="complexity-tag tag-excellent">O(1)</span></td></tr>
+                <tr><td>Inserir no Início</td><td><code>arr.insert(0, x)</code></td><td><span class="complexity-tag tag-bad">O(N) shift</span></td></tr>
+                <tr><td>Deque Inserir Início</td><td><code>dq.appendleft(x)</code></td><td><span class="complexity-tag tag-excellent">O(1)</span></td></tr>
+                <tr><td>Fatiamento (Slice)</td><td><code>arr[a:b]</code></td><td><span class="complexity-tag tag-fair">O(b &minus; a)</span></td></tr>
+                <tr><td>Ordenação</td><td><code>arr.sort()</code></td><td><span class="complexity-tag tag-good">O(N log N)</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🔤 Strings (`str`) e Dicionários</div>
+          <div class="card-body">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Operação</th>
+                  <th>Código</th>
+                  <th>Complexidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Acesso a Caractere</td><td><code>s[i]</code></td><td><span class="complexity-tag tag-excellent">O(1)</span></td></tr>
+                <tr><td>Concatenação `+`</td><td><code>s + t</code></td><td><span class="complexity-tag tag-fair">O(|s| + |t|)</span></td></tr>
+                <tr><td>Junção Total</td><td><code>"".join(lista)</code></td><td><span class="complexity-tag tag-good">O(N)</span></td></tr>
+                <tr><td>Busca de Substring</td><td><code>sub in s</code></td><td><span class="complexity-tag tag-good">O(N + M) médio</span></td></tr>
+                <tr><td>Substituição</td><td><code>s.replace(a, b)</code></td><td><span class="complexity-tag tag-good">O(N)</span></td></tr>
+                <tr><td>Contador de Frequência</td><td><code>Counter(s)</code></td><td><span class="complexity-tag tag-good">O(N)</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 20: TRILHA DE EXERCÍCIOS LEETCODE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Prática</span>
+        <h2 class="slide-title">Trilha de Exercícios Práticos no LeetCode</h2>
+        <p class="slide-subtitle">Problemas recomendados organizados por técnica para fixação em aula e laboratório.</p>
+      </div>
+
+      <div class="card card-highlight">
+        <div class="card-title">💻 Problemas Selecionados por Técnica</div>
+        <div class="card-body">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Técnica</th>
+                <th>Problema no LeetCode</th>
+                <th>Dificuldade</th>
+                <th>Conceito Principal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Two Pointers</strong></td>
+                <td><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">167. Two Sum II - Sorted Array</a></td>
+                <td><span class="diff-pill diff-med">Médio</span></td>
+                <td>Ponteiros convergentes em <i>O(N)</i> tempo e <i>O(1)</i> espaço</td>
+              </tr>
+              <tr>
+                <td><strong>Two Pointers</strong></td>
+                <td><a href="https://leetcode.com/problems/reverse-string/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">344. Reverse String</a></td>
+                <td><span class="diff-pill diff-easy">Fácil</span></td>
+                <td>Inversão <i>in-place</i> com troca simétrica</td>
+              </tr>
+              <tr>
+                <td><strong>Two Pointers</strong></td>
+                <td><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">26. Remove Duplicates</a></td>
+                <td><span class="diff-pill diff-easy">Fácil</span></td>
+                <td>Ponteiro Rápido & Lento para prefixo único</td>
+              </tr>
+              <tr>
+                <td><strong>Two Pointers</strong></td>
+                <td><a href="https://leetcode.com/problems/move-zeroes/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">283. Move Zeroes</a></td>
+                <td><span class="diff-pill diff-easy">Fácil</span></td>
+                <td>Particionamento com dois ponteiros no mesmo sentido</td>
+              </tr>
+              <tr>
+                <td><strong>Sliding Window</strong></td>
+                <td><a href="https://leetcode.com/problems/maximum-average-subarray-i/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">643. Maximum Average Subarray I</a></td>
+                <td><span class="diff-pill diff-easy">Fácil</span></td>
+                <td>Janela Fixa <i>K</i> com atualização em <i>O(1)</i></td>
+              </tr>
+              <tr>
+                <td><strong>Sliding Window</strong></td>
+                <td><a href="https://leetcode.com/problems/minimum-size-subarray-sum/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">209. Min Size Subarray Sum</a></td>
+                <td><span class="diff-pill diff-med">Médio</span></td>
+                <td>Janela Dinâmica (Expand & Shrink amortizado)</td>
+              </tr>
+              <tr>
+                <td><strong>Prefix Sum</strong></td>
+                <td><a href="https://leetcode.com/problems/range-sum-query-immutable/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">303. Range Sum Query</a></td>
+                <td><span class="diff-pill diff-easy">Fácil</span></td>
+                <td>Consultas em <i>O(1)</i> via <i>P[R] &minus; P[L&minus;1]</i></td>
+              </tr>
+              <tr>
+                <td><strong>Palíndromo</strong></td>
+                <td><a href="https://leetcode.com/problems/valid-palindrome/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">125. Valid Palindrome</a></td>
+                <td><span class="diff-pill diff-easy">Fácil</span></td>
+                <td>Dois ponteiros com limpeza de pontuação <i>in-place</i></td>
+              </tr>
+              <tr>
+                <td><strong>Anagrama</strong></td>
+                <td><a href="https://leetcode.com/problems/valid-anagram/" target="_blank" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">242. Valid Anagram</a></td>
+                <td><span class="diff-pill diff-easy">Fácil</span></td>
+                <td>Histograma de frequências linear <i>O(N)</i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 21: RESUMO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Síntese</span>
+        <h2 class="slide-title">Resumo dos Pontos-Chave 💡</h2>
+        <p class="slide-subtitle">Checklist de sobrevivência e boas práticas para Arrays e Strings.</p>
+      </div>
+
+      <div class="card card-highlight" style="margin-top: 16px;">
+        <div class="card-title">💡 Resumo dos Pontos-Chave</div>
+        <div class="card-body">
+          <ul class="bullet-list" style="font-size: 0.95rem; gap: 14px;">
+            <li><strong>1. Cuidado com o fatiamento:</strong> <code>s[a:b]</code> gera uma nova cópia em memória (<i>O(b &minus; a)</i>).</li>
+            <li><strong>2. Evite <code>+</code> em strings dentro de laços:</strong> Use listas e finalize com <code>"".join()</code> para garantir <i>O(N)</i>.</li>
+            <li><strong>3. Evite <code>insert(0)</code> e <code>pop(0)</code> em listas:</strong> O deslocamento (<em>shift</em>) custa <i>O(N)</i>. Use <code>collections.deque</code> para <i>O(1)</i>.</li>
+            <li><strong>4. <code>item in list</code> é <i>O(N)</i>:</strong> Para buscas instantâneas <i>O(1)</i>, converta para <code>set</code> ou <code>dict</code>.</li>
+            <li><strong>5. Two Pointers e Sliding Window:</strong> Transformam loops aninhados <i>O(N<sup>2</sup>)</i> em passagens lineares <i>O(N)</i>.</li>
+            <li><strong>6. Prefix Sum:</strong> Reduz o custo de consultas acumuladas repetidas para tempo constante <i>O(1)</i>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 22: ENCERRAMENTO -->
+    <section class="slide slide-cover">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS</span>
+      <h1 class="cover-title">Obrigado! :mortar_board:</h1>
+      <p class="cover-subtitle">Próxima Aula: <strong>Listas Encadeadas, Pilhas e Filas</strong>.</p>
+      
+      <div class="author-box">
+        <div style="font-size: 2.2rem;">🎓</div>
+        <div class="author-info">
+          <div class="author-name">Eduardo Cruz Araujo</div>
+          <div class="author-meta">E-mail: eduardo.araujo@cps.sp.gov.br • Fatec SP</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Presenter Notes Drawer -->
+  <aside class="notes-drawer" id="notes-drawer">
+    <div class="notes-header">
+      <span>💡 NOTAS DO APRESENTADOR (PROFESSOR)</span>
+      <span style="font-size: 0.75rem; color: var(--text-muted);">Pressione 'P' para alternar</span>
+    </div>
+    <div class="notes-content" id="notes-content">Carregando notas...</div>
+  </aside>
+
+  <!-- Slide Navigation Modal -->
+  <div class="modal-overlay" id="overview-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">🗺️ Índice Geral da Apresentação</div>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="slide-grid-nav" id="slide-grid-nav"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toast-msg">Notificação</div>
+
+  <script src="app.js"></script>
+</body>
+</html>

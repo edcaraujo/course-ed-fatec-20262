@@ -254,7 +254,7 @@ for a in list_a:      # O(A)
 ---
 
 Fundamentos: Introdução e Big-O
-## 5. O Zoológico das Complexidades
+## O Zoológico das Complexidades
 
 ---
 
@@ -513,7 +513,7 @@ Supondo um processador que realiza $10^8$ operações por segundo:
 ---
 
 Fundamentos: Introdução e Big-O
-## 6. Complexidade de Tempo vs Espaço
+## Complexidade de Tempo vs Espaço
 
 ---
 
@@ -604,7 +604,7 @@ def count_diffs_v3(nums):
 ---
 
 Fundamentos: Introdução e Big-O
-## 7. Análise Amortizada
+## Análise Amortizada
 
 ---
 
@@ -632,7 +632,7 @@ Como a lista do Python aumenta de tamanho dinamicamente?
 ---
 
 Fundamentos: Introdução e Big-O
-## 8. Cheat Sheet: Operações Nativas do Python
+## Cheat Sheet: Operações Nativas do Python
 
 ---
 
@@ -666,7 +666,7 @@ Fundamentos: Introdução e Big-O
 ---
 
 Fundamentos: Introdução e Big-O
-## 9. Desafios Interativos: "Qual é a Complexidade?" :dart:
+## Desafios Interativos: "Qual é a Complexidade?" :dart:
 
 ---
 
@@ -987,7 +987,7 @@ Qual é a complexidade de cada uma?
 ---
 
 Fundamentos: Introdução e Big-O
-## 10. Resumo e Regras de Sobrevivência
+## Resumo
 
 ---
 
