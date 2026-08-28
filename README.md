@@ -19,8 +19,8 @@ Repositório contendo os materiais, apresentações e exercícios da disciplina 
 | Aula | Data | Tópico | Descrição / Conteúdo | Materiais / Apresentações |
 | :---: | :---: | :--- | :--- | :--- |
 | **01** | 07/08 | Hello World | Apresentação, ementa e alinhamento sobre a disciplina.<br>Revisão de Python. | [[1]](01-ed-helloworld/01-ed-helloworld-part-1.md) • [[2]](01-ed-helloworld/01-ed-helloworld-part-2.md) |
-| **02** | 14/08 | Fundamentos: Introdução e Big-O | Conceitos fundamentais de complexidade computacional. Análise assintótica de algoritmos utilizando a Notação Big-O para avaliar o consumo de tempo e espaço de memória. | [[1]](02-ed-fundamentos-introducao-e-big-o/02-ed-fundamentos-introducao-e-big-o.md)|
-| **03** | 21/08 | Fundamentos: Arrays e Strings | Manipulação avançada de sequências e cadeias de caracteres. Implementação da técnica de Two Pointers, Sliding Window, Prefix Sum e verificação de palíndromos e anagramas. | [[1]](03-ed-fundamentos-arrays-e-strings/03-ed-fundamentos-arrays-e-strings.md)|
+| **02** | 14/08 | Fundamentos: Introdução e Big-O | Conceitos fundamentais de complexidade computacional. Análise assintótica de algoritmos utilizando a Notação Big-O para avaliar o consumo de tempo e espaço de memória. | [[1]](02-ed-fundamentos-introducao-e-big-o/02-ed-fundamentos-introducao-e-big-o.md) |
+| **03** | 21/08 | Fundamentos: Arrays e Strings | Manipulação avançada de sequências e cadeias de caracteres. Implementação da técnica de Two Pointers, Sliding Window, Prefix Sum e verificação de palíndromos e anagramas. | [[1]](03-ed-fundamentos-arrays-e-strings/03-ed-fundamentos-arrays-e-strings.md) |
 
 ---
 
@@ -28,6 +28,7 @@ Repositório contendo os materiais, apresentações e exercícios da disciplina 
 
 - Cada pasta numérica (ex: `01-ed-helloworld/`) representa um módulo/aula da disciplina.
 - Os arquivos `.md` principais contêm os slides em formato Markdown (compatíveis com [Marp](https://marp.app/)).
+- A subpasta `extra/` contém listas complementares de exercícios, análises teóricas e práticas guiadas de fixação.
 - A subpasta `src/` de cada aula contém os códigos-fonte organizados em:
   - `online-judges/`: Resoluções de problemas e exercícios de juízes online (ex: Beecrowd).
   - `demos/`: Simulações visuais e demonstrações interativas apresentadas em aula.
