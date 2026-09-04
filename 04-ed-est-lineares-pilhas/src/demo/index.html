@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Est. Lineares: Pilhas | Estrutura de Dados | Fatec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Application Navigation Bar -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-badge">FATEC 2026.2</span>
+      <span>Estrutura de Dados</span>
+      <span style="color: var(--text-muted); font-weight: 400;">| Est. Lineares: Pilhas</span>
+    </div>
+    
+    <div class="header-controls">
+      <button class="btn-nav" id="btn-prev" title="Slide Anterior (Seta Esquerda)">← Anter</button>
+      <span class="slide-counter" id="slide-counter">1 / 23</span>
+      <button class="btn-nav" id="btn-next" title="Próximo Slide (Seta Direita / Espaço)">Próx →</button>
+      <button class="btn-nav" id="btn-overview" title="Menu de Navegação (Teclas M)">📱 Índice (M)</button>
+      <button class="btn-nav" id="btn-notes" title="Notas do Apresentador (Tecla P)">💡 Notas (P)</button>
+      <button class="btn-nav" id="btn-fullscreen" title="Modo Tela Cheia (Tecla F)">⛶ Tela Cheia</button>
+    </div>
+  </header>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Slides Viewport -->
+  <main class="slides-viewport">
+
+    <!-- SLIDE 1: CAPA -->
+    <section class="slide slide-cover active">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS 2026.2</span>
+      <h1 class="cover-title">Est. Lineares: Pilhas</h1>
+      <p class="cover-subtitle">Implementação e aplicações da estrutura LIFO (Last-In, First-Out). Modelagem de problemas de validação de escopos (parênteses e chaves), avaliação de expressões e conversão de lógicas recursivas para iterativas.</p>
+      
+      <div class="author-box">
+        <div style="font-size: 2.2rem;">🎓</div>
+        <div class="author-info">
+          <div class="author-name">Eduardo Cruz Araujo</div>
+          <div class="author-meta">Professor & Engenheiro de Software • Fatec SP</div>
+        </div>
+      </div>
+
+      <div class="keyboard-hints">
+        <div class="kbd-pill"><kbd>←</kbd> <kbd>→</kbd> Navegar</div>
+        <div class="kbd-pill"><kbd>Espaço</kbd> Avançar</div>
+        <div class="kbd-pill"><kbd>M</kbd> Índice Geral</div>
+        <div class="kbd-pill"><kbd>P</kbd> Notas de Aula</div>
+        <div class="kbd-pill"><kbd>F</kbd> Tela Cheia</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: O CONCEITO DE PILHA E O LIFO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Fundamentos</span>
+        <h2 class="slide-title">O Conceito de Pilha e o Princípio LIFO</h2>
+        <p class="slide-subtitle">A estrutura linear restrita fundamental: o último a entrar é o primeiro a sair.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🥞 Princípio LIFO (Last-In, First-Out)</div>
+          <div class="card-body">
+            <p>Uma <strong>Pilha (Stack)</strong> é uma coleção ordenada onde todas as inserções e remoções ocorrem exclusivamente em uma extremidade chamada <strong>Topo (Top)</strong>.</p>
+            <ul class="bullet-list" style="margin-top: 12px;">
+              <li><strong>Ponto Único de Acesso:</strong> Você só enxerga e só toca no elemento do topo.</li>
+              <li><strong>Base (Bottom):</strong> O primeiro item inserido fica no fundo e só sai se todos os demais forem removidos.</li>
+              <li><strong>Analogias:</strong> Pilha de pratos, pilha de livros, baralho de cartas virado para baixo.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">💻 Onde a Pilha é Usada em Sistemas?</div>
+          <div class="card-body">
+            <ul class="bullet-list">
+              <li><strong>Desfazer / Refazer (Ctrl+Z):</strong> Cada edição é empilhada; desfazer desempilha o último comando.</li>
+              <li><strong>Histórico do Navegador:</strong> O botão "Voltar" desempilha a URL atual.</li>
+              <li><strong>Call Stack da CPU:</strong> Grava o endereço de retorno e variáveis locais de cada chamada de função.</li>
+              <li><strong>Compiladores:</strong> Checagem de sintaxe de delimitadores <code>{ } ( ) [ ]</code> e tags HTML.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: OPERAÇÕES FUNDAMENTAIS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Operações & Complexidade</span>
+        <h2 class="slide-title">Operações Primitivas e Análise Assintótica</h2>
+        <p class="slide-subtitle">Tempo estrito <i>O(1)</i> em todas as manipulações no topo.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">⚡ Primitivas do TAD Pilha</div>
+          <div class="card-body">
+            <table class="data-table" style="font-size: 0.88rem;">
+              <thead>
+                <tr>
+                  <th>Operação</th>
+                  <th>Efeito</th>
+                  <th>Custo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>push(x)</code></td>
+                  <td>Insere item <i>x</i> sobre o topo</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>pop()</code></td>
+                  <td>Remove e retorna o topo</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>peek()</code> / <code>top()</code></td>
+                  <td>Consulta o topo sem remover</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>is_empty()</code></td>
+                  <td>Verifica se tamanho == 0</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>size()</code></td>
+                  <td>Retorna contagem total de itens</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">⚠️ Estados Críticos de Erro</div>
+          <div class="card-body">
+            <div style="margin-bottom: 14px; padding: 12px; background: rgba(244, 63, 94, 0.1); border-left: 3px solid var(--accent-rose); border-radius: 6px;">
+              <strong style="color: var(--accent-rose);">Stack Underflow:</strong><br>
+              Tentativa de executar <code>pop()</code> ou <code>peek()</code> em uma pilha vazia. Dispara <code>IndexError</code>.
+            </div>
+            <div style="padding: 12px; background: rgba(251, 191, 36, 0.1); border-left: 3px solid var(--accent-amber); border-radius: 6px;">
+              <strong style="color: var(--accent-amber);">Stack Overflow:</strong><br>
+              Tentativa de executar <code>push()</code> em uma pilha com limite de capacidade esgotado (ou estouro de memória da CPU).
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: SIMULADOR INTERATIVO LIFO CORE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: Núcleo LIFO</h2>
+        <p class="slide-subtitle">Experimente inserções (Push), remoções (Pop), inspeção (Peek) e tratamento de Underflow/Overflow.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR LIFO: CONTROLE DE PILHA</div>
+          <div class="toolbar-controls">
+            <input type="text" id="sim1-input" class="input-tool" placeholder="Valor (ex: 42)" style="width: 120px;">
+            <button class="btn-tool btn-tool-primary" id="sim1-btn-push">➕ Push</button>
+            <button class="btn-tool btn-tool-secondary" id="sim1-btn-pop">➖ Pop</button>
+            <button class="btn-tool btn-tool-secondary" id="sim1-btn-peek">👁️ Peek</button>
+            <button class="btn-tool btn-tool-secondary" id="sim1-btn-clear">🧹 Clear</button>
+            <button class="btn-tool btn-tool-secondary" id="sim1-btn-toggle-cap" title="Alternar limite de capacidade">Capacidade: 6</button>
+          </div>
+        </div>
+
+        <div class="stack-arena">
+          <!-- Stack Visual Column -->
+          <div class="stack-column">
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan); margin-bottom: 8px;">TOPO DA PILHA ↑</div>
+            <div class="stack-bucket" id="sim1-bucket">
+              <!-- Stack Items dynamically rendered here -->
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); margin-top: 8px;">BASE DA PILHA ═</div>
+            <div class="stack-top-pointer" id="sim1-pointer" style="display: none;">
+              ← TOPO (<span id="sim1-top-val">-</span>)
+            </div>
+          </div>
+
+          <!-- Stack Status & Log Dashboard -->
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; max-width: 420px;">
+            <div class="card" style="margin: 0; padding: 14px;">
+              <div class="card-title" style="font-size: 0.9rem;">📊 Estado do Objeto Pilha</div>
+              <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8;">
+                <div>Tamanho Atual (<code>size()</code>): <strong id="sim1-stat-size" style="color: var(--accent-cyan);">0</strong></div>
+                <div>Vazia? (<code>is_empty()</code>): <strong id="sim1-stat-empty" style="color: var(--accent-emerald);">True</strong></div>
+                <div>Elemento Topo: <strong id="sim1-stat-top" style="color: var(--accent-amber);">Nenhum</strong></div>
+                <div>Capacidade Máxima: <strong id="sim1-stat-cap" style="color: var(--text-muted);">6 itens</strong></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin: 0; padding: 14px; flex: 1;">
+              <div class="card-title" style="font-size: 0.9rem;">📝 Console de Operações</div>
+              <div id="sim1-log" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); max-height: 140px; overflow-y: auto;">
+                > Pilha inicializada vazia.<br>
+                > Aguardando comandos...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: TAD E POR QUE CRIAR NOSSA CLASSE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Engenharia de Software</span>
+        <h2 class="slide-title">Por que Criar Nossa Própria Classe de Pilha?</h2>
+        <p class="slide-subtitle">O valor da abstração, encapsulamento e proteção de invariantes de código.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🛡️ O Princípio do Encapsulamento</div>
+          <div class="card-body">
+            <p>Em Python, listas nativas expõem métodos que <strong>violam totalmente o contrato de uma Pilha</strong>:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li><code>minha_lista.insert(0, x)</code>: Custa <strong style="color: var(--accent-rose);">O(N)</strong> por deslocar toda a memória.</li>
+              <li><code>minha_lista[2] = 99</code>: Acesso indexado no meio da pilha, quebrando o LIFO!</li>
+              <li><code>minha_lista.sort()</code>: Modifica a ordem temporal dos elementos inseridos.</li>
+            </ul>
+            <p style="margin-top: 12px; color: var(--accent-cyan);">A classe <code>Pilha</code> oculta esses perigos e expõe apenas o contrato formal do TAD.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🧩 O Conceito de TAD (Tipo Abstrato de Dados)</div>
+          <div class="card-body">
+            <p>Um <strong>TAD</strong> é um modelo matemático que especifica:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li><strong>O QUE faz:</strong> O conjunto de operações permitidas e seus comportamentos esperados (interface pública).</li>
+              <li><strong>COMO faz (oculto):</strong> A estrutura interna de armazenamento (array, nós encadeados, memória persistente).</li>
+            </ul>
+            <p style="margin-top: 12px;">Se trocarmos internamente uma lista por nós encadeados, <strong>nenhum código cliente é quebrado</strong>!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: NOSSA CLASSE PILHA (SIMPLES, DIRETA, SEM IMPORTS) -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Implementação Autossuficiente</span>
+        <h2 class="slide-title">A Nossa Classe Pilha em Python</h2>
+        <p class="slide-subtitle">Apenas ~20 linhas, sem imports, pronta para ser copiada em qualquer problema.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="padding: 14px;">
+          <div class="card-title">📦 Código Puro e Autossuficiente</div>
+          <pre class="code-block" style="font-size: 0.82rem; margin-top: 8px;"><code>class Pilha:
+    def __init__(self):
+        self._elementos = []
+
+    def push(self, item):
+        self._elementos.append(item)  # O(1) amortizado
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("Stack Underflow: pilha vazia!")
+        return self._elementos.pop()  # O(1) no final
+
+    def peek(self):
+        if self.is_empty():
+            raise IndexError("Stack Underflow: pilha vazia!")
+        return self._elementos[-1]    # O(1)
+
+    def is_empty(self):
+        return len(self._elementos) == 0
+
+    def size(self):
+        return len(self._elementos)</code></pre>
+        </div>
+
+        <div class="card card-highlight" style="padding: 14px;">
+          <div class="card-title">💡 Vantagens Desta Abordagem</div>
+          <ul class="bullet-list" style="margin-top: 10px; line-height: 1.7;">
+            <li><strong>Zero Imports:</strong> Não precisa importar módulos externos (como <code>typing</code>).</li>
+            <li><strong>Portabilidade Total:</strong> Pode ser declarada diretamente no topo do seu código para envio imediato no <strong>LeetCode</strong> ou <strong>Beecrowd</strong>!</li>
+            <li><strong>Didática Clara:</strong> Toda a lógica de LIFO em apenas alguns métodos intuitivos.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: PILHA ENCADEADA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Arquitetura de Dados</span>
+        <h2 class="slide-title">Pilha Encadeada (Node-Based) vs Pilha em Array</h2>
+        <p class="slide-subtitle">Como implementar LIFO sem alocação contígua de buffers.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🔗 Implementação com Nós Encadeados</div>
+          <pre class="code-block" style="font-size: 0.8rem; margin-top: 8px;"><code>class Node:
+    def __init__(self, dado, proximo=None):
+        self.dado = dado
+        self.proximo = proximo
+
+class PilhaEncadeada:
+    def __init__(self):
+        self._topo = None
+        self._tamanho = 0
+
+    def push(self, item):
+        self._topo = Node(item, proximo=self._topo)
+        self._tamanho += 1
+
+    def pop(self):
+        if not self._topo:
+            raise IndexError("Pilha Vazia!")
+        item = self._topo.dado
+        self._topo = self._topo.proximo
+        self._tamanho -= 1
+        return item</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">⚖️ Comparativo Arquitetural</div>
+          <table class="data-table" style="font-size: 0.86rem; margin-top: 10px;">
+            <thead>
+              <tr>
+                <th>Critério</th>
+                <th>Pilha em Array</th>
+                <th>Pilha Encadeada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Push / Pop</strong></td>
+                <td><i>O(1)</i> amortizado</td>
+                <td><strong><i>O(1)</i> estrito</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Localidade de Cache</strong></td>
+                <td>Excelente (RAM contígua)</td>
+                <td>Baixa (ponteiros dispersos)</td>
+              </tr>
+              <tr>
+                <td><strong>Overhead de Memória</strong></td>
+                <td>Baixo (apenas referências)</td>
+                <td>Maior (guarda nó + ponteiro)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: DESAFIO LEETCODE 20 & BEECROWD 1068 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Aplicação Prática 1</span>
+        <h2 class="slide-title">🎯 Desafio: Validação de Escopos</h2>
+        <p class="slide-subtitle">LeetCode #20 (Valid Parentheses) & Beecrowd #1068 (Balanço de Parênteses I)</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">📋 O Enunciado</div>
+          <div class="card-body">
+            <p>Dada uma sequência de delimitadores <code>( ) [ ] { }</code>, verifique se a cadeia é bem formada:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li>Todo delimitador de abertura deve ser fechado pelo mesmo tipo correspondente.</li>
+              <li>A ordem de fechamento deve respeitar estritamente a ordem de aninhamento.</li>
+            </ul>
+            <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.9rem;">
+              <span style="color: var(--accent-emerald);">"()[]{}"</span> → Válido (True)<br>
+              <span style="color: var(--accent-emerald);">"{[]}"</span> → Válido (True)<br>
+              <span style="color: var(--accent-rose);">(]</span> → Inválido (False)<br>
+              <span style="color: var(--accent-rose);">([)]</span> → Inválido (False)
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🤔 Reflexão: Por que Contar Caracteres Falha?</div>
+          <div class="card-body">
+            <p>Se contarmos apenas a quantidade:</p>
+            <p>Na string <code>"([)]"</code>: temos exatamente 1 <code>(</code>, 1 <code>)</code>, 1 <code>[</code>, 1 <code>]</code>.</p>
+            <p>A contagem de cada par é idêntica! Mas a cadeia é <strong>completamente inválida</strong> porque o colchete abriu por último e deveria fechar antes do parêntese!</p>
+            <div style="margin-top: 12px; padding: 10px; background: rgba(56, 189, 248, 0.1); border-radius: 6px; border-left: 3px solid var(--accent-cyan); font-weight: 500;">
+              💡 O aninhamento é estritamente <strong>temporal</strong>: o último escopo aberto DEVE ser o primeiro a fechar. Isso é a essência do <strong>LIFO</strong>!
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: MODELAGEM COM PILHA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Algoritmo</span>
+        <h2 class="slide-title">A Mecânica da Pilha na Validação de Escopos</h2>
+        <p class="slide-subtitle">Como mapear aberturas e fechamentos em tempo linear <i>O(N)</i>.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚙️ Regras do Algoritmo</div>
+        <div class="grid-3" style="margin-top: 12px;">
+          <div style="background: var(--bg-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 6px;">1. Encontrou Abertura</div>
+            <p style="font-size: 0.88rem;">Empilhe o caractere (<code>push(ch)</code>). Representa uma promessa pendente de fechamento futuro.</p>
+          </div>
+          <div style="background: var(--bg-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="color: var(--accent-amber); font-weight: 700; margin-bottom: 6px;">2. Encontrou Fechamento</div>
+            <p style="font-size: 0.88rem;">Se a pilha estiver vazia ou o <code>pop()</code> não for o par correspondente → <strong>Inválido imediato!</strong></p>
+          </div>
+          <div style="background: var(--bg-surface); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div style="color: var(--accent-emerald); font-weight: 700; margin-bottom: 6px;">3. Fim da String</div>
+            <p style="font-size: 0.88rem;">Se a pilha estiver vazia (<code>is_empty()</code>) → <strong>Válido!</strong> Se sobrou item pendente → <strong>Inválido!</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: SIMULADOR INTERATIVO VALIDADOR DE PARÊNTESES -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: Validação de Escopos</h2>
+        <p class="slide-subtitle">Acompanhe a pilha reagindo passo a passo a cada caractere da cadeia.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: BRACKET MATCHER</div>
+          <div class="toolbar-controls">
+            <input type="text" id="sim2-input" class="input-tool" value="{[()]}" style="width: 150px;">
+            <button class="btn-tool btn-tool-secondary" id="sim2-btn-preset1">Ex: {[()]}</button>
+            <button class="btn-tool btn-tool-secondary" id="sim2-btn-preset2">Ex: ([)]</button>
+            <button class="btn-tool btn-tool-secondary" id="sim2-btn-preset3">Ex: (((</button>
+            <button class="btn-tool btn-tool-primary" id="sim2-btn-step">▶ Passo a Passo</button>
+            <button class="btn-tool btn-tool-secondary" id="sim2-btn-reset">🔄 Reset</button>
+          </div>
+        </div>
+
+        <div style="padding: 18px; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color);">
+          <!-- Character Tape -->
+          <div style="margin-bottom: 14px;">
+            <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">FITA DE CARACTERES:</div>
+            <div class="tape-container" id="sim2-tape">
+              <!-- Tape cells rendered via JS -->
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 24px; align-items: flex-start;">
+            <!-- Mini Stack for Validator -->
+            <div class="stack-column" style="width: 140px;">
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 6px;">PILHA ↑</div>
+              <div class="stack-bucket" id="sim2-bucket" style="width: 130px; height: 180px;"></div>
+            </div>
+
+            <!-- Validation Status Box -->
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <div class="card" style="margin: 0; padding: 12px;">
+                <div class="card-title" style="font-size: 0.85rem;">Status da Validação</div>
+                <div id="sim2-status" style="font-size: 1.1rem; font-weight: 700; color: var(--accent-cyan);">Pronto para iniciar</div>
+                <p id="sim2-explanation" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Clique em "Passo a Passo" para analisar o primeiro caractere.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: CÓDIGO PYTHON VALIDAÇÃO COM NOSSA CLASSE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Código-Fonte Autossuficiente</span>
+        <h2 class="slide-title">Solução Completa: Classe Pilha Embutida</h2>
+        <p class="slide-subtitle">Declarada diretamente no próprio problema para facilitar testes e submissão.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🐍 Implementação em Python</div>
+          <pre class="code-block" style="font-size: 0.78rem; margin-top: 8px;"><code>class Pilha:
+    def __init__(self): self._elementos = []
+    def push(self, item): self._elementos.append(item)
+    def pop(self): return self._elementos.pop() if self._elementos else None
+    def is_empty(self): return len(self._elementos) == 0
+
+def validar_escopos(s: str) -> bool:
+    pilha = Pilha()
+    mapa = {')': '(', ']': '[', '}': '{'}
+
+    for char in s:
+        if char in mapa.values():
+            pilha.push(char)
+        elif char in mapa:
+            if pilha.is_empty() or pilha.pop() != mapa[char]:
+                return False
+
+    return pilha.is_empty()</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">📊 Análise de Complexidade</div>
+          <ul class="bullet-list" style="margin-top: 10px;">
+            <li><strong>Complexidade de Tempo:</strong> <span class="badge-o-tag o-excellent">O(N)</span><br>
+            A string é percorrida exatamente uma vez. Cada caractere faz no máximo 1 operação de tempo <i>O(1)</i> (push ou pop).</li>
+            <li style="margin-top: 12px;"><strong>Complexidade de Espaço Auxiliar:</strong> <span class="badge-o-tag o-good">O(N)</span><br>
+            No pior caso (ex: <code>"(((((("</code>), armazenamos até <i>N</i> delimitadores na pilha.</li>
+            <li style="margin-top: 12px;"><strong>Casos de Borda:</strong>
+              <br>• Fechar antes de abrir: <code>")("</code>
+              <br>• String ímpar: impossível formar pares completos.
+              <br>• Aberturas sem fechamento: <code>"(()"</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: NOTAÇÃO INFIXA VS RPN -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Aplicação Prática 2</span>
+        <h2 class="slide-title">Notação Infixa vs Polonesa Reversa (RPN)</h2>
+        <p class="slide-subtitle">Como computadores e calculadoras avaliam expressões aritméticas sem ambiguidade.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📝 Notação Infixa (Humana)</div>
+          <div class="card-body">
+            <p>O operador fica <strong>no meio</strong> dos operandos:</p>
+            <div style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-cyan); margin: 10px 0;">(3 + 4) * 5</div>
+            <ul class="bullet-list">
+              <li>Exige regras de precedência (<code>*</code> e <code>/</code> antes de <code>+</code> e <code>-</code>).</li>
+              <li>Exige parênteses para alterar a ordem natural.</li>
+              <li>Difícil para a CPU avaliar em um único passe linear.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">🚀 Notação Pós-fixa / RPN (Computacional)</div>
+          <div class="card-body">
+            <p>O operador vem <strong>após</strong> os operandos:</p>
+            <div style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-emerald); margin: 10px 0;">3 4 + 5 *</div>
+            <ul class="bullet-list">
+              <li><strong>Zero Ambiguidade:</strong> Não precisa de parênteses!</li>
+              <li>Avaliação linear inequívoca da esquerda para a direita.</li>
+              <li>Usada nas calculadoras <strong>HP</strong>, na <strong>JVM (Java)</strong> e no interpretador Python.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: DESAFIO LEETCODE 150 -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Aplicação Prática 2</span>
+        <h2 class="slide-title">🎯 Desafio: LeetCode #150</h2>
+        <p class="slide-subtitle">Evaluate Reverse Polish Notation (Avaliação de Notação Polonesa Reversa)</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">📋 O Enunciado</div>
+          <div class="card-body">
+            <p>Dado um array de strings <code>tokens</code> representando uma expressão em RPN, calcule seu valor numérico.</p>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li>Operadores válidos: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>.</li>
+              <li>A divisão entre dois inteiros deve sempre truncar em direção a zero.</li>
+            </ul>
+            <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.88rem;">
+              <strong>Exemplo 1:</strong> <code>["2", "1", "+", "3", "*"]</code><br>
+              ((2 + 1) * 3) = 9<br><br>
+              <strong>Exemplo 2:</strong> <code>["4", "13", "5", "/", "+"]</code><br>
+              (4 + (13 / 5)) = (4 + 2) = 6
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚠️ O Ponto de Atenção Crucial</div>
+          <div class="card-body">
+            <p>Ao encontrar um operador na pilha:</p>
+            <div style="background: var(--bg-surface); padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.88rem; margin: 10px 0;">
+              b = pilha.pop()  # <span style="color: var(--accent-rose);">Segundo operando (DIREITA)</span><br>
+              a = pilha.pop()  # <span style="color: var(--accent-cyan);">Primeiro operando (ESQUERDA)</span><br>
+              resultado = a op b  # <span style="color: var(--accent-emerald);">a - b (NUNCA b - a!)</span>
+            </div>
+            <p>Na divisão inteira com números negativos em Python, usamos <code>int(a / b)</code> para truncar para zero!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: SIMULADOR INTERATIVO RPN -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: Avaliação RPN</h2>
+        <p class="slide-subtitle">Acompanhe operandos sendo empilhados e operações consumindo o topo da pilha.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: AVALIADOR RPN</div>
+          <div class="toolbar-controls">
+            <button class="btn-tool btn-tool-secondary" id="sim3-btn-ex1">2 1 + 3 *</button>
+            <button class="btn-tool btn-tool-secondary" id="sim3-btn-ex2">4 13 5 / +</button>
+            <button class="btn-tool btn-tool-primary" id="sim3-btn-step">▶ Próximo Token</button>
+            <button class="btn-tool btn-tool-secondary" id="sim3-btn-reset">🔄 Reset</button>
+          </div>
+        </div>
+
+        <div style="padding: 18px; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color);">
+          <!-- Token Tape -->
+          <div style="margin-bottom: 14px;">
+            <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">TOKENS DA EXPRESSÃO:</div>
+            <div class="tape-container" id="sim3-tape">
+              <!-- Tokens rendered via JS -->
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 28px; align-items: flex-start;">
+            <!-- Stack Column -->
+            <div class="stack-column" style="width: 140px;">
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 6px;">PILHA DE NÚMEROS ↑</div>
+              <div class="stack-bucket" id="sim3-bucket" style="width: 130px; height: 180px;"></div>
+            </div>
+
+            <!-- Calculation Display -->
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+              <div class="card" style="margin: 0; padding: 14px;">
+                <div class="card-title" style="font-size: 0.85rem;">Operação em Execução</div>
+                <div id="sim3-op-display" style="font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan);">Aguardando início...</div>
+                <p id="sim3-explanation" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">Clique em "Próximo Token" para empilhar ou operar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 15: CÓDIGO PYTHON AVALIAÇÃO RPN -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Código-Fonte Autossuficiente</span>
+        <h2 class="slide-title">Implementação da Avaliação RPN</h2>
+        <p class="slide-subtitle">Código limpo em Python utilizando a classe Pilha sem imports.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🐍 Código Completo com Classe Pilha</div>
+          <pre class="code-block" style="font-size: 0.78rem; margin-top: 8px;"><code>def avaliar_rpn(tokens: list[str]) -> int:
+    pilha = Pilha()
+    operadores = {'+', '-', '*', '/'}
+
+    for token in tokens:
+        if token not in operadores:
+            pilha.push(int(token))
+        else:
+            b = pilha.pop()  # operando da direita
+            a = pilha.pop()  # operando da esquerda
+
+            if token == '+': pilha.push(a + b)
+            elif token == '-': pilha.push(a - b)
+            elif token == '*': pilha.push(a * b)
+            elif token == '/': pilha.push(int(a / b))
+
+    return pilha.pop()</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">📊 Análise de Desempenho</div>
+          <ul class="bullet-list" style="margin-top: 10px;">
+            <li><strong>Tempo de Execução:</strong> <span class="badge-o-tag o-excellent">O(N)</span><br>
+            Cada token da lista de tamanho <i>N</i> realiza apenas operações em tempo constante <i>O(1)</i>.</li>
+            <li style="margin-top: 14px;"><strong>Memória Auxiliar:</strong> <span class="badge-o-tag o-good">O(N)</span><br>
+            No pior caso, a pilha armazena até aproximadamente $N/2$ números antes de encontrar operadores.</li>
+            <li style="margin-top: 14px;"><strong>Divisão Truncada para Zero:</strong><br>
+            <code>int(a / b)</code> garante conformidade estrita com a semântica de linguagens tipadas (como C e Java).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: COMO A CPU EXECUTA FUNÇÕES (CALL STACK) -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Arquitetura de Sistemas</span>
+        <h2 class="slide-title">A Call Stack e o Limite de Recursão</h2>
+        <p class="slide-subtitle">Como o Sistema Operacional e o interpretador executam chamadas de função.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🧱 Anatomia de um Stack Frame</div>
+          <div class="card-body">
+            <p>A cada chamada de função, um <strong>Quadro de Ativação</strong> é empilhado na memória Stack da CPU contendo:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li>Endereço de retorno na instrução anterior.</li>
+              <li>Argumentos passados por parâmetro.</li>
+              <li>Variáveis locais declaradas na função.</li>
+            </ul>
+            <p style="margin-top: 12px;">Quando a função faz <code>return</code>, seu quadro é desempilhado e a CPU volta ao chamador.</p>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">💥 O Perigo: RecursionError</div>
+          <div class="card-body">
+            <p>A pilha de execução da CPU possui tamanho muito limitado para proteger a integridade do sistema operacional:</p>
+            <div style="background: var(--bg-surface); padding: 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; margin: 10px 0; border-left: 3px solid var(--accent-rose);">
+              import sys<br>
+              print(sys.getrecursionlimit())  # Padrão: 1000
+            </div>
+            <p style="color: var(--accent-rose);">Se uma árvore ou grafo tiver profundidade > 1000, o programa aborta com falha crítica!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 17: CONVERSÃO RECURSÃO -> ITERAÇÃO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Engenharia Algorítmica</span>
+        <h2 class="slide-title">Conversão de Recursão para Iteração</h2>
+        <p class="slide-subtitle">Substituindo a Call Stack do SO por uma Pilha Explícita na memória Heap.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🔁 Versão Recursiva (Vulnerável)</div>
+          <pre class="code-block" style="font-size: 0.8rem; margin-top: 8px;"><code>def dfs_recursivo(no, visitados=None):
+    if visitados is None: visitados = []
+    if not no: return visitados
+
+    visitados.append(no.valor)
+    dfs_recursivo(no.esq, visitados)
+    dfs_recursivo(no.dir, visitados)
+
+    return visitados</code></pre>
+          <p style="font-size: 0.82rem; color: var(--accent-rose); margin-top: 8px;">Estoura com mais de 1000 níveis!</p>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">🛡️ Versão Iterativa com Pilha (Blindada)</div>
+          <pre class="code-block" style="font-size: 0.8rem; margin-top: 8px;"><code>def dfs_iterativo(raiz):
+    if not raiz: return []
+    visitados = []
+    pilha = Pilha()
+    pilha.push(raiz)
+
+    while not pilha.is_empty():
+        no = pilha.pop()
+        visitados.append(no.valor)
+
+        if no.dir: pilha.push(no.dir) # Direita entra antes
+        if no.esq: pilha.push(no.esq) # Esquerda entra depois (Topo!)
+
+    return visitados</code></pre>
+          <p style="font-size: 0.82rem; color: var(--accent-emerald); margin-top: 8px;">Suporta milhões de nós na memória RAM!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 18: SIMULADOR RECURSÃO VS ITERAÇÃO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: DFS com Pilha Explícita</h2>
+        <p class="slide-subtitle">Veja a pilha explícita governando a ordem de visitação dos nós em profundidade.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR: DFS TRAVERSAL VIA PILHA</div>
+          <div class="toolbar-controls">
+            <button class="btn-tool btn-tool-primary" id="sim4-btn-step">▶ Avançar Passo DFS</button>
+            <button class="btn-tool btn-tool-secondary" id="sim4-btn-reset">🔄 Resetar Árvore</button>
+          </div>
+        </div>
+
+        <div style="padding: 18px; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); display: flex; gap: 32px;">
+          <!-- Tree Visualization -->
+          <div style="flex: 1;">
+            <div style="font-size: 0.85rem; font-family: var(--font-mono); color: var(--accent-cyan); margin-bottom: 12px;">ESTRUTURA HIERÁRQUICA:</div>
+            <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.8;" id="sim4-tree-ascii">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[A]<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;\<br>
+              &nbsp;&nbsp;&nbsp;[B]&nbsp;&nbsp;&nbsp;[C]<br>
+              &nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\<br>
+              &nbsp;[D]&nbsp;&nbsp;[E]&nbsp;&nbsp;&nbsp;[F]
+            </div>
+            <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.85rem;">
+              Nós Visitados: <strong id="sim4-visited" style="color: var(--accent-emerald);">[]</strong>
+            </div>
+          </div>
+
+          <!-- Explicit Stack Display -->
+          <div class="stack-column" style="width: 160px;">
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 6px;">PILHA EXPLÍCITA ↑</div>
+            <div class="stack-bucket" id="sim4-bucket" style="width: 150px; height: 180px;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 19: PILHAS NATIVAS COM LIST E DEQUE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Python Idiomático</span>
+        <h2 class="slide-title">Simulando Pilhas com Recursos Nativos do Python</h2>
+        <p class="slide-subtitle">Como utilizar <code>list</code> e <code>collections.deque</code> de forma correta e veloz.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📝 Usando <code>list</code> Nativa</div>
+          <div class="card-body">
+            <p>A lista nativa funciona perfeitamente como pilha se você respeitar as regras:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li><code>stack.append(x)</code>: <i>O(1)</i> amortizado (push)</li>
+              <li><code>stack.pop()</code>: <i>O(1)</i> (pop no final)</li>
+              <li><code>stack[-1]</code>: <i>O(1)</i> (peek)</li>
+              <li><code>not stack</code>: <i>O(1)</i> (is_empty)</li>
+            </ul>
+            <div style="margin-top: 10px; color: var(--accent-rose); font-size: 0.85rem;">
+              ⚠️ NUNCA use <code>pop(0)</code> ou <code>insert(0, x)</code>! Custa <i>O(N)</i>.
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">⚡ Usando <code>collections.deque</code></div>
+          <div class="card-body">
+            <p>Uma Fila de Duas Pontas (Double-Ended Queue) baseada em blocos encadeados:</p>
+            <pre class="code-block" style="font-size: 0.8rem; margin: 8px 0;"><code>from collections import deque
+stack = deque()
+stack.append(10)     # O(1) estrito
+topo = stack.pop()   # O(1) estrito</code></pre>
+            <p>Vantagem: Garante <i>O(1)</i> estrito em ambas as pontas sem realocação contígua de buffer!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 20: TABELA COMPARATIVA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Guia de Escolha</span>
+        <h2 class="slide-title">Tabela Comparativa de Abordagens</h2>
+        <p class="slide-subtitle">Quando usar nossa classe customizada, <code>list</code> nativa ou <code>deque</code>.</p>
+      </div>
+
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Critério</th>
+              <th>Nossa Classe <code>Pilha</code></th>
+              <th><code>list</code> Nativa</th>
+              <th><code>collections.deque</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Encapsulamento LIFO</strong></td>
+              <td>⭐ <strong>Total (Blindado)</strong></td>
+              <td>⚠️ Inexistente (Permite tudo)</td>
+              <td>⚠️ Inexistente (Permite ambas pontas)</td>
+            </tr>
+            <tr>
+              <td><strong>Tempo de Push / Pop</strong></td>
+              <td><i>O(1)</i> amortizado</td>
+              <td><i>O(1)</i> amortizado</td>
+              <td><strong><i>O(1)</i> estrito</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Risco de Deslocamento O(N)</strong></td>
+              <td>Zero (sem métodos inválidos)</td>
+              <td>Alto (se usar <code>insert(0)</code> ou <code>pop(0)</code>)</td>
+              <td>Zero nas extremidades</td>
+            </tr>
+            <tr>
+              <td><strong>Cenário de Aplicação</strong></td>
+              <td>Sistemas corporativos e TADs</td>
+              <td>Entrevistas e desafios rápidos</td>
+              <td>Sistemas de altíssimo throughput</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 21: REFERÊNCIA AVANÇADA COM TIPAGEM ESTÁTICA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Referência Avançada</span>
+        <h2 class="slide-title">🔍 Para ir além: Tipagem Estática e Genéricos</h2>
+        <p class="slide-subtitle">Como tipar pilhas em projetos corporativos utilizando <code>Generic[T]</code>.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📦 Pilha com <code>Generic[T]</code></div>
+          <pre class="code-block" style="font-size: 0.78rem; margin-top: 8px;"><code>from typing import Generic, TypeVar, Optional
+
+T = TypeVar('T')
+
+class PilhaGenerica(Generic[T]):
+    def __init__(self):
+        self._elementos: list[T] = []
+
+    def push(self, item: T) -> None:
+        self._elementos.append(item)
+
+    def pop(self) -> T:
+        if not self._elementos:
+            raise IndexError("Stack Underflow")
+        return self._elementos.pop()
+
+    def peek(self) -> T:
+        return self._elementos[-1]
+
+    def is_empty(self) -> bool:
+        return len(self._elementos) == 0</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">💡 Quando usar cada versão?</div>
+          <div class="card-body">
+            <p><strong>Em Juízes Online & Maratonas:</strong> Use a versão simples sem genéricos da aula (apenas 20 linhas e zero dependências).</p>
+            <p style="margin-top: 12px;"><strong>Em Bibliotecas & Ambientes de Produção:</strong> Adicione <code>Generic[T]</code> para permitir que o <code>mypy</code> e a IDE validem tipos em tempo de compilação.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 22: RESUMO DOS PONTOS-CHAVE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Revisão</span>
+        <h2 class="slide-title">Resumo dos Pontos-Chave 💡</h2>
+        <p class="slide-subtitle">Conceitos indispensáveis para guardar desta aula.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <ul class="bullet-list" style="line-height: 1.8;">
+            <li><strong>LIFO é a Lei:</strong> Inserção, remoção e consulta acontecem exclusivamente no <strong>Topo</strong> em <i>O(1)</i>.</li>
+            <li><strong>Trate Exceções:</strong> Sempre proteja contra <i>Stack Underflow</i> (pop em pilha vazia).</li>
+            <li><strong>Validação de Escopos:</strong> O último delimitador a abrir deve ser o primeiro a fechar.</li>
+          </ul>
+        </div>
+
+        <div class="card card-highlight">
+          <ul class="bullet-list" style="line-height: 1.8;">
+            <li><strong>Notação Polonesa Reversa (RPN):</strong> Dispensa parênteses. Ao operar, <code>b = pop()</code> e <code>a = pop()</code>, calcule <code>a op b</code>.</li>
+            <li><strong>Eliminação de Recursão:</strong> Use uma Pilha Explícita em memória Heap para evitar o limite de 1000 chamadas da CPU.</li>
+            <li><strong>Em Python:</strong> <code>list</code> com <code>append()</code> e <code>pop()</code> é a simulação padrão em competições.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 23: ENCERRAMENTO -->
+    <section class="slide slide-cover">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS</span>
+      <h1 class="cover-title">Obrigado! 🤘</h1>
+      <p class="cover-subtitle">Próxima Aula: <strong>Estruturas Lineares — Filas (FIFO) e Deques</strong>.</p>
+
+      <div class="author-box" style="margin-top: 28px;">
+        <div style="font-size: 2.2rem;">🎓</div>
+        <div class="author-info">
+          <div class="author-name">Eduardo Cruz Araujo</div>
+          <div class="author-meta">
+            E-mail: <a href="mailto:eduardo.araujo@cps.sp.gov.br" style="color: var(--accent-cyan);">eduardo.araujo@cps.sp.gov.br</a><br>
+            GitHub: <a href="https://github.com/edcaraujo" target="_blank" style="color: var(--accent-cyan);">github.com/edcaraujo</a><br>
+            LinkedIn: <a href="https://www.linkedin.com/in/edcaraujo/" target="_blank" style="color: var(--accent-cyan);">linkedin.com/in/edcaraujo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Overview Navigation Modal -->
+  <div class="modal-overlay" id="overview-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Índice da Apresentação</h3>
+        <button class="modal-close" id="modal-close">×</button>
+      </div>
+      <div class="slide-grid" id="slide-grid-nav">
+        <!-- Grid items generated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Presenter Notes Drawer -->
+  <div class="notes-drawer" id="notes-drawer">
+    <div class="notes-header">
+      <div class="notes-title">💡 Notas do Apresentador</div>
+      <button class="notes-close" id="notes-close">×</button>
+    </div>
+    <div class="notes-content" id="notes-content">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg">Notificação</div>
+
+  <script src="app.js"></script>
+</body>
+</html>

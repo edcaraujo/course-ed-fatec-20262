@@ -21,6 +21,7 @@ Repositório contendo os materiais, apresentações e exercícios da disciplina 
 | **01** | 07/08 | Hello World | Apresentação, ementa e alinhamento sobre a disciplina.<br>Revisão de Python. | [[1]](01-ed-helloworld/01-ed-helloworld-part-1.md) • [[2]](01-ed-helloworld/01-ed-helloworld-part-2.md) |
 | **02** | 14/08 | Fundamentos: Introdução e Big-O | Conceitos fundamentais de complexidade computacional. Análise assintótica de algoritmos utilizando a Notação Big-O para avaliar o consumo de tempo e espaço de memória. | [[1]](02-ed-fundamentos-introducao-e-big-o/02-ed-fundamentos-introducao-e-big-o.md) |
 | **03** | 21/08 | Fundamentos: Arrays e Strings | Manipulação avançada de sequências e cadeias de caracteres. Implementação da técnica de Two Pointers, Sliding Window, Prefix Sum e verificação de palíndromos e anagramas. | [[1]](03-ed-fundamentos-arrays-e-strings/03-ed-fundamentos-arrays-e-strings.md) |
+| **04** | 28/08 | Est. Lineares: Pilhas | Implementação e aplicações da estrutura LIFO (Last-In, First-Out). Modelagem de problemas de validação de escopos (parênteses e chaves), avaliação de expressões e conversão de lógicas recursivas para iterativas. | [[1]](04-ed-est-lineares-pilhas/04-ed-est-lineares-pilhas.md) |
 
 ---
 
