@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Est. Lineares: Filas e Deques | Estrutura de Dados | Fatec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Application Navigation Bar -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-badge">FATEC 2026.2</span>
+      <span>Estrutura de Dados</span>
+      <span style="color: var(--text-muted); font-weight: 400;">| Est. Lineares: Filas e Deques</span>
+    </div>
+    
+    <div class="header-controls">
+      <button class="btn-nav" id="btn-prev" title="Slide Anterior (Seta Esquerda)">← Anter</button>
+      <span class="slide-counter" id="slide-counter">1 / 22</span>
+      <button class="btn-nav" id="btn-next" title="Próximo Slide (Seta Direita / Espaço)">Próx →</button>
+      <button class="btn-nav" id="btn-overview" title="Menu de Navegação (Tecla M)">📱 Índice (M)</button>
+      <button class="btn-nav" id="btn-notes" title="Notas do Apresentador (Tecla P)">💡 Notas (P)</button>
+      <button class="btn-nav" id="btn-fullscreen" title="Modo Tela Cheia (Tecla F)">⛶ Tela Cheia</button>
+    </div>
+  </header>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Slides Viewport -->
+  <main class="slides-viewport">
+
+    <!-- SLIDE 1: CAPA -->
+    <section class="slide slide-cover active">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS 2026.2</span>
+      <h1 class="cover-title">Est. Lineares: Filas e Deques</h1>
+      <p class="cover-subtitle">Implementação da estrutura FIFO (First-In, First-Out) e Deques (Double-Ended Queues). Modelagem de problemas de simulação e escalonamento.</p>
+      
+      <div class="author-box">
+        <div style="font-size: 2.2rem;">🎓</div>
+        <div class="author-info">
+          <div class="author-name">Eduardo Cruz Araujo</div>
+          <div class="author-meta">Professor & Engenheiro de Software • Fatec SP</div>
+        </div>
+      </div>
+
+      <div class="keyboard-hints">
+        <div class="kbd-pill"><kbd>←</kbd> <kbd>→</kbd> Navegar</div>
+        <div class="kbd-pill"><kbd>Espaço</kbd> Avançar</div>
+        <div class="kbd-pill"><kbd>M</kbd> Índice Geral</div>
+        <div class="kbd-pill"><kbd>P</kbd> Notas de Aula</div>
+        <div class="kbd-pill"><kbd>F</kbd> Tela Cheia</div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: O CONCEITO DE FILA E O FIFO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Fundamentos</span>
+        <h2 class="slide-title">O Conceito de Fila e o Princípio FIFO</h2>
+        <p class="slide-subtitle">A ordem de chegada governa a ordem de atendimento: o primeiro a entrar é o primeiro a sair.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🚶‍♂️ Princípio FIFO (First-In, First-Out)</div>
+          <div class="card-body">
+            <p>Uma <strong>Fila (Queue)</strong> é uma estrutura de dados linear e justa que opera com duas extremidades distintas:</p>
+            <ul class="bullet-list" style="margin-top: 12px;">
+              <li><strong>Início / Frente (Front):</strong> Onde os elementos são consultados e removidos (<i>Dequeue</i>).</li>
+              <li><strong>Fim / Cauda (Rear):</strong> Onde novos elementos chegam e são inseridos (<i>Enqueue</i>).</li>
+              <li><strong>Analogias:</strong> Fila do caixa de banco, túnel de pedágio, fila de impressão (*print spooler*).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">💻 Aplicações Cruciais na Computação</div>
+          <div class="card-body">
+            <ul class="bullet-list">
+              <li><strong>Escalonamento de CPU:</strong> O escalonador do SO mantém uma fila de processos prontos para execução.</li>
+              <li><strong>Sistemas de Mensageria:</strong> RabbitMQ, Kafka e SQS como filas corporativas assíncronas.</li>
+              <li><strong>Roteadores e Redes:</strong> Buffers de pacotes IP para controle de congestionamento.</li>
+              <li><strong>Algoritmos de Grafos:</strong> A Busca em Largura (BFS - Breadth-First Search) utiliza filas FIFO.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: OPERAÇÕES FUNDAMENTAIS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Operações & Complexidade</span>
+        <h2 class="slide-title">Operações Primitivas do TAD Fila</h2>
+        <p class="slide-subtitle">Tempo estrito <i>O(1)</i> nas duas extremidades sem deslocamento de memória.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">⚡ Primitivas do TAD Fila</div>
+          <div class="card-body">
+            <table class="data-table" style="font-size: 0.88rem;">
+              <thead>
+                <tr>
+                  <th>Operação</th>
+                  <th>Efeito</th>
+                  <th>Custo Ideal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>enqueue(x)</code></td>
+                  <td>Insere item <i>x</i> no final da fila</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>dequeue()</code></td>
+                  <td>Remove e retorna o item do início</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>front()</code> / <code>peek()</code></td>
+                  <td>Consulta o item da frente sem remover</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>is_empty()</code></td>
+                  <td>Verifica se a fila está vazia</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+                <tr>
+                  <td><code>size()</code></td>
+                  <td>Retorna contagem total de itens</td>
+                  <td><span class="badge-o-tag o-excellent">O(1)</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">⚠️ Estados de Erro e Exceções</div>
+          <div class="card-body">
+            <div style="margin-bottom: 14px; padding: 12px; background: rgba(244, 63, 94, 0.1); border-left: 3px solid var(--accent-rose); border-radius: 6px;">
+              <strong style="color: var(--accent-rose);">Queue Underflow:</strong><br>
+              Tentativa de executar <code>dequeue()</code> ou <code>front()</code> em uma fila vazia. Dispara <code>IndexError</code>.
+            </div>
+            <div style="padding: 12px; background: rgba(251, 191, 36, 0.1); border-left: 3px solid var(--accent-amber); border-radius: 6px;">
+              <strong style="color: var(--accent-amber);">Queue Overflow:</strong><br>
+              Tentativa de executar <code>enqueue()</code> em um buffer com capacidade esgotada.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: SIMULADOR INTERATIVO FIFO CORE & CIRCULAR BUFFER -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: Núcleo FIFO & Buffer Circular</h2>
+        <p class="slide-subtitle">Acompanhe inserções (Enqueue no fim), remoções (Dequeue na frente) e o comportamento circular do array.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR FIFO: CONTROLE DE FILA</div>
+          <div class="toolbar-controls">
+            <input type="text" id="sim1-input" class="input-tool" placeholder="Valor (ex: C1)" style="width: 110px;">
+            <button class="btn-tool btn-tool-primary" id="sim1-btn-enqueue">📥 Enqueue (Fim)</button>
+            <button class="btn-tool btn-tool-secondary" id="sim1-btn-dequeue">📤 Dequeue (Início)</button>
+            <button class="btn-tool btn-tool-secondary" id="sim1-btn-front">👁️ Front</button>
+            <button class="btn-tool btn-tool-secondary" id="sim1-btn-clear">🧹 Limpar</button>
+          </div>
+        </div>
+
+        <div class="queue-arena">
+          <!-- Horizontal Pipeline View -->
+          <div class="queue-track-container">
+            <div class="queue-labels">
+              <span style="color: var(--accent-emerald);">← SAÍDA (Início / Front)</span>
+              <span style="color: var(--accent-cyan); font-family: var(--font-mono);">FLUXO FIFO</span>
+              <span style="color: var(--accent-amber);">ENTRADA (Fim / Rear) ←</span>
+            </div>
+            <div class="queue-track" id="sim1-track">
+              <!-- Dynamically populated queue items -->
+            </div>
+          </div>
+
+          <!-- Circular Buffer Slot View -->
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px;">
+              REPRESENTAÇÃO INTERNA EM MEMÓRIA (BUFFER CIRCULAR):
+            </div>
+            <div class="circular-slots-grid" id="sim1-circular-slots">
+              <!-- Slots populated by JS -->
+            </div>
+          </div>
+
+          <!-- Queue Status Board -->
+          <div class="grid-3" style="font-family: var(--font-mono); font-size: 0.85rem; margin-top: 4px;">
+            <div class="card" style="padding: 10px; margin: 0;">
+              <div>Tamanho (<code>size()</code>): <strong id="sim1-stat-size" style="color: var(--accent-cyan);">0</strong></div>
+              <div>Capacidade: <strong id="sim1-stat-cap" style="color: var(--text-muted);">6 slots</strong></div>
+            </div>
+            <div class="card" style="padding: 10px; margin: 0;">
+              <div>Elemento Front: <strong id="sim1-stat-front" style="color: var(--accent-emerald);">-</strong></div>
+              <div>Elemento Rear: <strong id="sim1-stat-rear" style="color: var(--accent-amber);">-</strong></div>
+            </div>
+            <div class="card" style="padding: 10px; margin: 0;">
+              <div>Vazia? <strong id="sim1-stat-empty" style="color: var(--accent-emerald);">True</strong></div>
+              <div>Cheia? <strong id="sim1-stat-full" style="color: var(--text-muted);">False</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: A ARMADILHA DO LIST.POP(0) -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Performance em Python</span>
+        <h2 class="slide-title">A Grande Armadilha do <code>list.pop(0)</code></h2>
+        <p class="slide-subtitle">Por que usar uma lista comum como fila degrada catastrophicamente seu software.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🚨 O Deslocamento O(N) na RAM</div>
+          <div class="card-body">
+            <p>Uma <code>list</code> em Python é um array contíguo de ponteiros em C. Ao executar <code>fila.pop(0)</code>:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li>O primeiro item é removido do índice <code>0</code>.</li>
+              <li>Todos os <strong>$N-1$ elementos restantes são deslocados uma posição para a esquerda</strong> para cobrir o buraco!</li>
+              <li>Isso exige $N-1$ operações de cópia de ponteiros na memória a <strong>CADA dequeue</strong>.</li>
+            </ul>
+            <div style="margin-top: 12px; padding: 10px; background: rgba(244, 63, 94, 0.1); border-radius: 6px; border-left: 3px solid var(--accent-rose); font-family: var(--font-mono); font-size: 0.85rem;">
+              Para 100.000 requisições: 100.000 × 50.000 = ~5 bilhões de operações inúteis de cópia!
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚖️ Comparação de Tempo Real</div>
+          <table class="data-table" style="font-size: 0.88rem; margin-top: 8px;">
+            <thead>
+              <tr>
+                <th>Operação</th>
+                <th><code>list.pop(0)</code></th>
+                <th>Fila Circular / Deque</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10.000 dequeues</td>
+                <td>~0.045 s</td>
+                <td><strong>~0.001 s</strong> (45x mais rápido)</td>
+              </tr>
+              <tr>
+                <td>100.000 dequeues</td>
+                <td>~4.820 s</td>
+                <td><strong>~0.012 s</strong> (400x mais rápido)</td>
+              </tr>
+              <tr>
+                <td>1.000.000 dequeues</td>
+                <td><span class="badge-o-tag o-horrible">Trava / Minutos</span></td>
+                <td><span class="badge-o-tag o-excellent">~0.120 s</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: FILA CIRCULAR EM ARRAY -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Engenharia de Algoritmos</span>
+        <h2 class="slide-title">Buffer Circular: Aritmética Modular</h2>
+        <p class="slide-subtitle">Como garantir <i>O(1)</i> estrito em arrays contíguos sem deslocar memória.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🔄 A Lógica do Módulo (%)</div>
+          <div class="card-body">
+            <p>Em vez de mover os elementos para a esquerda, movemos os <strong>ponteiros de índice</strong>:</p>
+            <pre class="code-block" style="font-size: 0.82rem; margin: 10px 0;"><code># Avanço circular dos índices:
+self._fim = (self._fim + 1) % self._capacidade
+self._inicio = (self._inicio + 1) % self._capacidade</code></pre>
+            <p>Quando o índice alcança a capacidade máxima $C$, a operação módulo faz o índice voltar ao índice $0$ aproveitando os espaços já desocupados!</p>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">💡 Vantagens da Fila Circular</div>
+          <ul class="bullet-list" style="line-height: 1.7;">
+            <li><strong>Zero Deslocamentos:</strong> Elementos permanecem imóveis na memória física até serem substituídos.</li>
+            <li><strong>Localidade de Cache Máxima:</strong> Utiliza um array contíguo em RAM, altamente amigável para o hardware da CPU.</li>
+            <li><strong>Uso Extensivo na Indústria:</strong> Buffers de áudio/vídeo, drivers de rede e ring buffers do kernel Linux.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: NOSSA CLASSE FILA EM PYTHON -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Implementação Autossuficiente</span>
+        <h2 class="slide-title">Nossa Classe Fila Circular em Python</h2>
+        <p class="slide-subtitle">Pronta para copiar e colar em qualquer problema ou juiz online sem imports.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📦 Código Limpo e Autossuficiente</div>
+          <pre class="code-block" style="font-size: 0.78rem;"><code>class Fila:
+    def __init__(self, capacidade: int = 100):
+        self._capacidade = capacidade
+        self._elementos = [None] * capacidade
+        self._inicio = 0
+        self._fim = 0
+        self._tamanho = 0
+
+    def enqueue(self, item):
+        if self._tamanho == self._capacidade:
+            raise OverflowError("Queue Overflow!")
+        self._elementos[self._fim] = item
+        self._fim = (self._fim + 1) % self._capacidade
+        self._tamanho += 1
+
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("Queue Underflow!")
+        item = self._elementos[self._inicio]
+        self._elementos[self._inicio] = None
+        self._inicio = (self._inicio + 1) % self._capacidade
+        self._tamanho -= 1
+        return item</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">📊 Métodos Auxiliares</div>
+          <pre class="code-block" style="font-size: 0.78rem;"><code>    def front(self):
+        if self.is_empty():
+            raise IndexError("Queue Underflow!")
+        return self._elementos[self._inicio]
+
+    def is_empty(self) -> bool:
+        return self._tamanho == 0
+
+    def size(self) -> int:
+        return self._tamanho
+
+    def __len__(self) -> int:
+        return self._tamanho</code></pre>
+          <p style="font-size: 0.85rem; color: var(--accent-emerald); margin-top: 10px;">
+            Totalmente blindada contra operações inválidas no meio da fila e com tempo estrito <i>O(1)</i>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: FILA ENCADEADA (NODE-BASED) -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Arquitetura de Dados</span>
+        <h2 class="slide-title">Fila Encadeada: Ponteiros Head e Tail</h2>
+        <p class="slide-subtitle">Crescimento dinâmico sob demanda na memória Heap sem capacidade pré-alocada.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🔗 Implementação com Nós</div>
+          <pre class="code-block" style="font-size: 0.78rem;"><code>class Node:
+    def __init__(self, dado):
+        self.dado = dado
+        self.proximo = None
+
+class FilaEncadeada:
+    def __init__(self):
+        self._head = None  # Dequeue aqui
+        self._tail = None  # Enqueue aqui
+        self._tamanho = 0
+
+    def enqueue(self, item):
+        novo = Node(item)
+        if not self._tail:
+            self._head = self._tail = novo
+        else:
+            self._tail.proximo = novo
+            self._tail = novo
+        self._tamanho += 1</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">⚖️ Buffer Circular vs Fila Encadeada</div>
+          <table class="data-table" style="font-size: 0.85rem; margin-top: 8px;">
+            <thead>
+              <tr>
+                <th>Critério</th>
+                <th>Buffer Circular</th>
+                <th>Fila Encadeada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Enqueue / Dequeue</strong></td>
+                <td><i>O(1)</i></td>
+                <td><strong><i>O(1)</i></strong></td>
+              </tr>
+              <tr>
+                <td><strong>Capacidade</strong></td>
+                <td>Fixa (ou redimensionável)</td>
+                <td><strong>Dinâmica ilimitada</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Overhead RAM</strong></td>
+                <td><strong>Mínimo</strong> (apenas array)</td>
+                <td>Ponteiros por nó</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: INTRODUÇÃO AOS DEQUES -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Superestrutura Linear</span>
+        <h2 class="slide-title">Deques: Double-Ended Queues</h2>
+        <p class="slide-subtitle">A unificação de Pilhas e Filas com acesso simultâneo <i>O(1)</i> em ambas as pontas.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🔄 O que é um Deque?</div>
+          <div class="card-body">
+            <p>Um <strong>Deque</strong> permite inserções, remoções e inspeções em ambas as extremidades:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li><code>append_front()</code> e <code>pop_front()</code> no Início.</li>
+              <li><code>append_rear()</code> e <code>pop_rear()</code> no Fim.</li>
+              <li>Se usarmos apenas um lado: comporta-se como uma <strong>Pilha (LIFO)</strong>.</li>
+              <li>Se usarmos lados opostos: comporta-se como uma <strong>Fila (FIFO)</strong>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚡ O Padrão Python: <code>collections.deque</code></div>
+          <div class="card-body">
+            <pre class="code-block" style="font-size: 0.8rem; margin-bottom: 10px;"><code>from collections import deque
+
+d = deque()
+d.append(10)       # Inserir no fim
+d.appendleft(20)   # Inserir no início
+item = d.popleft() # Remover do início
+final = d.pop()    # Remover do fim</code></pre>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Implementado em C como uma lista duplamente encadeada de blocos de 64 itens. Garante <i>O(1)</i> estrito!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: SIMULADOR INTERATIVO DEQUE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: Laboratório Deque</h2>
+        <p class="slide-subtitle">Experimente manipulações bilaterais em tempo real: frente e cauda independentes.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR DEQUE (DUAS PONTAS)</div>
+          <div class="toolbar-controls">
+            <input type="text" id="sim2-input" class="input-tool" placeholder="Valor (ex: X)" style="width: 100px;">
+            <button class="btn-tool btn-tool-primary" id="sim2-btn-push-front">➕ Início</button>
+            <button class="btn-tool btn-tool-secondary" id="sim2-btn-pop-front">➖ Início</button>
+            <button class="btn-tool btn-tool-primary" id="sim2-btn-push-rear">➕ Fim</button>
+            <button class="btn-tool btn-tool-secondary" id="sim2-btn-pop-rear">➖ Fim</button>
+            <button class="btn-tool btn-tool-secondary" id="sim2-btn-clear">🧹 Clear</button>
+          </div>
+        </div>
+
+        <div class="queue-arena">
+          <div class="queue-track-container">
+            <div class="queue-labels">
+              <span style="color: var(--accent-emerald);">FRENTE (Front) ⟷</span>
+              <span style="color: var(--accent-purple); font-family: var(--font-mono);">DEQUE BILATERAL</span>
+              <span style="color: var(--accent-amber);">⟷ FUNDO (Rear)</span>
+            </div>
+            <div class="queue-track" id="sim2-track" style="justify-content: center;">
+              <!-- Deque items -->
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card" style="margin: 0; padding: 12px;">
+              <div class="card-title" style="font-size: 0.88rem;">📊 Estado do Deque</div>
+              <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8;">
+                <div>Tamanho Atual: <strong id="sim2-stat-size" style="color: var(--accent-cyan);">0</strong></div>
+                <div>Primeiro Elemento (Front): <strong id="sim2-stat-front" style="color: var(--accent-emerald);">-</strong></div>
+                <div>Último Elemento (Rear): <strong id="sim2-stat-rear" style="color: var(--accent-amber);">-</strong></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin: 0; padding: 12px;">
+              <div class="card-title" style="font-size: 0.88rem;">📝 Log de Operações</div>
+              <div id="sim2-log" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); max-height: 90px; overflow-y: auto;">
+                > Deque inicializado vazio.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: IMPLEMENTANDO O TAD DEQUE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Código-Fonte Autossuficiente</span>
+        <h2 class="slide-title">Nossa Classe Deque em Python</h2>
+        <p class="slide-subtitle">Lista Duplamente Encadeada garantindo <i>O(1)</i> estrito em todas as 4 extremidades.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🐍 Implementação com Nós Duplos O(1)</div>
+          <pre class="code-block" style="font-size: 0.74rem;"><code>class Node:
+    def __init__(self, dado, ant=None, prox=None):
+        self.dado, self.ant, self.prox = dado, ant, prox
+
+class Deque:
+    def __init__(self):
+        self._head = self._tail = None
+        self._tamanho = 0
+
+    def append_front(self, item):  # O(1) estrito
+        novo = Node(item, prox=self._head)
+        if not self._head: self._head = self._tail = novo
+        else: self._head.ant = novo; self._head = novo
+        self._tamanho += 1
+
+    def append_rear(self, item):   # O(1) estrito
+        novo = Node(item, ant=self._tail)
+        if not self._tail: self._head = self._tail = novo
+        else: self._tail.prox = novo; self._tail = novo
+        self._tamanho += 1
+
+    def pop_front(self):           # O(1) estrito
+        if not self._head: raise IndexError("Vazio!")
+        val = self._head.dado
+        self._head = self._head.prox
+        if not self._head: self._tail = None
+        else: self._head.ant = None
+        self._tamanho -= 1
+        return val
+
+    def pop_rear(self):            # O(1) estrito
+        if not self._tail: raise IndexError("Vazio!")
+        val = self._tail.dado
+        self._tail = self._tail.ant
+        if not self._tail: self._head = None
+        else: self._tail.prox = None
+        self._tamanho -= 1
+        return val</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">💡 Por que NÃO usar list com insert(0)/pop(0)?</div>
+          <div class="card-body">
+            <p>Se usássemos <code>list</code> comum:</p>
+            <ul class="bullet-list" style="margin-top: 6px; font-size: 0.85rem;">
+              <li><code>insert(0, x)</code> e <code>pop(0)</code> custam <strong style="color: var(--accent-rose);">O(N)</strong> por mover toda a memória RAM.</li>
+              <li>Isso destruiria a promessa assintótica do TAD Deque!</li>
+            </ul>
+            <p style="margin-top: 10px; font-weight: 600; color: var(--accent-emerald);">Com Lista Duplamente Encadeada:</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Apenas 2 ou 3 atualizações de ponteiros são feitas, garantindo <strong>O(1) puro e real</strong> sem nenhum deslocamento.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: MODELAGEM DE ATENDIMENTO (FILA DE BANCO) -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Aplicação Prática 1</span>
+        <h2 class="slide-title">Simulação de Atendimento em Fila de Banco</h2>
+        <p class="slide-subtitle">Teoria das Filas e modelagem de eventos discretos na tomada de decisões.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🏦 O Cenário Real</div>
+          <div class="card-body">
+            <p>Clientes chegam ao banco em instantes aleatórios de tempo. Cada cliente necessita de $D$ minutos no guichê.</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li>Uma única fila organizada por ordem de chegada (FIFO).</li>
+              <li>Um ou mais caixas atendem o cliente da frente assim que ficam desocupados.</li>
+              <li><strong>Métrica Principal:</strong> Tempo médio de espera na fila!</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⚙️ Regra de Transição Temporal</div>
+          <div class="card-body">
+            <div style="background: var(--bg-surface); padding: 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.85rem;">
+              inicio = max(tempo_chegada, caixa_livre)<br>
+              espera = inicio - tempo_chegada<br>
+              caixa_livre = inicio + duracao_servico
+            </div>
+            <p style="margin-top: 10px; font-size: 0.88rem;">
+              Se o cliente chega e o caixa já está vago, espera é 0. Caso contrário, ele aguarda o caixa terminar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: SIMULADOR INTERATIVO ATENDIMENTO BANCO -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: Atendimento Bancário</h2>
+        <p class="slide-subtitle">Acompanhe clientes saindo da fila e liberando caixas com métricas de tempo em tempo real.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR DE ATENDIMENTO DE BANCO</div>
+          <div class="toolbar-controls">
+            <button class="btn-tool btn-tool-primary" id="sim3-btn-step">▶ Atender Próximo Cliente</button>
+            <button class="btn-tool btn-tool-secondary" id="sim3-btn-toggle-cashiers">Caixas: 1</button>
+            <button class="btn-tool btn-tool-secondary" id="sim3-btn-reset">🔄 Reiniciar Simulação</button>
+          </div>
+        </div>
+
+        <div style="padding: 16px; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 14px;">
+          <!-- Waiting Queue Track -->
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan); margin-bottom: 6px;">FILA DE ESPERA (FIFO):</div>
+            <div class="queue-track" id="sim3-queue-track" style="height: 65px;"></div>
+          </div>
+
+          <!-- Cashiers Stations -->
+          <div class="grid-2" id="sim3-cashiers-container">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Live Metrics -->
+          <div class="grid-3" style="font-family: var(--font-mono); font-size: 0.85rem;">
+            <div class="card" style="padding: 10px; margin: 0;">
+              <div>Clientes Atendidos: <strong id="sim3-stat-count" style="color: var(--accent-emerald);">0</strong></div>
+            </div>
+            <div class="card" style="padding: 10px; margin: 0;">
+              <div>Tempo Médio de Espera: <strong id="sim3-stat-avg" style="color: var(--accent-amber);">0.00 min</strong></div>
+            </div>
+            <div class="card" style="padding: 10px; margin: 0;">
+              <div>Tempo Global do Banco: <strong id="sim3-stat-clock" style="color: var(--accent-cyan);">0 min</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 14: ESCALONAMENTO ROUND-ROBIN -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Aplicação Prática 2</span>
+        <h2 class="slide-title">Escalonamento de Processos: Round-Robin</h2>
+        <p class="slide-subtitle">Como o kernel do Sistema Operacional compartilha o núcleo de processador entre múltiplos programas.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">⏱️ O Conceito de Quantum</div>
+          <div class="card-body">
+            <p>O <strong>Round-Robin (RR)</strong> é um algoritmo de escalonamento preemptivo baseado em fila FIFO:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li>Cada processo recebe uma fatia de tempo ininterrupto chamada <strong>Quantum</strong> ($q$).</li>
+              <li>O processo roda na CPU por até $q$ milissegundos.</li>
+              <li>Se não terminar, é <strong>preempcionado</strong> (interrompido) e reenfileirado no final da fila de prontos.</li>
+              <li>Se terminar antes ou igual a $q$, ele finaliza e sai do sistema.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🛡️ Por que Round-Robin é Justo?</div>
+          <div class="card-body">
+            <p>Impede que um processo longo monopolize a CPU (evita o problema de *Starvation* / Inanição).</p>
+            <p style="margin-top: 12px; color: var(--accent-cyan);">
+              Garante tempo de resposta ágil para sistemas interativos e de janelas gráficas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 15: SIMULADOR INTERATIVO ROUND-ROBIN -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Laboratório Visual</span>
+        <h2 class="slide-title">Simulador Interativo: Escalonador Round-Robin</h2>
+        <p class="slide-subtitle">Assista aos processos alternando na CPU e retornando ao final da fila a cada fatia de tempo.</p>
+      </div>
+
+      <div class="interactive-widget">
+        <div class="widget-toolbar">
+          <div class="toolbar-title">🧪 SIMULADOR CPU ROUND-ROBIN (QUANTUM = 3 ms)</div>
+          <div class="toolbar-controls">
+            <button class="btn-tool btn-tool-primary" id="sim4-btn-step">▶ Avançar Fatia de Tempo</button>
+            <button class="btn-tool btn-tool-secondary" id="sim4-btn-reset">🔄 Resetar Processos</button>
+          </div>
+        </div>
+
+        <div style="padding: 16px; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; gap: 24px; align-items: stretch;">
+            <!-- CPU Active Box -->
+            <div class="cpu-box" style="width: 220px;">
+              <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--accent-purple); margin-bottom: 4px;">NÚCLEO CPU ATIVO</div>
+              <div id="sim4-cpu-proc" style="font-size: 1.5rem; font-weight: 800; color: #fff;">Aguardando...</div>
+              <div id="sim4-cpu-detail" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">-</div>
+            </div>
+
+            <!-- Ready Queue Track -->
+            <div style="flex: 1;">
+              <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan); margin-bottom: 6px;">FILA DE PRONTOS (READY QUEUE - FIFO):</div>
+              <div class="queue-track" id="sim4-ready-track" style="height: 90px;"></div>
+            </div>
+          </div>
+
+          <!-- Gantt Timeline -->
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-amber); margin-bottom: 4px;">DIAGRAMA DE GANTT (LINHA DO TEMPO DA CPU):</div>
+            <div class="gantt-chart" id="sim4-gantt"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: VERIFICAÇÃO DE PALÍNDROMOS COM DEQUE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Aplicação Prática 3</span>
+        <h2 class="slide-title">Verificação de Palíndromos com Deque</h2>
+        <p class="slide-subtitle">Comparações simétricas em tempo <i>O(N)</i> sem alocação de strings invertidas.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🎯 Algoritmo com Deque</div>
+          <pre class="code-block" style="font-size: 0.78rem;"><code>from collections import deque
+
+def eh_palindromo(texto: str) -> bool:
+    d = deque()
+    for ch in texto.lower():
+        if ch.isalnum():
+            d.append(ch)
+
+    while len(d) > 1:
+        if d.popleft() != d.pop():
+            return False
+
+    return True</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">🔍 Rastreamento: "radar"</div>
+          <table class="data-table" style="font-size: 0.85rem; margin-top: 8px;">
+            <thead>
+              <tr>
+                <th>Passo</th>
+                <th>popleft()</th>
+                <th>pop()</th>
+                <th>Comparação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>'r'</td>
+                <td>'r'</td>
+                <td>'r' == 'r' ✅</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>'a'</td>
+                <td>'a'</td>
+                <td>'a' == 'a' ✅</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td colspan="3">Resta apenas 'd' (tamanho 1) → <strong>Palíndromo!</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 17: O JOGO DA BATATA QUENTE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Aplicação Prática 4</span>
+        <h2 class="slide-title">O Jogo da Batata Quente (Josephus)</h2>
+        <p class="slide-subtitle">Como modelar círculos dinâmicos através da circulação na fila.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <div class="card-title">🔄 Circulação Contínua</div>
+          <div class="card-body">
+            <p>Para simular uma roda:</p>
+            <ul class="bullet-list" style="margin-top: 10px;">
+              <li>Desenfileira da frente: <code>p = fila.popleft()</code>.</li>
+              <li>Reenfileira no final: <code>fila.append(p)</code>.</li>
+              <li>Após $K$ rotações, quem está na frente é eliminado com <code>fila.popleft()</code>!</li>
+              <li>O processo se repete até restar apenas 1 sobrevivente.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🐍 Código em Python</div>
+          <pre class="code-block" style="font-size: 0.8rem;"><code>def batata_quente(nomes, k):
+    fila = deque(nomes)
+    while len(fila) > 1:
+        for _ in range(k):
+            fila.append(fila.popleft())
+        eliminado = fila.popleft()
+    return fila.popleft() # Vencedor</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 18: FILA COM DUAS PILHAS -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Desafio Técnico</span>
+        <h2 class="slide-title">🎯 Fila com Duas Pilhas (LeetCode #232)</h2>
+        <p class="slide-subtitle">A matemática da inversão dupla: duas operações LIFO resultam em FIFO!</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📦 Código: Fila com Duas Pilhas</div>
+          <pre class="code-block" style="font-size: 0.78rem;"><code>class FilaComPilhas:
+    def __init__(self):
+        self.entrada = []
+        self.saida = []
+
+    def push(self, x: int) -> None:
+        self.entrada.append(x)
+
+    def pop(self) -> int:
+        self._despejar()
+        return self.saida.pop()
+
+    def _despejar(self):
+        if not self.saida:
+            while self.entrada:
+                self.saida.append(self.entrada.pop())</code></pre>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">💡 Por que é O(1) Amortizado?</div>
+          <div class="card-body">
+            <p>Cada elemento passa por exatamente:</p>
+            <ul class="bullet-list" style="margin-top: 8px;">
+              <li>1 push na pilha de entrada.</li>
+              <li>1 pop na pilha de entrada.</li>
+              <li>1 push na pilha de saída.</li>
+              <li>1 pop na pilha de saída.</li>
+            </ul>
+            <p style="margin-top: 10px; color: var(--accent-emerald);">
+              Cada item é tocado no máximo 4 vezes em toda sua existência. Custo médio por item: <strong>$O(1)$ amortizado</strong>!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 19: TABELA COMPARATIVA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Guia de Escolha</span>
+        <h2 class="slide-title">Tabela Comparativa de Abordagens</h2>
+        <p class="slide-subtitle">Qual estrutura utilizar em cada cenário da sua carreira.</p>
+      </div>
+
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Critério</th>
+              <th>Fila Circular (Array)</th>
+              <th>Fila Encadeada (Nodes)</th>
+              <th><code>collections.deque</code></th>
+              <th><code>list</code> Nativa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Enqueue (Fim)</strong></td>
+              <td><i>O(1)</i></td>
+              <td><i>O(1)</i></td>
+              <td><strong><i>O(1)</i> estrito</strong></td>
+              <td><i>O(1)</i> amortizado</td>
+            </tr>
+            <tr>
+              <td><strong>Dequeue (Início)</strong></td>
+              <td><strong><i>O(1)</i></strong></td>
+              <td><strong><i>O(1)</i></strong></td>
+              <td><strong><i>O(1)</i> estrito</strong></td>
+              <td><span class="badge-o-tag o-horrible">O(N) Catastrófico</span></td>
+            </tr>
+            <tr>
+              <td><strong>Localidade de Cache</strong></td>
+              <td>Excelente</td>
+              <td>Baixa</td>
+              <td>Muito Alta (blocos de 64)</td>
+              <td>Alta (destruída no shift)</td>
+            </tr>
+            <tr>
+              <td><strong>Cenário Indicado</strong></td>
+              <td>Sistemas embarcados</td>
+              <td>TADs didáticos</td>
+              <td><strong>Padrão de produção</strong></td>
+              <td><strong>NUNCA usar para filas!</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SLIDE 20: REFERÊNCIA AVANÇADA -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Referência Avançada</span>
+        <h2 class="slide-title">🔍 Para ir além: Concorrência e Tipagem</h2>
+        <p class="slide-subtitle">Filas seguras para múltiplas threads e checagem estática com <code>Generic[T]</code>.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🧵 Filas Concorrentes com <code>queue.Queue</code></div>
+          <div class="card-body">
+            <p>Para sistemas multi-threaded onde várias threads consomem simultaneamente:</p>
+            <pre class="code-block" style="font-size: 0.8rem; margin: 8px 0;"><code>import queue
+
+q = queue.Queue(maxsize=10)
+q.put("Tarefa")   # Bloqueia se cheia
+item = q.get()    # Bloqueia se vazia
+q.task_done()</code></pre>
+            <p style="font-size: 0.85rem; color: var(--accent-emerald);">
+              Garante exclusão mútua (Thread-Safety) com travas e semáforos.
+            </p>
+          </div>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="card-title">📦 Tipagem Estática: <code>Generic[T]</code></div>
+          <pre class="code-block" style="font-size: 0.8rem;"><code>from typing import Generic, TypeVar
+
+T = TypeVar('T')
+
+class FilaGenerica(Generic[T]):
+    def __init__(self) -> None:
+        self._elementos: list[T] = []
+
+    def enqueue(self, item: T) -> None:
+        self._elementos.append(item)</code></pre>
+          <p style="font-size: 0.85rem; color: var(--accent-cyan); margin-top: 8px;">
+            Permite validação de tipos em tempo de edição pelo <code>mypy</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 21: RESUMO DOS PONTOS-CHAVE -->
+    <section class="slide">
+      <div class="slide-header">
+        <span class="slide-tag">Revisão</span>
+        <h2 class="slide-title">Resumo dos Pontos-Chave 💡</h2>
+        <p class="slide-subtitle">Conceitos fundamentais para guardar desta aula.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <ul class="bullet-list" style="line-height: 1.8;">
+            <li><strong>FIFO é a Regra:</strong> O primeiro que entra é o primeiro a sair. Inserção no fim, remoção no início.</li>
+            <li><strong>Fuja do <code>list.pop(0)</code>:</strong> Custa <i>O(N)</i> e degrada a aplicação com cópias contínuas de memória.</li>
+            <li><strong>Buffer Circular:</strong> Aritmética modular <code>(i + 1) % C</code> atinge <i>O(1)</i> em arrays estáticos.</li>
+          </ul>
+        </div>
+
+        <div class="card card-highlight">
+          <ul class="bullet-list" style="line-height: 1.8;">
+            <li><strong>Deques Unificam Tudo:</strong> Permitem inserção e remoção nas duas pontas em <i>O(1)</i>.</li>
+            <li><strong>Padrão da Indústria:</strong> Em Python, use <code>collections.deque</code> para altíssimo throughput.</li>
+            <li><strong>Aplicações Reais:</strong> Modelagem de simulação bancária e escalonadores de CPU (Round-Robin).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 22: ENCERRAMENTO -->
+    <section class="slide slide-cover">
+      <span class="cover-badge">FATEC RIBEIRÃO PRETO • ESTRUTURA DE DADOS</span>
+      <h1 class="cover-title">Obrigado! 🤘</h1>
+      <p class="cover-subtitle">Próxima Aula: <strong>Estruturas Encadeadas: Listas Simples e Duplamente Encadeadas</strong>.</p>
+
+      <div class="author-box" style="margin-top: 28px;">
+        <div style="font-size: 2.2rem;">🎓</div>
+        <div class="author-info">
+          <div class="author-name">Eduardo Cruz Araujo</div>
+          <div class="author-meta">
+            E-mail: <a href="mailto:eduardo.araujo@cps.sp.gov.br" style="color: var(--accent-cyan);">eduardo.araujo@cps.sp.gov.br</a><br>
+            GitHub: <a href="https://github.com/edcaraujo" target="_blank" style="color: var(--accent-cyan);">github.com/edcaraujo</a><br>
+            LinkedIn: <a href="https://www.linkedin.com/in/edcaraujo/" target="_blank" style="color: var(--accent-cyan);">linkedin.com/in/edcaraujo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Overview Navigation Modal -->
+  <div class="modal-overlay" id="overview-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Índice da Apresentação</h3>
+        <button class="modal-close" id="modal-close">×</button>
+      </div>
+      <div class="slide-grid" id="slide-grid-nav">
+        <!-- Grid items generated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Presenter Notes Drawer -->
+  <div class="notes-drawer" id="notes-drawer">
+    <div class="notes-header">
+      <div class="notes-title">💡 Notas do Apresentador</div>
+      <button class="notes-close" id="notes-close">×</button>
+    </div>
+    <div class="notes-content" id="notes-content">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg">Notificação</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
