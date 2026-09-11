@@ -14,7 +14,7 @@ class Fila:
         self._elementos[self._fim] = item
 
         #logica do circular
-        if self._fim >= self._capacidade:
+        if self._fim+1 >= self._capacidade:
             self._fim = 0
         else:
             self._fim += 1
@@ -28,7 +28,7 @@ class Fila:
         item = self._elementos[self._inicio]
 
         #logica do circular
-        if self._inicio >= self._capacidade:
+        if self._inicio+1 >= self._capacidade:
             self._inicio = 0
         else:
             self._inicio += 1
