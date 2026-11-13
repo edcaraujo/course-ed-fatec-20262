@@ -26,7 +26,7 @@ Neste trabalho avaliativo de **P2**, você assumirá o papel de autor: deverá e
 
 ## 🎯 Catálogo de Temas
 
-Selecione **um (1)** dos 5 temas abaixo (caso o professor defina sorteio por RA, utilize o **último dígito do seu RA** conforme indicado na coluna de referência):
+Selecione **um (1)** dos 5 temas abaixo:
 
 | Tema | Tópico / Algoritmo | Requisitos Específicos (Código Python + Simulador Visual) |
 | :---: | :--- | :--- |
