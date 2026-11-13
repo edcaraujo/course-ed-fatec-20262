@@ -20,7 +20,7 @@ Neste trabalho avaliativo de **P2**, você assumirá o papel de autor: deverá e
 1. **Implementação de Referência em Python (`src/algoritmo.py`)**: Código limpo, documentado e instrumentado com contadores de operações.
 2. **Simulador Visual Interativo (`src/demo/`)**: Aplicação web (`index.html`, `styles.css`, `app.js`) que demonstra visualmente a execução passo a passo do algoritmo.
 3. **Documentação Técnica e Registro de IA (`README.md`)**: Guia teórico resumido, análise de complexidade assintótica (Big-O) e diário de prompts utilizados.
-4. **Vídeo Explicativo (3 a 5 minutos)**: Gravação de tela (*screencast*) demonstrando o algoritmo em funcionamento no seu próprio simulador e explicando sua implementação em Python.
+4. **Vídeo Explicativo (3 a 7 minutos)**: Gravação de tela (*screencast*) demonstrando o algoritmo em funcionamento no seu próprio simulador e explicando sua implementação em Python.
 
 ---
 
